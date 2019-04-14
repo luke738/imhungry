@@ -29,6 +29,11 @@
 	align-items:center;
 }
 
+#dropdown {
+	background-color: #FFD27F;
+	width: 100%;
+}
+
 .dropDown {
 	position: absolute;
 	width:15vw;
