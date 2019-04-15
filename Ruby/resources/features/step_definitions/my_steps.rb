@@ -192,3 +192,7 @@ end
 And(/^click on dropdown$/) do
   find_by_id('dropdown').click
 end
+
+And(/^I should see a "([^"]*)" pagination button$/) do |arg|
+ find_by_id(arg)
+end
