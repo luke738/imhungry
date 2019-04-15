@@ -23,6 +23,10 @@
 	<h4 id = "header_text">I'm Hungry </h4>
 </div>
 	<div id = "header">Results</div>
+	<div class = "sort_buttons">
+		<button id = "alphabet_sort" type="button" class="btn btn-outline-warning">Sort By Alphabet</button>
+		<button id = "rating_sort" type="button" class="btn btn-outline-warning">Sort By Rating</button>
+	</div>
 	<div id = "collage"></div>
 	
 	<form action="listPage.jsp">
@@ -41,14 +45,20 @@
 	<form action="searchPage.jsp">
    	 	<input type="submit" id = "back_search" value="Back to Search" />
 	</form>
-	
+
+	<nav aria-label="page-navigation" class="pagination" id = "nav">
+			<%--<input class="page-link" type="button" id="first" onclick="firstPage()" value="1" />--%>
+			<%--<input class="page-link" type="button" id="next" onclick="nextPage()"/>--%>
+	</nav>
+
 	<div id = "container">
 		<div id = "column1">
 			<div id = "restaurantColumn" class = "sub_header">Restaurants</div>
-
+			<div id = "rest_results"></div>
 		</div>
 		<div id = "column2">
 			<div id = "recipeColumn" class = "sub_header">Recipes</div>
+			<div id = "rec_results"></div>
 		</div>
 
 		<ul id=”pages”></ul>

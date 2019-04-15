@@ -30,7 +30,7 @@ button[type=submit] {
 
 .backToResults {
 	background-color: orange;
-	position: fixed;
+	position: absolute;
 	margin-left: 80%;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -39,13 +39,13 @@ button[type=submit] {
 
 .printableVersion {
 	background-color: orange;
-	position: fixed;
+	position: absolute;
 	margin-left: 80%;
 	top:20vh;
 }
 
 .addToList {
-	position: fixed;
+	position: absolute;
 	margin-left: 105vh;
 }
 
@@ -57,7 +57,7 @@ button[type=submit] {
 }
 
 .dropDown {
-	position: fixed;
+	position: absolute;
 	margin-left: 80%;
 	margin-top: 5vh;
 	margin-bottom: 10px;

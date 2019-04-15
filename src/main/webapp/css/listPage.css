@@ -3,13 +3,16 @@ body {
 	padding: 0;
 }
 
+#dropdown {
+	background-color: #FFD27F;
+}
+
 .dropDown {
 	position: absolute;
 	width:15vw;
 	right:15vw;
 	top:21vh;
 	font-size:1rem;
-	background-color: #FFD27F;
 }
 
 input[type=submit], button{
