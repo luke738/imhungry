@@ -1,8 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `imhungry`;
-USE `imhungry`;
--- MySQL dump 10.13  Distrib 8.0.15, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.15, for macos10.14 (x86_64)
 --
--- Host: localhost    Database: imhungry
+-- Host: 127.0.0.1    Database: imhungry
 -- ------------------------------------------------------
 -- Server version	8.0.15
 
@@ -86,8 +84,8 @@ CREATE TABLE `recipe` (
   `recipeIDapi` int(11) NOT NULL,
   `prepTime` int(11) NOT NULL,
   `cookTime` int(11) NOT NULL,
-  `ingredient` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `instructions` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `ingredient` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `instructions` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `imageURL` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `rating` int(11) NOT NULL,
   `rname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -346,4 +344,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-14 17:11:39
+-- Dump completed on 2019-04-14 21:43:28
