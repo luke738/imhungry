@@ -39,8 +39,10 @@ public class SearchServlet extends HttpServlet {
 	private static final String SPOONACULAR_RECIPE_API_PREFIX = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes";
 	//private static final String SPOONACULAR_RAPID_API_KEY = "5d400066d1msh1a0901e6bb0917dp1b2dc1jsn1dcafa5afeb5";
 	//Mackenzie's Credit Card attached to (below) & Luke's old teammate's Credit Card (above)
-	private static final String SPOONACULAR_RAPID_API_KEY = "64cd03670fmsh3472c2b61fbfa38p129c7ajsnd0c9ef0f31be";
-
+	//0 = mackenzie, 1 = erica, 2 = luke
+	private static final String[] SPOONACULAR_RAPID_API_KEY = {"64cd03670fmsh3472c2b61fbfa38p129c7ajsnd0c9ef0f31be",
+															   "c2a6b9a24dmsh003243b0b928762p186ee7jsn03f96ad98af5",
+															   "748dfe7917msh0407ba7882559f0p18961fjsn8ec2d06e6e63"};
 	private static final String GOOGLE_CX_API_KEY = "AIzaSyAH3GjzX5RNq1ObGtaJEuciQziHrakn4cM";
 	private static final String GOOGLE_CX_ENGINE = "001810512200125518925:d_yaufj89m8";
 	private static final int IMAGE_COLLAGE_NUM = 10;
@@ -95,23 +97,14 @@ public class SearchServlet extends HttpServlet {
 		boolean success = true;
 		String errorMsg = "";
 
-		//Check for null input
-		if (userSearch == null) {
-			success = false;
-			errorMsg += "The file doesn't exist!";
-		}
-
 		//get lists
 		ArrayList<RecipeInfo> recipeList = recipeSearch(userSearch, numResults, doNotShowList, favoritesList);
 		ArrayList<RestaurantInfo> restaurantList = restaurantSearch(userSearch, numResults, radius, doNotShowList, favoritesList);
 		ArrayList<String> urlList = getImageURLs(userSearch);
 
 		//return content
-		if (!success){
-			//create error message
-			out.println(errorMsg);
-
-		} else {
+		if (success)
+		{
 			//create success message
 			//Cast result arrays to arrays of their parent's types
 			//This cast is potentially dangerous, but OK because we 100% know that recipe and restaurantList can also be represented as List<Info>s
@@ -136,7 +129,7 @@ public class SearchServlet extends HttpServlet {
 			URL requestURL = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) requestURL.openConnection();
 			//HTTP header for authorization of Spoonacular recipe API
-			con.setRequestProperty("X-RapidAPI-Key", SPOONACULAR_RAPID_API_KEY);
+			con.setRequestProperty("X-RapidAPI-Key", SPOONACULAR_RAPID_API_KEY[new Random().nextInt(3)]);
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
@@ -224,16 +217,20 @@ public class SearchServlet extends HttpServlet {
 		}
 
 		Collections.sort(recipes);  //sort RecipeInfo in ascending order based on preparation time
-//REFACTOR DULICATE CODE
 		//move recipes in Favorites List to the top
-		for(int i = recipes.size() - 1; i > 0; i--) {
-			if(favoritesList.contains(recipes.get(i))) {
-				recipes.add(0, recipes.get(i));
+		return (ArrayList<RecipeInfo>)((Object)(helperSort(true, (ArrayList<Info>)((Object)recipes), favoritesList)));
+	}
+
+	private ArrayList<Info> helperSort(Boolean isRecipe, ArrayList<Info> r, List<Info> favoritesList){
+		for (int i = r.size() - 1; i > 0; i--) {
+			// not responsible for testing project 1
+			if (favoritesList.contains(r.get(i))) {
+				r.add(0, r.get(i));
 				i++;
-				recipes.remove(i);
+				r.remove(i);
 			}
 		}
-		return recipes;
+		return r;
 	}
 
 
@@ -278,15 +275,7 @@ public class SearchServlet extends HttpServlet {
 		getPhoneAndURL(restaurants);
 
 		Collections.sort(restaurants);  //sort RestaurantInfo in ascending order based on drive time
-//REFACTOR DUPLICATE CODE
-		//move restaurants in Favorites List to the top
-		for(int i = restaurants.size() - 1; i > 0; i--) {
-			if(favoritesList.contains(restaurants.get(i))) {
-				restaurants.add(0, restaurants.get(i));
-				i++;
-				restaurants.remove(i);
-			}
-		}
+		restaurants = (ArrayList<RestaurantInfo>)((Object)(helperSort(false,  (ArrayList<Info>)((Object)restaurants), favoritesList)));
 
 		//filter restaurants by distance
 		//create Map of Restaurant Name, Restaurant distance
@@ -308,14 +297,8 @@ public class SearchServlet extends HttpServlet {
 	public Map<RestaurantInfo, String> getDistances (ArrayList<RestaurantInfo> restaurants) {
 		String distanceURL = GOOGLE_MAPS_API_PREFIX + "/distancematrix/json?units=imperial&origins="
 				+ TOMMY_TROJAN_LOC + "&destinations=";
-
-		for(int i = 0; i < restaurants.size(); i++) {
-			distanceURL += "place_id:" + restaurants.get(i).placeID + "%7C";
-		}
-		distanceURL += "&key=" + MAPS_API_KEY;
-
-        JsonArray distanc = new JsonParser().parse(getJSONResponse(distanceURL)).getAsJsonObject().get("rows").getAsJsonArray();
-        if(distanc.size() == 0){
+        JsonArray distanc = helperDriveTime(distanceURL, restaurants);
+        if(distanc == null){
             return null;
         }
         JsonArray distances = distanc.get(0).getAsJsonObject().get("elements").getAsJsonArray();
@@ -336,15 +319,9 @@ public class SearchServlet extends HttpServlet {
 				+ TOMMY_TROJAN_LOC + "&destinations=";
 		//concatenate the request URL to make use of the Distance Matrix API, obtaining drive times of multiple
 		//destinations in one request
-		for(int i = 0; i < restaurants.size(); i++) {
-			driveTimeURL += "place_id:" + restaurants.get(i).placeID + "%7C";
-		}
-		driveTimeURL += "&key=" + MAPS_API_KEY;
+        JsonArray driveTim = helperDriveTime(driveTimeURL, restaurants);
 
-        JsonArray driveTim = new JsonParser().parse(getJSONResponse(driveTimeURL)).getAsJsonObject().get("rows").getAsJsonArray();
-
-        //extract relevant part of the JSON response
-        if (driveTim.size() == 0){
+        if (driveTim.size()==0){
             return;
         }
 		JsonArray driveTimes = driveTim.get(0).getAsJsonObject().get("elements").getAsJsonArray();
@@ -355,6 +332,18 @@ public class SearchServlet extends HttpServlet {
 			restaurants.get(i).driveTimeValue = durationJSON.get("value").getAsInt();
 		}
 	}
+	private JsonArray helperDriveTime(String driveTimeURL, ArrayList<RestaurantInfo> restaurants){
+        if(restaurants.size()==0){
+        	return new JsonArray();
+		}
+		for(int i = 0; i < restaurants.size(); i++) {
+            driveTimeURL += "place_id:" + restaurants.get(i).placeID + "%7C";
+        }
+        driveTimeURL += "&key=" + MAPS_API_KEY;
+
+        JsonArray driveTim = new JsonParser().parse(getJSONResponse(driveTimeURL)).getAsJsonObject().get("rows").getAsJsonArray();
+        return driveTim;
+    }
 
 	//A separate request is needed to get detailed information including phone and URL.
 	public void getPhoneAndURL(ArrayList<RestaurantInfo> restaurants) {
