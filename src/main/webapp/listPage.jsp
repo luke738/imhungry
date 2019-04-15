@@ -47,8 +47,8 @@
 		</div>
 
 	<div class = "sort_buttons">
-		<button id = "alphabet_sort" type="button" class="btn btn-outline-warning">Sort By Alphabet</button>
-		<button id = "rating_sort" type="button" class="btn btn-outline-warning">Sort By Rating</button>
+		<button id = "alphabet_sort" type="button" class="btn btn-outline-warning" onclick="reorderResults(parseQuery(window.location.search).list, 'Alphabetically'); location.reload(true);">Sort By Alphabet</button>
+		<button id = "rating_sort" type="button" class="btn btn-outline-warning" onclick="reorderResults(parseQuery(window.location.search).list, 'Rating'); location.reload(true);">Sort By Rating</button>
 	</div>
 
 		<script src="js/ListClient.js"></script>
