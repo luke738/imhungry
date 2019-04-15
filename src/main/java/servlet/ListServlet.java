@@ -64,12 +64,7 @@ public class ListServlet extends HttpServlet
             Message reqMessage = gson.fromJson(reqBody, Message.class); //Parse outer Message object from JSON
             Message reqListAndItem = gson.fromJson((String)reqMessage.body, Message.class); //Parse inner Message object from json
             String listName = reqListAndItem.header; //Get name of list to modify from the inner Message
-            if(listName.equals("To+Explore")){
-                listName = "To Explore";
-            }
-            if(listName.equals("Do+Not+Show")){
-                listName = "Do Not Show";
-            }
+
             if(!listName.equals("Grocery") && !listName.equals("Favorites") && !listName.equals("To Explore") && !listName.equals("Do Not Show")) //Check validity
                 throw new Exception("Invalid list name." + listName);
             String infoJson = (String)reqListAndItem.body; //Get Info object of item to add/remove as a JSON string

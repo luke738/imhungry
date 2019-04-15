@@ -35,6 +35,7 @@ function reorderResults(listName, order){
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/Lists", false);
     xhttp.send(JSON.stringify(request));
+    console.log(xhttp.response);
     var response = JSON.parse(xhttp.response);
 }
 
