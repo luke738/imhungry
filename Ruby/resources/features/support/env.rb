@@ -5,12 +5,8 @@ require 'rspec'
 require 'webdrivers'
 
 
-#Capybara.register_driver :chrome do |app|
-#  Capybara::Selenium::Driver.new(app, :browser => :chrome, :driver_path=>"/Users/mackenziemcclung/Downloads/chromedriver")
-#end
-
-Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome, :driver_path=>"/Users/mackenziemcclung/Downloads/chromedriver")
 end
 
-Capybara.default_driver = :selenium
+Capybara.default_driver = :chrome
