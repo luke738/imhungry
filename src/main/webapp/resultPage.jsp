@@ -51,11 +51,11 @@
 	<div id = "container">
 		<div id = "column1">
 			<div id = "restaurantColumn" class = "sub_header">Restaurants</div>
-			<div id = "rest_results"></div>
+			<%--<div id = "rest_results"></div>--%>
 		</div>
 		<div id = "column2">
 			<div id = "recipeColumn" class = "sub_header">Recipes</div>
-			<div id = "rec_results"></div>
+			<%--<div id = "rec_results"></div>--%>
 		</div>
 
 		<ul id=”pages”></ul>
