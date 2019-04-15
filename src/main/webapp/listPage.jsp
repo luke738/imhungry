@@ -35,6 +35,7 @@
 		<form action="resultPage.jsp">
 			<input type="hidden" id="queryStringInput" name="search" value="" />
 			<input type="hidden" id="numberResultsInput" name="number" value="cache" />
+			<input type="hidden" id="radiusInput" name="radius" value="" />
 			<input type="submit" id = "back_result" value="Back to Results Page " />
 		</form>
 	
@@ -56,7 +57,7 @@
 		<script>
 			//Configure the back to results button
             if(document.getElementById("queryStringInput") != null) document.getElementById("queryStringInput").value = localStorage.getItem('search');
-
+			if(document.getElementById("radiusInput") != null) document.getElementById("radiusInput").value = localStorage.getItem('radius');
             //Identify the list this page is displaying from the query string
 			var listName = parseQuery(window.location.search).list;
 			listName = listName.replace(/\+/g, ' ');

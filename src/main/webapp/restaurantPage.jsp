@@ -39,6 +39,7 @@
     <div class = "backToResults">
         <input type="hidden" id="queryStringInput" name="search" value="" />
         <input type="hidden" id="numberResultsInput" name="number" value="cache" />
+        <input type="hidden" id="radiusInput" name="radius" value="" />
         <button type="submit" id = "backtoresults">Back to Results<i class="fas fa-arrow-left"></i> </button>
 
     </div>
