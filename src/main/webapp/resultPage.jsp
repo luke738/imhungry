@@ -23,10 +23,7 @@
 	<h4 id = "header_text">I'm Hungry </h4>
 </div>
 	<div id = "header">Results</div>
-	<div class = "sort_buttons">
-		<button id = "alphabet_sort" type="button" class="btn btn-outline-warning">Sort By Alphabet</button>
-		<button id = "rating_sort" type="button" class="btn btn-outline-warning">Sort By Rating</button>
-	</div>
+
 	<div id = "collage"></div>
 	
 	<form action="listPage.jsp">

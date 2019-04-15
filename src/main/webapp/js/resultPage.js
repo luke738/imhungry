@@ -85,8 +85,10 @@ function loadList() {
         //Create each sub section for the entry and populate it with data and attributes
 
         if (results[0][i]!=null) {
-            let sec1 = document.createElement("div");
-            sec1.id = "rest_results";
+            //let sec1 = document.createElement("div");
+            //sec1.id = "rest_results";
+
+            let sec1 = document.getElementById("rest_results");
 
             sec1.setAttribute("class", "Res_section1");
             sec1.innerHTML = results[0][i].name;
@@ -137,8 +139,10 @@ function loadList() {
     for (var i = begin; i < end; i++) {
 
         if (results[1][i]!=null) {
-            let sec1 = document.createElement("div");
-            sec1.id = "rec_results";
+            // let sec1 = document.createElement("div");
+            // sec1.id = "rec_results";
+
+            let sec1 = document.getElementById("rec_results");
 
             sec1.setAttribute("class", "Rec_section1");
             sec1.innerHTML = results[1][i].name;
