@@ -20,6 +20,7 @@ else {
 }
 //Store results in local storage
 window.localStorage.setItem("search", query.search);
+window.localStorage.setItem("radius", query.radius);
 window.localStorage.setItem("searchResults", JSON.stringify(results));
 window.localStorage.setItem("imageURLs", JSON.stringify(imageURLs));
 

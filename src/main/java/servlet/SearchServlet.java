@@ -33,7 +33,7 @@ public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private static final String GOOGLE_MAPS_API_PREFIX = "https://maps.googleapis.com/maps/api";
-	private static final String MAPS_API_KEY = "AIzaSyC-iVaMeUT0xoM_wNIxJPOZrvlfLQMrI1A";
+	private static final String MAPS_API_KEY = "AIzaSyBjQeU1iAYlGwz0UZJKjmMHdf-Dhc0pmPA";
 	private static final String TOMMY_TROJAN_LOC = "34.0205663,-118.2876355";
 
 	private static final String SPOONACULAR_RECIPE_API_PREFIX = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes";
@@ -43,7 +43,7 @@ public class SearchServlet extends HttpServlet {
 	private static final String[] SPOONACULAR_RAPID_API_KEY = {"64cd03670fmsh3472c2b61fbfa38p129c7ajsnd0c9ef0f31be",
 															   "c2a6b9a24dmsh003243b0b928762p186ee7jsn03f96ad98af5",
 															   "748dfe7917msh0407ba7882559f0p18961fjsn8ec2d06e6e63"};
-	private static final String GOOGLE_CX_API_KEY = "AIzaSyAH3GjzX5RNq1ObGtaJEuciQziHrakn4cM";
+	private static final String GOOGLE_CX_API_KEY = "AIzaSyA5PPeShWK1mI6bN5wFwceRNvn4Y-YY7qY";
 	private static final String GOOGLE_CX_ENGINE = "001810512200125518925:d_yaufj89m8";
 	private static final int IMAGE_COLLAGE_NUM = 10;
 
