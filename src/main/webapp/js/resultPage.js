@@ -23,8 +23,6 @@ window.localStorage.setItem("search", query.search);
 window.localStorage.setItem("searchResults", JSON.stringify(results));
 window.localStorage.setItem("imageURLs", JSON.stringify(imageURLs));
 
-console.log(results);
-
 //first check if the restaurant results are empty; if so return empty results msg
 if (results[0].length == 0) {
     let restaurant_error = document.createElement("p");
@@ -33,6 +31,7 @@ if (results[0].length == 0) {
     document.querySelector("#restaurantColumn").appendChild(restaurant_error);
 }
 
+//first check if the restaurant results are empty; if so return empty results msg
 if (results[1].length == 0) {
     let recipe_error = document.createElement("p");
     recipe_error.innerHTML = "No recipes based on search";
@@ -40,7 +39,7 @@ if (results[1].length == 0) {
     document.querySelector("#recipeColumn").appendChild(recipe_error);
 }
 
-//implement pagination; seperate for both recipes and restaurants
+//implement pagination, results split into pageLists
 var rec_list = results[1];
 var rest_list = results[0];
 var rec_pageList = new Array();
@@ -49,20 +48,31 @@ var currentPage = 1;
 var numberPerPage = 5;
 var numberOfPages = 0;
 
+//creates numbered pg buttons according to the max of either recipe or restaurant results
 function makeList() {
     numberOfRecPages = Math.ceil(rec_list.length / numberPerPage);
     numberOfRestPages = Math.ceil(rest_list.length / numberPerPage);
 
-    //create numbered pg buttons
-    numberOfPages = Math.max(numberOfRecPages,numberOfRestPages);
-    for (var i = 1; i <= numberOfPages; i++) {
-        var input = document.createElement("input");
-        input.value = i;
-        input.class = "page-link";
-        input.type = "button";
-        input.id = "page"+i;
-        input.addEventListener("click", nextPage);
-        document.getElementById("nav").appendChild(input);
+    //create numbered pg buttons - restaurant
+    for (var i = 1; i <= numberOfRestPages; i++) {
+        var rest_input = document.createElement("input");
+        rest_input.value = i;
+        rest_input.class = "page-link";
+        rest_input.type = "button";
+        rest_input.id = "page"+i;
+        rest_input.addEventListener("click", nextPage);
+        document.getElementById("rest_nav").appendChild(input);
+    }
+
+    //create numbered pg buttons - recipe
+    for (var i = 1; i <= numberOfRecPages; i++) {
+        var rec_input = document.createElement("input");
+        rec_input.value = i;
+        rec_input.class = "page-link";
+        rec_input.type = "button";
+        rec_input.id = "page"+i;
+        rec_input.addEventListener("click", nextPage);
+        document.getElementById("rec_nav").appendChild(input);
     }
 }
 
@@ -71,22 +81,24 @@ function nextPage() {
     loadList();
 }
 
+//removes items on pg and replaces with newly generated items according to clicked pg value
 function loadList() {
-    //remove previously generated restaurant items
+    //remove previously generated restaurant items on pg so results dont build on each other
     var rest_node = document.getElementById("column1");
     while (rest_node.childNodes.length > 2) {
         rest_node.removeChild(rest_node.lastChild);
     }
 
-    //remove previously generated recipe items
+    //remove previously generated recipe items from pg
     var rec_node = document.getElementById("column2");
     while (rec_node.childNodes.length > 2) {
         rec_node.removeChild(rec_node.lastChild);
     }
 
+    //begin = which index in results array to display for specific page.
+    //when (value is null) displays elements [0 - numberPerPage]
+    //end = which index in results array to stop at
     var begin = 0;
-
-    console.log(event.srcElement.value);
     if (event.srcElement.value == null) {
         begin = (0);
     } else {
@@ -94,13 +106,10 @@ function loadList() {
     }
     var end = begin + numberPerPage;
 
-    console.log(begin);
-    console.log(begin);
-
-
     drawList(begin,end);
 }
 
+//generates the list of item results to show
 function drawList(begin,end) {
 
     var col1 = document.getElementById("column1");
