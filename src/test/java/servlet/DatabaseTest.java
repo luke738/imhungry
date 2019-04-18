@@ -138,10 +138,12 @@ public class DatabaseTest
         db.updateLists(2,true, "favorites", info);
         db.updateLists(2,true, "favorites", info2);
         //
-        db.moveUp("favorites", info2);
+        db.moveItem("favorites", true, info2);
+        //moving up
         ArrayList<Info> newOrder = db.getLists(2, "favorites");
         assertEquals("test2recipe", newOrder.get(0).name);
-        db.moveDown("favorites", info2);
+        db.moveItem("favorites", false,  info2);
+        //moving down
         ArrayList<Info> orderNow = db.getLists(2, "favorites");
         assertEquals("testrecipe", orderNow.get(0).name);
     }
