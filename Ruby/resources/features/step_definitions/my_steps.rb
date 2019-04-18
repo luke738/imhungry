@@ -1,22 +1,22 @@
 
 When(/^I visit the website$/) do
-  visit('localhost:8080')
+  visit('https://localhost:8443')
 end
 
 When(/^I visit the results page/) do
-  visit('localhost:8080/resultPage.jsp')
+  visit('https://localhost:8443/resultPage.jsp')
 end
 
 When(/^I visit the list page/) do
-  visit('localhost:8080/listPage.jsp')
+  visit('https://localhost:8443/listPage.jsp')
 end
 
 When(/^I visit the recipe page/) do
-  visit('localhost:8080/recipePage.jsp')
+  visit('https://localhost:8443/recipePage.jsp')
 end
 
 When(/^I visit the restaurant page/) do
-  visit('localhost:8080/restaurantPage.jsp')
+  visit('https://localhost:8443/restaurantPage.jsp')
 end
 
 When(/^press search$/) do
