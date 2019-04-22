@@ -127,7 +127,7 @@ public class DatabaseTest
         getListsTest();
     }
 
-    Test
+    @Test
     //update lists
     public void getPosTest() {
         Database db = new Database();
@@ -150,7 +150,7 @@ public class DatabaseTest
         RecipeInfo info = new RecipeInfo("testing", 8, 56565, 10, 10, new ArrayList<>(Arrays.asList("ingredient1", "ingredient2")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",2);
         Boolean favUpdates = db.updateLists(1, true,"Favorites",  info);
         //userID, listname, boolean (Up=true, down=false), pos
-        changeOrder(1, "Favorites", true, 2);
+        db.changeOrder(1, "Favorites", true, 2);
         ArrayList<Info> favor = db.getLists(1, "Favorites");
         assertEquals("testrecipe", favor.get(2).name);
         assertEquals("testing", favor.get(1).name);
