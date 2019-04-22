@@ -127,40 +127,33 @@ public class DatabaseTest
         getListsTest();
     }
 
+    Test
+    //update lists
+    public void getPosTest() {
+        Database db = new Database();
+        Gson gson = new Gson();
+        RecipeInfo infos = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",1);
+        Boolean favUpdate = db.updateLists(1, true,"Favorites",  infos);
+        RecipeInfo info = new RecipeInfo("testing", 8, 56565, 10, 10, new ArrayList<>(Arrays.asList("ingredient1", "ingredient2")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",2);
+        Boolean favUpdates = db.updateLists(1, true,"Favorites",  info);
+        // userID, Listname, recipe BOolean, dbid
+        assertEquals(1, db.getPos(1, "Favorites", true, 1));
+    }
+
     @Test
     //update lists
     public void updateListOrderTest() {
         Database db = new Database();
         Gson gson = new Gson();
-        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",1);
-
-        //ArrayList<Info> list = new ArrayList<>(Collections.singletonList(info));
-        //removing recipes from the list
-        Boolean favUpdate = db.updateLists(1, false,"Favorites",  info);
-        System.out.println(favUpdate);
-        Boolean expUpdate = db.updateLists(1, false,"To Explore", info);
-        System.out.println(expUpdate);
-        Boolean dnsUpdate = db.updateLists(1, false,"Do Not Show", info);
-        System.out.println(dnsUpdate);
-        //adding recipes back to the list
-        Boolean favUpdate2 = db.updateLists(1, true,"Favorites",  info);
-        System.out.println(favUpdate2);
-        Boolean expUpdate2 = db.updateLists(1, true,"To Explore", info);
-        System.out.println(expUpdate2);
-        Boolean dnsUpdate2 = db.updateLists(1, true,"Do Not Show", info);
-        System.out.println(dnsUpdate2);
-        assertTrue(favUpdate && expUpdate && dnsUpdate && favUpdate2 && expUpdate2 && dnsUpdate2);
-        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url");
-        //removing restaurants from the lists
-        Boolean rfavUpdate = db.updateLists(1, false,"Favorites",  rinfo);
-        Boolean rexpUpdate = db.updateLists(1, false,"To Explore", rinfo);
-        Boolean rdnsUpdate = db.updateLists(1, false,"Do Not Show", rinfo);
-        //adding restaurants to lists
-        Boolean rfavUpdate2 = db.updateLists(1, true,"Favorites",  rinfo);
-        Boolean rexpUpdate2 = db.updateLists(1, true,"To Explore", rinfo);
-        Boolean rdnsUpdate2 = db.updateLists(1, true,"Do Not Show", rinfo);
-        assertTrue( rfavUpdate && rexpUpdate && rdnsUpdate && rfavUpdate2 && rexpUpdate2 && rdnsUpdate2 );
-        getListsTest();
+        RecipeInfo infos = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",1);
+        Boolean favUpdate = db.updateLists(1, true,"Favorites",  infos);
+        RecipeInfo info = new RecipeInfo("testing", 8, 56565, 10, 10, new ArrayList<>(Arrays.asList("ingredient1", "ingredient2")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",2);
+        Boolean favUpdates = db.updateLists(1, true,"Favorites",  info);
+        //userID, listname, boolean (Up=true, down=false), pos
+        changeOrder(1, "Favorites", true, 2);
+        ArrayList<Info> favor = db.getLists(1, "Favorites");
+        assertEquals("testrecipe", favor.get(2).name);
+        assertEquals("testing", favor.get(1).name);
     }
 
     @Test
