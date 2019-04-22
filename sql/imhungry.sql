@@ -1,8 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `imhungry` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `imhungry`;
--- MySQL dump 10.13  Distrib 8.0.15, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.15, for macos10.14 (x86_64)
 --
--- Host: localhost    Database: imhungry
+-- Host: 127.0.0.1    Database: imhungry
 -- ------------------------------------------------------
 -- Server version	8.0.15
 
@@ -116,6 +114,7 @@ CREATE TABLE `recipedonotshow` (
   `favID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL,
   `rID` int(11) NOT NULL,
+  `pos` int(11) DEFAULT NULL,
   PRIMARY KEY (`favID`),
   KEY `fk7` (`userID`),
   KEY `fk8` (`rID`),
@@ -130,7 +129,7 @@ CREATE TABLE `recipedonotshow` (
 
 LOCK TABLES `recipedonotshow` WRITE;
 /*!40000 ALTER TABLE `recipedonotshow` DISABLE KEYS */;
-INSERT INTO `recipedonotshow` VALUES (53,1,1);
+INSERT INTO `recipedonotshow` VALUES (53,1,1,1);
 /*!40000 ALTER TABLE `recipedonotshow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,6 +144,7 @@ CREATE TABLE `recipefavorites` (
   `favID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL,
   `rID` int(11) NOT NULL,
+  `pos` int(11) DEFAULT NULL,
   PRIMARY KEY (`favID`),
   KEY `fk3` (`userID`),
   KEY `fk4` (`rID`),
@@ -159,7 +159,7 @@ CREATE TABLE `recipefavorites` (
 
 LOCK TABLES `recipefavorites` WRITE;
 /*!40000 ALTER TABLE `recipefavorites` DISABLE KEYS */;
-INSERT INTO `recipefavorites` VALUES (52,1,1);
+INSERT INTO `recipefavorites` VALUES (52,1,1,1);
 /*!40000 ALTER TABLE `recipefavorites` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,6 +174,7 @@ CREATE TABLE `recipetoexplore` (
   `favID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL,
   `rID` int(11) NOT NULL,
+  `pos` int(11) DEFAULT NULL,
   PRIMARY KEY (`favID`),
   KEY `fk11` (`userID`),
   KEY `fk12` (`rID`),
@@ -188,7 +189,7 @@ CREATE TABLE `recipetoexplore` (
 
 LOCK TABLES `recipetoexplore` WRITE;
 /*!40000 ALTER TABLE `recipetoexplore` DISABLE KEYS */;
-INSERT INTO `recipetoexplore` VALUES (54,1,1);
+INSERT INTO `recipetoexplore` VALUES (54,1,1,0);
 /*!40000 ALTER TABLE `recipetoexplore` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,6 +236,7 @@ CREATE TABLE `restdonotshow` (
   `favID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL,
   `rID` int(11) NOT NULL,
+  `pos` int(11) DEFAULT NULL,
   PRIMARY KEY (`favID`),
   KEY `fk5` (`userID`),
   KEY `fk6` (`rID`),
@@ -249,7 +251,7 @@ CREATE TABLE `restdonotshow` (
 
 LOCK TABLES `restdonotshow` WRITE;
 /*!40000 ALTER TABLE `restdonotshow` DISABLE KEYS */;
-INSERT INTO `restdonotshow` VALUES (26,1,1);
+INSERT INTO `restdonotshow` VALUES (26,1,1,0);
 /*!40000 ALTER TABLE `restdonotshow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,6 +266,7 @@ CREATE TABLE `restfavorites` (
   `favID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL,
   `rID` int(11) NOT NULL,
+  `pos` int(11) DEFAULT NULL,
   PRIMARY KEY (`favID`),
   KEY `fk1` (`userID`),
   KEY `fk2` (`rID`),
@@ -278,7 +281,7 @@ CREATE TABLE `restfavorites` (
 
 LOCK TABLES `restfavorites` WRITE;
 /*!40000 ALTER TABLE `restfavorites` DISABLE KEYS */;
-INSERT INTO `restfavorites` VALUES (39,1,1);
+INSERT INTO `restfavorites` VALUES (39,1,1,0);
 /*!40000 ALTER TABLE `restfavorites` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,6 +296,7 @@ CREATE TABLE `resttoexplore` (
   `favID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL,
   `rID` int(11) NOT NULL,
+  `pos` int(11) DEFAULT NULL,
   PRIMARY KEY (`favID`),
   KEY `fk9` (`userID`),
   KEY `fk10` (`rID`),
@@ -307,7 +311,7 @@ CREATE TABLE `resttoexplore` (
 
 LOCK TABLES `resttoexplore` WRITE;
 /*!40000 ALTER TABLE `resttoexplore` DISABLE KEYS */;
-INSERT INTO `resttoexplore` VALUES (45,1,1);
+INSERT INTO `resttoexplore` VALUES (45,1,1,1);
 /*!40000 ALTER TABLE `resttoexplore` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,4 +350,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-14 21:58:28
+-- Dump completed on 2019-04-22 14:04:26
