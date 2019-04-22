@@ -193,10 +193,11 @@ public class Database
         //adding recipes
         try {
             if (isRecipe) {
-                //
+                // check if recipe already exists in recipe table
                 ps = conn.prepareStatement("SELECT r.recipeIDapi, r.recipID FROM recipe r WHERE r.recipeIDapi = ?");
                 ps.setInt(1, ((RecipeInfo) i).recipeID);
                 rs = ps.executeQuery();
+                // if not already in recipe table, add it
                 if (!rs.next()) {
                     ps = conn.prepareStatement("INSERT INTO recipe(recipeIDapi, prepTime, cookTime, ingredient, instructions, imageurl, rating, rname) VALUES(?,?,?,?,?,?,?,?)");
                     ps.setInt(1, ((RecipeInfo) i).recipeID);
@@ -237,21 +238,28 @@ public class Database
                 if(rs.next()){
                     return false;
                 }
+
+                // TODO: FIND OUT WHAT POS TO GIVE NEW ITEM
+                int highestPos = -1;
                 if (listname.equals("Favorites")) {
+                    highestPos = findHighestPos("favorites", userID);
                     //checking that the specified user has the specified recipe in the Favorites list
-                    ps = conn.prepareStatement("INSERT INTO recipefavorites(rID, userid) VALUES(?,?)");
+                    ps = conn.prepareStatement("INSERT INTO recipefavorites(rID, userid, pos) VALUES(?,?,?)");
                 } else if (listname.equals("Do Not Show")) {
+                    highestPos = findHighestPos("donotshow", userID);
                     //checking that the specified user has the specified recipe in the Donotshow list
-                    ps = conn.prepareStatement("INSERT INTO recipedonotshow(rID, userid) VALUES(?,?)");
+                    ps = conn.prepareStatement("INSERT INTO recipedonotshow(rID, userid, pos) VALUES(?,?,?)");
                 } else if (listname.equals("To Explore")) {
+                    highestPos = findHighestPos("toexplore", userID);
                     //checking that the specified user has the specified recipe in the to explore list
-                    ps = conn.prepareStatement("INSERT INTO recipetoexplore(rID, userid) VALUES(?,?)");
+                    ps = conn.prepareStatement("INSERT INTO recipetoexplore(rID, userid, pos) VALUES(?,?,?)");
                 } else if (listname.equals("Grocery")) {
                     //checking that the specified user has the specified recipe in the to explore list
                     ps = conn.prepareStatement("INSERT INTO groceries(recipeID, userID) VALUES(?,?)");
                 }
                 ps.setInt(1, dbids);
                 ps.setInt(2, userID);
+                ps.setInt(3, highestPos + 1);
                 ps.executeUpdate();
                 return true;
             }
@@ -295,15 +303,21 @@ public class Database
                     System.out.println("Here I am ");
                     return false;
                 }
+                // TODO: FIND OUT WHAT POS TO GIVE NEW ITEM
+                int highestPos = -1;
                 if (listname.equals("Favorites")) {
-                    ps = conn.prepareStatement("INSERT INTO restfavorites(rID, userid) VALUES(?,?)");
+                    highestPos = findHighestPos("favorites", userID);
+                    ps = conn.prepareStatement("INSERT INTO restfavorites(rID, userid, pos) VALUES(?,?,?)");
                 } else if (listname.equals("Do Not Show")) {
-                    ps = conn.prepareStatement("INSERT INTO restdonotshow(rID, userid) VALUES(?,?)");
+                    highestPos = findHighestPos("donotshow", userID);
+                    ps = conn.prepareStatement("INSERT INTO restdonotshow(rID, userid, pos) VALUES(?,?,?)");
                 } else if (listname.equals("To Explore")) {
-                    ps = conn.prepareStatement("INSERT INTO resttoexplore(rID, userid) VALUES(?,?)");
+                    highestPos = findHighestPos("toexplore", userID);
+                    ps = conn.prepareStatement("INSERT INTO resttoexplore(rID, userid, pos) VALUES(?,?,?)");
                 }
                 ps.setInt(1, dbids);
                 ps.setInt(2, userID);
+                ps.setInt(3, highestPos);
                 ps.executeUpdate();
                 return true;
             }
@@ -314,6 +328,39 @@ public class Database
         }
         return false;
 
+    }
+
+    private int findHighestPos(String listname, int userID){
+        String recipeQuery = "SELECT list.pos FROM recipe" + listname + " list WHERE userID=" + userID;
+        String restaurantQuery = "SELECT list.pos FROM rest" + listname + " list WHERE userID=" + userID;
+        int highestPos = -1;
+        try {
+            // get the positions of recipes
+            ps = conn.prepareStatement(recipeQuery);
+            rs = ps.executeQuery();
+            // find the highest position in recipes
+            while (rs.next()){
+                int pos = rs.getInt("pos");
+                if (pos > highestPos) {
+                    highestPos = pos;
+                }
+            }
+            // get the positions of restaurants
+            ps = conn.prepareStatement(restaurantQuery);
+            rs = ps.executeQuery();
+            // find the highest position in restaurants
+            while (rs.next()) {
+                int pos = rs.getInt("pos");
+                if (pos > highestPos){
+                    highestPos = pos;
+                }
+            }
+        }
+        catch(SQLException e){
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
+        return highestPos;
     }
 
     private Boolean removeFromList(int userID, Boolean isRecipe, String listname, Info i) {
