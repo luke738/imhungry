@@ -41,8 +41,11 @@ public class ListServlet extends HttpServlet
         if(listName.equals("Grocery")) {
             List<String> groceryList = new ArrayList<>();
             for (Info i : list) {
-                groceryList.addAll(((RecipeInfo) i).ingredients);
+                for(int l =0 ; l < ((RecipeInfo)i).ingredients.size();l++ ){
+                    groceryList.add(((RecipeInfo) i).checked.get(l)?"C":"N"+((RecipeInfo) i).ingredients.get(l));
+                }
             }
+
             respWriter.println(gson.toJson(new Message(listName,groceryList))); //convert to JSON before sending it to the response
             respWriter.close();
             return;
@@ -100,6 +103,36 @@ public class ListServlet extends HttpServlet
                     break;
                 case "resetLists":
                     session.invalidate(); //Note: This is for debuggin only; the page will break if this is called and a new search is not immediately made
+                    break;
+                case "checkGrocery":
+                    String ingred = item.name;
+                    Boolean flag = false;
+                    for(int k =0; k < list.size() && !flag; k++){
+                        for(int m =0; m < ((RecipeInfo)list.get(k)).ingredients.size(); m++){
+                            if(((RecipeInfo) list.get(k)).ingredients.get(m).equals(ingred)){
+                                db.updateLists(userID, false, "Grocery", list.get(k));
+                                ((RecipeInfo) list.get(k)).checked.set(m, true);
+                                db.updateLists(userID, true, "Grocery", list.get(k));
+                                flag = true;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                case "uncheckGrocery":
+                    String ingrid = item.name;
+                    Boolean flage = false;
+                    for(int k =0; k < list.size() && !flage; k++){
+                        for(int m =0; m < ((RecipeInfo)list.get(k)).ingredients.size(); m++){
+                            if(((RecipeInfo) list.get(k)).ingredients.get(m).equals(ingrid)){
+                                db.updateLists(userID, false, "Grocery", list.get(k));
+                                ((RecipeInfo) list.get(k)).checked.set(m, false);
+                                db.updateLists(userID, true, "Grocery", list.get(k));
+                                flage = true;
+                                break;
+                            }
+                        }
+                    }
                     break;
                 case "reorderList":
                     RecipeInfo ri = (RecipeInfo) item;

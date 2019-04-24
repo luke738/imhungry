@@ -380,7 +380,6 @@ public class Database
                     return false;
                 }
 
-                // TODO: FIND OUT WHAT POS TO GIVE NEW ITEM
                 int highestPos = -1;
                 if (listname.equals("Favorites")) {
                     highestPos = findHighestPos("Favorites", userID);

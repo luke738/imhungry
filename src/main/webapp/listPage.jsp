@@ -64,7 +64,7 @@
         if(list == null || list.length === 0) col1.innerHTML = "This list is empty. Add something to see it here!" ;
         else if(listName === "Grocery") {
             for (var i = 0; i < list.length; i++) {
-                col1.innerHTML += i+1 + ". " + list[i] + "<br />";
+                col1.innerHTML += i+1 + ". " + list[i].substring(1,list[i].size()) + "<br />";
             }
         }
         else {

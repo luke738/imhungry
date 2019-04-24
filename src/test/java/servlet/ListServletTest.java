@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class ListServletTest {
@@ -134,7 +134,102 @@ public class ListServletTest {
 		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Moved item Down"))+System.lineSeparator()));
 		assertEquals("Wendy's", ((ArrayList<Info>)sessionObj.get("Favorites")).get(2).name);
 	}
+	@Test
+	public void testChecking() throws Exception {
+		ListServlet listServlet = mock(ListServlet.class, CALLS_REAL_METHODS);//Have to partial mock so loginServlet.getServletContext() can be mocked
+		Method doPostMethod = listServlet.getClass().getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
+		doPostMethod.setAccessible(true);
+		HttpServletRequest request = mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		Map<String, Object> sessionObj = new TreeMap<>();
+		// create a test list
+		List<Info> actual = new ArrayList<Info>();
+		actual.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>(Arrays.asList(false,false))));
+		sessionObj.put("Grocery", actual);
+		sessionObj.put("hello", "Hello testuser");
+		sessionObj.put("userID", 1);
 
+		when(request.getSession()).thenReturn(session);
+		StringWriter stringWriter = new StringWriter();
+		when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
+		RecipeInfo ri = new RecipeInfo("1. ingredient", 0, 0, 0, 0, null, null, "", 1);
+		Gson gson = new Gson();
+		BufferedReader br = new BufferedReader(new StringReader(gson.toJson(new Message("checkGrocery", gson.toJson(new Message("Grocery", gson.toJson(ri)))))));
+		when(request.getReader()).thenReturn(br);
+		doAnswer(new Answer()
+		{
+			@Override
+			public Object answer(InvocationOnMock invocationOnMock) throws Throwable
+			{
+				assertEquals(sessionObj.get(invocationOnMock.getArguments()[0]), invocationOnMock.getArguments()[1]); //ensures the session state is set correctly
+				return null;
+			}
+		}).when(session).setAttribute(anyString(), anyObject());
+		doAnswer(new Answer()
+		{
+			@Override
+			public Object answer(InvocationOnMock invocationOnMock) throws Throwable
+			{
+				return sessionObj.get((invocationOnMock.getArguments()[0]));
+			}
+		}).when(session).getAttribute(anyString());
+
+		doPostMethod.invoke(listServlet, request, response);
+
+		//Make sure the correct response was set
+		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Checked"))+System.lineSeparator()));
+		assertTrue(((RecipeInfo)((ArrayList<Info>)sessionObj.get("Grocery")).get(0)).checked.get(0));
+
+	}@Test
+	public void testUnchecking() throws Exception {
+		ListServlet listServlet = mock(ListServlet.class, CALLS_REAL_METHODS);//Have to partial mock so loginServlet.getServletContext() can be mocked
+		Method doPostMethod = listServlet.getClass().getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
+		doPostMethod.setAccessible(true);
+		HttpServletRequest request = mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		Map<String, Object> sessionObj = new TreeMap<>();
+		// create a test list
+		List<Info> actual = new ArrayList<Info>();
+		actual.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>(Arrays.asList(true,true))));
+		sessionObj.put("Grocery", actual);
+		sessionObj.put("hello", "Hello testuser");
+		sessionObj.put("userID", 1);
+
+		when(request.getSession()).thenReturn(session);
+		StringWriter stringWriter = new StringWriter();
+		when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
+		RecipeInfo ri = new RecipeInfo("1. ingredient", 0, 0, 0, 0, null, null, "", 1);
+		Gson gson = new Gson();
+		BufferedReader br = new BufferedReader(new StringReader(gson.toJson(new Message("uncheckGrocery", gson.toJson(new Message("Grocery", gson.toJson(ri)))))));
+		when(request.getReader()).thenReturn(br);
+		doAnswer(new Answer()
+		{
+			@Override
+			public Object answer(InvocationOnMock invocationOnMock) throws Throwable
+			{
+				assertEquals(sessionObj.get(invocationOnMock.getArguments()[0]), invocationOnMock.getArguments()[1]); //ensures the session state is set correctly
+				return null;
+			}
+		}).when(session).setAttribute(anyString(), anyObject());
+		doAnswer(new Answer()
+		{
+			@Override
+			public Object answer(InvocationOnMock invocationOnMock) throws Throwable
+			{
+				return sessionObj.get((invocationOnMock.getArguments()[0]));
+			}
+		}).when(session).getAttribute(anyString());
+
+		doPostMethod.invoke(listServlet, request, response);
+
+		//Make sure the correct response was set
+		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Unchecked"))+System.lineSeparator()));
+		assertFalse(((RecipeInfo)((ArrayList<Info>)sessionObj.get("Grocery")).get(0)).checked.get(0));
+
+
+	}
 	@Test
 	//Check getting grocery list
 	public void getGroceryList() throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ServletException
@@ -183,7 +278,7 @@ public class ListServletTest {
 
 
 		//Make sure the correct response was set
-		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Grocery", new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")))))+System.lineSeparator());
+		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Grocery", new ArrayList<>(Arrays.asList("N1. ingredient", "N2. ingredient")))))+System.lineSeparator());
 	}
 
 	@Test

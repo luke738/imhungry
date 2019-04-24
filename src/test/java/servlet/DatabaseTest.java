@@ -161,7 +161,7 @@ public class DatabaseTest
     //add previous Searches
     public void addPrevSearchTest() {
         Database db = new Database();
-        db.addPrevSearch(1, "testSearch", 5, 1);
+        db.addPrevSearch(1, "testSearch", 5, 1, null);
         ArrayList<Searches> prevT = db.getPrevSearch(1);
         boolean isPrevStored = false;
         for(int i = 0; i < prevT.size(); i++){
@@ -170,7 +170,6 @@ public class DatabaseTest
             }
         }
         assertTrue(isPrevStored);
-        db.addPrevSearch(1, "testSearch", 5, 1);
     }
 
     @Test
