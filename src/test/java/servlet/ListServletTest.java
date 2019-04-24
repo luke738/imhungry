@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 public class ListServletTest {
 
 	@Test
-	public void testReorderingAlphabetically() throws Exception {
+	public void testReorderingUp() throws Exception {
 		ListServlet listServlet = mock(ListServlet.class, CALLS_REAL_METHODS);//Have to partial mock so loginServlet.getServletContext() can be mocked
 		Method doPostMethod = listServlet.getClass().getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
 		doPostMethod.setAccessible(true);
@@ -38,11 +38,8 @@ public class ListServletTest {
 		// create a test list
 		List<Info> actual = new ArrayList<Info>();
 		actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1", 0));
-		actual.add(new RestaurantInfo("Wendy's", 3, "1", "1", 1, "1", 1, "1", "1", 0));
-		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1", 0));
-		actual.add(new RecipeInfo("Chicken Marsala", 2, 1, 1, 1, null, null, "1", 0));
-		actual.add(new RecipeInfo("Clam Chowder", 6, 1, 1, 1, null, null, "1", 0));
-		actual.add(new RecipeInfo("Mac & Cheese", 4, 1, 1, 1, null, null, "1", 0));
+		actual.add(new RestaurantInfo("Wendy's", 3, "1", "1", 1, "1", 1, "1", "1", 1));
+		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1", 2));
 		sessionObj.put("Favorites", actual);
 		sessionObj.put("hello", "Hello testuser");
 		sessionObj.put("userID", 1);
@@ -50,7 +47,7 @@ public class ListServletTest {
 		when(request.getSession()).thenReturn(session);
 		StringWriter stringWriter = new StringWriter();
 		when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
-		RecipeInfo ri = new RecipeInfo("Alphabetically", 0, 0, 0, 0, null, null, "", 0);
+		RecipeInfo ri = new RecipeInfo("Up", 0, 0, 0, 0, null, null, "", 1);
 		Gson gson = new Gson();
 		BufferedReader br = new BufferedReader(new StringReader(gson.toJson(new Message("reorderList", gson.toJson(new Message("Favorites", gson.toJson(ri)))))));
 		when(request.getReader()).thenReturn(br);
@@ -79,12 +76,13 @@ public class ListServletTest {
 		doPostMethod.invoke(listServlet, request, response);
 
 		//Make sure the correct response was set
-		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Changed order of lists to Alphabetically"))+System.lineSeparator()));
+		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Moved item up"))+System.lineSeparator()));
+		assertEquals("Wendy's", ((ArrayList<Info>)sessionObj.get("Favorites")).get(0).name);
 
 	}
 
 	@Test
-	public void testReorderingRating() throws Exception {
+	public void testReorderingDown() throws Exception {
 		ListServlet listServlet = mock(ListServlet.class, CALLS_REAL_METHODS);//Have to partial mock so loginServlet.getServletContext() can be mocked
 		Method doPostMethod = listServlet.getClass().getDeclaredMethod("doPost", HttpServletRequest.class, HttpServletResponse.class);
 		doPostMethod.setAccessible(true);
@@ -95,11 +93,8 @@ public class ListServletTest {
 		// create a test list
 		List<Info> actual = new ArrayList<Info>();
 		actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1", 0));
-		actual.add(new RestaurantInfo("Wendy's", 3, "1", "1", 1, "1", 1, "1", "1", 0));
-		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1", 0));
-		actual.add(new RecipeInfo("Chicken Marsala", 2, 1, 1, 1, null, null, "1", 0));
-		actual.add(new RecipeInfo("Clam Chowder", 6, 1, 1, 1, null, null, "1", 0));
-		actual.add(new RecipeInfo("Mac & Cheese", 4, 1, 1, 1, null, null, "1", 0));
+		actual.add(new RestaurantInfo("Wendy's", 3, "1", "1", 1, "1", 1, "1", "1", 1));
+		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1", 2));
 		sessionObj.put("Favorites", actual);
 		sessionObj.put("hello", "Hello testuser");
 		sessionObj.put("userID", 1);
@@ -107,7 +102,7 @@ public class ListServletTest {
 		when(request.getSession()).thenReturn(session);
 		StringWriter stringWriter = new StringWriter();
 		when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
-		RecipeInfo ri = new RecipeInfo("Rating", 0, 0, 0, 0, null, null, "", 0);
+		RecipeInfo ri = new RecipeInfo("Down", 0, 0, 0, 0, null, null, "", 1);
 		Gson gson = new Gson();
 		BufferedReader br = new BufferedReader(new StringReader(gson.toJson(new Message("reorderList", gson.toJson(new Message("Favorites", gson.toJson(ri)))))));
 		when(request.getReader()).thenReturn(br);
@@ -135,10 +130,9 @@ public class ListServletTest {
 		//doNothing().when(rd).forward(any(), any());
 		doPostMethod.invoke(listServlet, request, response);
 
-
 		//Make sure the correct response was set
-		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Changed order of lists to Rating"))+System.lineSeparator()));
-
+		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Moved item down"))+System.lineSeparator()));
+		assertEquals("Wendy's", ((ArrayList<Info>)sessionObj.get("Favorites")).get(2).name);
 	}
 
 	@Test
