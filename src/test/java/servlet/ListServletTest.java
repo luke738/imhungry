@@ -155,7 +155,7 @@ public class ListServletTest {
 		sessionObj.put("hello", "Hello testuser");
 		sessionObj.put("userID", 1);
 		List<Info> list = new ArrayList<>();
-		list.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>(), 0));
+		list.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>()));
 		sessionObj.put("Grocery", list);
 		when(request.getSession()).thenReturn(session);
 		StringWriter stringWriter = new StringWriter();

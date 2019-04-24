@@ -116,48 +116,44 @@ public class Database
     private int getrecipeID(int position, String listname, int userID){
         try {
             if (listname.equals("Favorites")) {
-                ps = conn.prepareStatement("SELECT rr.rID FROM recipefavorites rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                ps = conn.prepareStatement("SELECT rr.rID FROM imhungry.recipefavorites rr  WHERE rr.userID = ?  AND rr.pos = ?");
             } else if (listname.equals("Do Not Show")) {
-                ps = conn.prepareStatement("SELECT rr.rID FROM recipedonotshow rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                ps = conn.prepareStatement("SELECT rr.rID FROM imhungry.recipedonotshow rr  WHERE rr.userID = ?  AND rr.pos = ?");
             } else if (listname.equals("To Explore")) {
-                ps = conn.prepareStatement("SELECT rr.rID FROM recipetoexplore rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                ps = conn.prepareStatement("SELECT rr.rID FROM imhungry.recipetoexplore rr  WHERE rr.userID = ?  AND rr.pos = ?");
             }
             ps.setInt(1, userID);
             ps.setInt(2, position);
             rs = ps.executeQuery();
-            if(!rs.next()) {
-                return -1;
-            }
-            if(rs.next()) {
+            while(rs.next()) {
                 return rs.getInt("rID");
             }
+            return -1;
         }
         catch (SQLException e) {
             System.out.println("SQLException in function \"validate\"");
             e.printStackTrace();
         }
-        return -10;
+        return -100;
     }
 
     private int getrestID(int position, String listname, int userID){
         try {
             if (listname.equals("Favorites")) {
-                ps = conn.prepareStatement("SELECT rr.rID FROM restfavorites rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                ps = conn.prepareStatement("SELECT rr.rID FROM imhungry.restfavorites rr  WHERE rr.userID = ?  AND rr.pos = ?");
             } else if (listname.equals("Do Not Show")) {
-                ps = conn.prepareStatement("SELECT rr.rID FROM restdonotshow rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                ps = conn.prepareStatement("SELECT rr.rID FROM imhungry.restdonotshow rr  WHERE rr.userID = ?  AND rr.pos = ?");
             } else if (listname.equals("To Explore")) {
-                ps = conn.prepareStatement("SELECT rr.rID FROM resttoexplore rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                ps = conn.prepareStatement("SELECT rr.rID FROM imhunngry.resttoexplore rr  WHERE rr.userID = ?  AND rr.pos = ?");
             }
             ps.setInt(1, userID);
             ps.setInt(2, position);
             rs = ps.executeQuery();
             //meaning it is not a restaurant
-            if(!rs.next()) {
-                return -10;
-            }
-            if(rs.next()) {
+            while(rs.next()) {
                 return rs.getInt("rID");
             }
+            return -10;
         }
         catch (SQLException e) {
             System.out.println("SQLException in function \"validate\"");
@@ -223,12 +219,13 @@ public class Database
         }
 
         int movingrID = getrecipeID(posit, listname, userID);
-        if(rID == -1) {
+        if(movingrID == -1) {
             isRecipe2 = false;
             movingrID = getrestID(posit, listname, userID);
         }
 
         // to update the position of the info item above the moving one before the move
+        System.out.println("pos1: " + posit +"  pos2: " + position + " rID"+ rID + " movingID:" + movingrID);
         updatePos(posit, listname, userID, rID, isRecipe);
         // now update the position of the moving one after the move
         updatePos(position, listname, userID, movingrID, isRecipe2);
@@ -248,7 +245,7 @@ public class Database
                 ps = conn.prepareStatement("SELECT rec.rID, rec.userID, r.recipeIDapi, r.prepTime, r.rating, r.CookTime, r.ingredient, r.instructions, r.imageURL, r.rname, rec.rID, rec.pos FROM recipedonotshow rec JOIN recipe r WHERE rec.userID=? AND rec.rID = r.recipID");
             }
             else if(listname.equals("Grocery")){
-                ps = conn.prepareStatement("SELECT grow.grocID, grow.userID, grow.recipeID AS 'rID', r.recipeIDapi, r.prepTime, r.rating, r.CookTime, r.ingredient, r.instructions, r.imageURL, r.rname FROM groceries grow JOIN recipe r WHERE grow.userID=? AND grow.recipeID = r.recipID");
+                ps = conn.prepareStatement("SELECT grow.grocID, grow.userID, grow.checked, grow.recipeID AS 'rID', r.recipeIDapi, r.prepTime, r.rating, r.CookTime, r.ingredient, r.instructions, r.imageURL, r.rname FROM groceries grow JOIN recipe r WHERE grow.userID=? AND grow.recipeID = r.recipID");
             }
             ps.setInt(1, userID);
             rs = ps.executeQuery();
@@ -315,8 +312,16 @@ public class Database
                 RestaurantInfo p = new RestaurantInfo(restname, rating, placeID, restaddress, price,driveTimeT, driveTimeV, phone, url, dbid, pos);
                 pList.add(p);
             }
+            for(int i = 0; i < pList.size(); i++){
+                System.out.println(pList.get(i).name +" "+ pList.get(i).pos);
+            }
+            System.out.println();
             // reorder based on position
             pList.sort(Comparator.comparingInt((Info i) -> i.pos));
+            for(int i = 0; i < pList.size(); i++){
+                System.out.println(pList.get(i).name  +" "+ pList.get(i).pos);
+            }
+
             return pList;
         } catch (SQLException e) {
             System.out.println("SQLException in function \"validate\"");
@@ -391,12 +396,20 @@ public class Database
                     ps = conn.prepareStatement("INSERT INTO recipetoexplore(rID, userid, pos) VALUES(?,?,?)");
                 } else if (listname.equals("Grocery")) {
                     //checking that the specified user has the specified recipe in the to explore list
-                    ps = conn.prepareStatement("INSERT INTO groceries(recipeID, userID) VALUES(?,?)");
+                    ps = conn.prepareStatement("INSERT INTO groceries(recipeID, userID, checked) VALUES(?,?,?)");
                 }
                 ps.setInt(1, dbids);
                 ps.setInt(2, userID);
                 if (!listname.equals("Grocery")) {
                     ps.setInt(3, highestPos + 1);
+                }
+                else{
+                    int j = ((RecipeInfo) i).ingredients.size();
+                    ArrayList<Boolean> checked = new ArrayList<>();
+                    for(int m = 0; m < j; m++){
+                        checked.add(false);
+                    }
+                    ps.setString(3, new Gson().toJson(checked));
                 }
                 ps.executeUpdate();
                 return true;
@@ -466,21 +479,18 @@ public class Database
 
     }
 
-    private int findHighestPos(String listname, int userID){
-        String actualListname = "";
-        if (listname.equals("Favorites")){
-            actualListname = "favorites";
-        } else if (listname.equals("Do Not Show")){
-            actualListname = "donotshow";
-        } else if (listname.equals("To Explore")){
-            actualListname = "toexplore";
-        }
-        String recipeQuery = "SELECT pos FROM recipe" + actualListname + " l WHERE userID = " + userID;
-        String restaurantQuery = "SELECT pos FROM rest" + actualListname + " l WHERE userID = " + userID;
+    public int findHighestPos(String listname, int userID){
         int highestPos = -1;
         try {
             // get the positions of recipes
-            ps = conn.prepareStatement(recipeQuery);
+            if (listname.equals("Favorites")) {
+                ps = conn.prepareStatement("SELECT r.pos FROM recipefavorites r WHERE r.userID= ?");
+            } else if (listname.equals("Do Not Show")) {
+                ps = conn.prepareStatement("SELECT r.pos FROM recipedonotshow r WHERE r.userID= ?");
+            } else if (listname.equals("To Explore")) {
+                ps = conn.prepareStatement("SELECT r.pos FROM recipetoexplore r WHERE r.userID= ?");
+            }
+            ps.setInt(1, userID);
             rs = ps.executeQuery();
             // find the highest position in recipes
             while (rs.next()){
@@ -490,7 +500,14 @@ public class Database
                 }
             }
             // get the positions of restaurants
-            ps = conn.prepareStatement(restaurantQuery);
+            if (listname.equals("Favorites")) {
+                ps = conn.prepareStatement("SELECT r.pos FROM restfavorites r WHERE r.userID= ?");
+            } else if (listname.equals("Do Not Show")) {
+                ps = conn.prepareStatement("SELECT r.pos FROM restdonotshow r WHERE r.userID= ?");
+            } else if (listname.equals("To Explore")) {
+                ps = conn.prepareStatement("SELECT r.pos FROM resttoexplore r WHERE r.userID= ?");
+            }
+            ps.setInt(1, userID);
             rs = ps.executeQuery();
             // find the highest position in restaurants
             while (rs.next()) {
