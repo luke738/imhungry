@@ -271,7 +271,10 @@ public class Database
                 String imageurl = rs.getString("imageURL");
                 RecipeInfo p;
                 if(listname.equals("Grocery")){
-                    p = new RecipeInfo(rname, rating, recipeIDapi, prepTime, cookTime, ingredients, instructions,imageurl, dbid);
+                    String checkedString   = rs.getString("checked");
+                    Boolean[] checkedArray = gson.fromJson(checkedString, Boolean[].class);
+                    ArrayList<Boolean> checked = new ArrayList<Boolean>(Arrays.asList(checkedArray));
+                    p = new RecipeInfo(rname, rating, recipeIDapi, prepTime, cookTime, ingredients, instructions,imageurl, dbid, checked);
                 }
                 else {
                     int pos = rs.getInt("pos");
