@@ -43,9 +43,10 @@
    	 	<input type="submit" id = "back_search" value="Back to Search" />
 	</form>
 
-	<nav aria-label="page-navigation" class="pagination" id = "nav">
-			<%--<input class="page-link" type="button" id="first" onclick="firstPage()" value="1" />--%>
-			<%--<input class="page-link" type="button" id="next" onclick="nextPage()"/>--%>
+	<nav aria-label="page-navigation" class="pagination" id = "rec_nav">
+	</nav>
+
+	<nav aria-label="page-navigation" class="pagination" id = "rest_nav">
 	</nav>
 
 	<div id = "container">
