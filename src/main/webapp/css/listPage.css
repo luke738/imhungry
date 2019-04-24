@@ -3,17 +3,27 @@ body {
 	padding: 0;
 }
 
+#dropdown {
+	background-color: #FFD27F;
+	width:100%;
+}
+
+.sort_buttons {
+	float: right;
+	margin-right: 5%;
+	margin-top:18%;
+}
+
 .dropDown {
 	position: absolute;
 	width:15vw;
 	right:15vw;
 	top:21vh;
 	font-size:1rem;
-	background-color: #FFD27F;
 }
 
 input[type=submit], button{
-	background:orange;
+	background:#FFD27F;
 	color: white;
 	width:15vw;
 	border: 0;
@@ -33,16 +43,16 @@ button {
 }
 
 #manage_list{
-	position: fixed;
+	position: absolute;
 	top:calc(21vh + 3rem);
 }
 
 #back_search{
-	position: fixed;
+	position: absolute;
 	top:calc(21vh + 9rem);
 }
 #back_result{
-	position: fixed;
+	position: absolute;
 	padding: 10px;
 	top:calc(21vh + 6rem);
 }

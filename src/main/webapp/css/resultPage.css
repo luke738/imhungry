@@ -3,7 +3,7 @@
 #header{
 	font-size: 3rem;
 	text-align: left;
-	padding-left: 10%;
+	padding-left: 40%;
 	margin-top: 3%;
 }
 
@@ -27,6 +27,20 @@
 .imageDiv img{
 	max-height:100%;
 	align-items:center;
+}
+
+#dropdown {
+	background-color: #FFD27F;
+	width: 100%;
+}
+
+.page-link {
+	background-color: #FFD27F;
+}
+
+.pagination {
+	float: right;
+	margin-right: 5%;
 }
 
 .dropDown {

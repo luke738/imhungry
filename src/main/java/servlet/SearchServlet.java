@@ -33,15 +33,17 @@ public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private static final String GOOGLE_MAPS_API_PREFIX = "https://maps.googleapis.com/maps/api";
-	private static final String MAPS_API_KEY = "AIzaSyC-iVaMeUT0xoM_wNIxJPOZrvlfLQMrI1A";
+	private static final String MAPS_API_KEY = "AIzaSyBjQeU1iAYlGwz0UZJKjmMHdf-Dhc0pmPA";
 	private static final String TOMMY_TROJAN_LOC = "34.0205663,-118.2876355";
 
 	private static final String SPOONACULAR_RECIPE_API_PREFIX = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes";
 	//private static final String SPOONACULAR_RAPID_API_KEY = "5d400066d1msh1a0901e6bb0917dp1b2dc1jsn1dcafa5afeb5";
 	//Mackenzie's Credit Card attached to (below) & Luke's old teammate's Credit Card (above)
-	//private static final String SPOONACULAR_RAPID_API_KEY = "64cd03670fmsh3472c2b61fbfa38p129c7ajsnd0c9ef0f31be";
-	private static final String SPOONACULAR_RAPID_API_KEY = "c2a6b9a24dmsh003243b0b928762p186ee7jsn03f96ad98af5";
-	private static final String GOOGLE_CX_API_KEY = "AIzaSyAH3GjzX5RNq1ObGtaJEuciQziHrakn4cM";
+	//0 = mackenzie, 1 = erica, 2 = luke
+	private static final String[] SPOONACULAR_RAPID_API_KEY = {"64cd03670fmsh3472c2b61fbfa38p129c7ajsnd0c9ef0f31be",
+															   "c2a6b9a24dmsh003243b0b928762p186ee7jsn03f96ad98af5",
+															   "748dfe7917msh0407ba7882559f0p18961fjsn8ec2d06e6e63"};
+	private static final String GOOGLE_CX_API_KEY = "AIzaSyA5PPeShWK1mI6bN5wFwceRNvn4Y-YY7qY";
 	private static final String GOOGLE_CX_ENGINE = "001810512200125518925:d_yaufj89m8";
 	private static final int IMAGE_COLLAGE_NUM = 10;
 
@@ -114,7 +116,6 @@ public class SearchServlet extends HttpServlet {
 			results.add(castedRecipeList);
 			//Put together the Search Result and Message object, convert to Json, and reply.
 
-			System.out.println("	results " + results);
 			out.println(new Gson().toJson(new Message("Success",new SearchResult(results, urlList))));
 		}
 		out.close();
@@ -128,7 +129,7 @@ public class SearchServlet extends HttpServlet {
 			URL requestURL = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) requestURL.openConnection();
 			//HTTP header for authorization of Spoonacular recipe API
-			con.setRequestProperty("X-RapidAPI-Key", SPOONACULAR_RAPID_API_KEY);
+			con.setRequestProperty("X-RapidAPI-Key", SPOONACULAR_RAPID_API_KEY[new Random().nextInt(3)]);
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();

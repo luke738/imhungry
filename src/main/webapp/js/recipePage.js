@@ -1,5 +1,6 @@
 //Configure back to results button based on previously stored query value
 if(document.getElementById("queryStringInput") != null) document.getElementById("queryStringInput").value = localStorage.getItem('search');
+if(document.getElementById("radiusInput") != null) document.getElementById("radiusInput").value = localStorage.getItem('radius');
 
 var query = parseQuery(window.location.search);
 //Configure printable button to show the correct printable page (the one corresponding to this page)

@@ -20,61 +20,11 @@ else {
 }
 //Store results in local storage
 window.localStorage.setItem("search", query.search);
+window.localStorage.setItem("radius", query.radius);
 window.localStorage.setItem("searchResults", JSON.stringify(results));
 window.localStorage.setItem("imageURLs", JSON.stringify(imageURLs));
 
-//create buttons for paginating results array (5 results/pg)
-// var numButtons = (results.length)/5;
-//
-// for (var i = 1; i <= numButtons; i++) {
-// 	var pgButton = document.createElement("BUTTON");
-//     pgButton.innerHTML = "Page " + i;
-//     pgButton.setAttribute("id", "page"+i);
-//     pgButton.setAttribute("class", "page");
-//     pgButton.addEventListener('click',loadResults);
-//
-//     document.getElementById("pages").appendChild(pgButton);
-// }
-//
-// function loadList() {
-//     var begin = ((currentPage - 1) * numberPerPage);
-//     var end = begin + numberPerPage;
-//
-//     pageList = list.slice(begin, end);
-//     drawList();    // draws out our data
-//     check();         // determines the states of the pagination buttons
-// }
-//
-//
-// function drawList() {
-//     document.getElementById("list").innerHTML = "";
-//
-//     for (r = 0; r < pageList.length; r++) {
-//         document.getElementById("list").innerHTML += pageList[r] + "";
-//     }
-// }
-//
-// function check() {
-//     document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
-//     document.getElementById("previous").disabled = currentPage == 1 ? true : false;
-//     document.getElementById("first").disabled = currentPage == 1 ? true : false;
-//     document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
-// }
-
-//use ajax to reload that part of the results page
-// function loadResults() {
-//     var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//             document.getElementById("pages").innerHTML =
-//                 this.responseText;
-//         }
-//     };
-//     xhttp.open("GET", "ajax_info.txt", true);
-//     xhttp.send();
-// }
-
-//check if the restaurant results are empty; if so return empty results msg
+//first check if the restaurant results are empty; if so return empty results msg
 if (results[0].length == 0) {
     let restaurant_error = document.createElement("p");
     restaurant_error.innerHTML = "No restaurants within desired radius(mi)";
@@ -82,92 +32,191 @@ if (results[0].length == 0) {
     document.querySelector("#restaurantColumn").appendChild(restaurant_error);
 }
 
-//First, populate restaurant results
-var col1 = document.getElementById("column1");
-for(let i = 0; i < results[0].length; i++) {
-    //Create each sub section for the entry and populate it with data and attributes
-    let sec1 = document.createElement("div");
-    sec1.setAttribute("class", "Res_section1");
-    sec1.innerHTML = results[0][i].name;
-
-    let sec2 = document.createElement("div");
-    sec2.setAttribute("class", "Res_section2");
-    for(let j = 0; j < 5; j++) {
-        if(j < results[0][i].rating) sec2.innerHTML += '⭐';
-        else sec2.innerHTML += '☆';
-    }
-
-    let divider = document.createElement("div");
-    divider.setAttribute("class", "divider");
-
-    let sec3 = document.createElement("div");
-    sec3.setAttribute("class", "Res_section3");
-    sec3.innerHTML = results[0][i].driveTimeText + " away";
-
-    let sec4 = document.createElement("div");
-    sec4.setAttribute("class", "Res_section4");
-    sec4.innerHTML = results[0][i].address;
-
-    let sec5 = document.createElement("div");
-    sec5.setAttribute("class", "Res_section5");
-    sec5.innerHTML = results[0][i].priceLevel;
-
-    //Create the actual entry element and set the previous subsections to be its children
-    let res = document.createElement("div");
-    res.setAttribute("class","item");
-    res.setAttribute("id","Res_item"+i);
-    //Sets the onclick so that you can navigate to the proper detailed page.
-    res.setAttribute("onclick","window.location='restaurantPage.jsp?i="+i+"'");
-    res.setAttribute("style","cursor:pointer;");
-    res.appendChild(sec1);
-    res.appendChild(sec2);
-    res.appendChild(divider);
-    res.appendChild(sec3);
-    res.appendChild(sec4);
-    res.appendChild(sec5);
-
-    //Add the entry to the proper place on the page
-    col1.appendChild(res);
+//first check if the restaurant results are empty; if so return empty results msg
+if (results[1].length == 0) {
+    let recipe_error = document.createElement("p");
+    recipe_error.innerHTML = "No recipes based on search";
+    recipe_error.style.color = "red";
+    document.querySelector("#recipeColumn").appendChild(recipe_error);
 }
 
-//Same process as above, but for recipe results
-var col2 = document.getElementById("column2");
-for(let i = 0; i < results[1].length; i++) {
-    let sec1 = document.createElement("div");
-    sec1.setAttribute("class", "Rec_section1");
-    sec1.innerHTML = results[1][i].name;
+//implement pagination, results split into pageLists
+var rec_list = results[1];
+var rest_list = results[0];
+var rec_pageList = new Array();
+var rest_pageList = new Array();
+var currentPage = 1;
+var numberPerPage = 5;
+var numberOfPages = 0;
 
-    let sec2 = document.createElement("div");
-    sec2.setAttribute("class", "Rec_section2");
-    for(let j = 0; j < 5; j++) {
-        if(j < results[1][i].rating) sec2.innerHTML += '⭐';
-        else sec2.innerHTML += '☆';
+//creates numbered pg buttons according to the max of either recipe or restaurant results
+function makeList() {
+    numberOfRecPages = Math.ceil(rec_list.length / numberPerPage);
+    numberOfRestPages = Math.ceil(rest_list.length / numberPerPage);
+
+    //create numbered pg buttons - restaurant
+    for (var i = 1; i <= numberOfRestPages; i++) {
+        var rest_input = document.createElement("input");
+        rest_input.value = i;
+        rest_input.class = "page-link";
+        rest_input.type = "button";
+        rest_input.id = "page"+i;
+        rest_input.addEventListener("click", nextPage);
+        document.getElementById("rest_nav").appendChild(input);
     }
 
-    let divider = document.createElement("div");
-    divider.setAttribute("class", "divider");
-
-    let sec3 = document.createElement("div");
-    sec3.setAttribute("class", "Rec_section3");
-    sec3.innerHTML = results[1][i].prepTime + " min prep time";
-
-    let sec4 = document.createElement("div");
-    sec4.setAttribute("class", "Rec_section4");
-    sec4.innerHTML = results[1][i].cookTime + " min cook time";
-
-    let res = document.createElement("div");
-    res.setAttribute("class","item");
-    res.setAttribute("id","Rec_item" + i);
-    res.setAttribute("onclick","window.location='recipePage.jsp?i="+i+"'");
-    res.setAttribute("style","cursor:pointer;");
-    res.appendChild(sec1);
-    res.appendChild(sec2);
-    res.appendChild(divider);
-    res.appendChild(sec3);
-    res.appendChild(sec4);
-
-    col2.appendChild(res);
+    //create numbered pg buttons - recipe
+    for (var i = 1; i <= numberOfRecPages; i++) {
+        var rec_input = document.createElement("input");
+        rec_input.value = i;
+        rec_input.class = "page-link";
+        rec_input.type = "button";
+        rec_input.id = "page"+i;
+        rec_input.addEventListener("click", nextPage);
+        document.getElementById("rec_nav").appendChild(input);
+    }
 }
+
+function nextPage() {
+    currentPage += 1;
+    loadList();
+}
+
+//removes items on pg and replaces with newly generated items according to clicked pg value
+function loadList() {
+    //remove previously generated restaurant items on pg so results dont build on each other
+    var rest_node = document.getElementById("column1");
+    while (rest_node.childNodes.length > 2) {
+        rest_node.removeChild(rest_node.lastChild);
+    }
+
+    //remove previously generated recipe items from pg
+    var rec_node = document.getElementById("column2");
+    while (rec_node.childNodes.length > 2) {
+        rec_node.removeChild(rec_node.lastChild);
+    }
+
+    //begin = which index in results array to display for specific page.
+    //when (value is null) displays elements [0 - numberPerPage]
+    //end = which index in results array to stop at
+    var begin = 0;
+    if (event.srcElement.value == null) {
+        begin = (0);
+    } else {
+        begin = ((event.srcElement.value - 1) * numberPerPage);
+    }
+    var end = begin + numberPerPage;
+
+    drawList(begin,end);
+}
+
+//generates the list of item results to show
+function drawList(begin,end) {
+
+    var col1 = document.getElementById("column1");
+    for(let i = begin; i < end; i++) {
+        //Create each sub section for the entry and populate it with data and attributes
+
+        if (results[0][i]!=null) {
+            let sec1 = document.createElement("div");
+            sec1.class = "rest_results";
+
+            sec1.setAttribute("class", "Res_section1");
+            sec1.innerHTML = results[0][i].name;
+
+            let sec2 = document.createElement("div");
+            sec2.setAttribute("class", "Res_section2");
+            for (let j = 0; j < 5; j++) {
+                if (j < results[0][i].rating) sec2.innerHTML += '⭐';
+                else sec2.innerHTML += '☆';
+            }
+
+            let divider = document.createElement("div");
+            divider.setAttribute("class", "divider");
+
+            let sec3 = document.createElement("div");
+            sec3.setAttribute("class", "Res_section3");
+            sec3.innerHTML = results[0][i].driveTimeText + " away";
+
+            let sec4 = document.createElement("div");
+            sec4.setAttribute("class", "Res_section4");
+            sec4.innerHTML = results[0][i].address;
+
+            let sec5 = document.createElement("div");
+            sec5.setAttribute("class", "Res_section5");
+            sec5.innerHTML = results[0][i].priceLevel;
+
+            //Create the actual entry element and set the previous subsections to be its children
+            let res = document.createElement("div");
+            res.setAttribute("class", "item");
+            res.setAttribute("id", "Res_item" + i);
+            //Sets the onclick so that you can navigate to the proper detailed page.
+            res.setAttribute("onclick", "window.location='restaurantPage.jsp?i=" + i + "'");
+            res.setAttribute("style", "cursor:pointer;");
+            res.appendChild(sec1);
+            res.appendChild(sec2);
+            res.appendChild(divider);
+            res.appendChild(sec3);
+            res.appendChild(sec4);
+            res.appendChild(sec5);
+
+            //Add the entry to the proper place on the page
+            col1.appendChild(res);
+        }
+    }
+
+    //Same process as above, but for recipe results
+    var col2 = document.getElementById("column2");
+    for (var i = begin; i < end; i++) {
+
+        if (results[1][i]!=null) {
+            let sec1 = document.createElement("div");
+            sec1.class = "rec_results";
+
+            sec1.setAttribute("class", "Rec_section1");
+            sec1.innerHTML = results[1][i].name;
+
+            let sec2 = document.createElement("div");
+            sec2.setAttribute("class", "Rec_section2");
+            for (let j = 0; j < 5; j++) {
+                if (j < results[1][i].rating) sec2.innerHTML += '⭐';
+                else sec2.innerHTML += '☆';
+            }
+
+            let divider = document.createElement("div");
+            divider.setAttribute("class", "divider");
+
+            let sec3 = document.createElement("div");
+            sec3.setAttribute("class", "Rec_section3");
+            sec3.innerHTML = results[1][i].prepTime + " min prep time";
+
+            let sec4 = document.createElement("div");
+            sec4.setAttribute("class", "Rec_section4");
+            sec4.innerHTML = results[1][i].cookTime + " min cook time";
+
+            let res = document.createElement("div");
+            res.setAttribute("class", "item");
+            res.setAttribute("id", "Rec_item" + i);
+            res.setAttribute("onclick", "window.location='recipePage.jsp?i=" + i + "'");
+            res.setAttribute("style", "cursor:pointer;");
+            res.appendChild(sec1);
+            res.appendChild(sec2);
+            res.appendChild(divider);
+            res.appendChild(sec3);
+            res.appendChild(sec4);
+
+            col2.appendChild(res);
+        }
+    }
+}
+
+function load() {
+    makeList();
+    loadList();
+}
+
+window.onload = load;
+
 
 //Assemble the collage
 var collage = document.getElementById("collage");
