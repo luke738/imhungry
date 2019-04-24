@@ -62,7 +62,7 @@ function makeList() {
         rest_input.type = "button";
         rest_input.id = "page"+i;
         rest_input.addEventListener("click", nextPage);
-        document.getElementById("rest_nav").appendChild(input);
+        document.getElementById("rest_nav").appendChild(rest_input);
     }
 
     //create numbered pg buttons - recipe
@@ -73,7 +73,7 @@ function makeList() {
         rec_input.type = "button";
         rec_input.id = "page"+i;
         rec_input.addEventListener("click", nextPage);
-        document.getElementById("rec_nav").appendChild(input);
+        document.getElementById("rec_nav").appendChild(rec_input);
     }
 }
 

@@ -726,14 +726,17 @@ public class Database
     public ArrayList<Searches> getPrevSearch(int userID) {
         ArrayList<Searches> searchHistory = new ArrayList<Searches>();
         try {
-            ps = conn.prepareStatement("SELECT p.userID, p.searchTerm, p.specradius, p.expectRes FROM previoussearch p WHERE p.userID = ?");
+            ps = conn.prepareStatement("SELECT p.userID, p.searchTerm, p.url, p.specradius, p.expectRes FROM previoussearch p WHERE p.userID = ?");
             ps.setInt(1, userID);
             rs = ps.executeQuery();
             while (rs.next()) {
                 String searchTerm = rs.getString("searchTerm");
                 int specifiedRadius = rs.getInt("specradius");
                 int expectedResults = rs.getInt("expectRes");
-                searchHistory.add(new Searches(searchTerm, specifiedRadius, expectedResults));
+                String urlString = rs.getString("url");
+                String[] urlArray = new Gson().fromJson(urlString, String[].class);
+                ArrayList<String> url = new ArrayList<>(Arrays.asList(urlArray));
+                searchHistory.add(new Searches(searchTerm, specifiedRadius, expectedResults, url));
             }
             return searchHistory;
         }catch(SQLException e){
@@ -743,9 +746,9 @@ public class Database
         return searchHistory;
     }
 
-    public Boolean addPrevSearch(int userID, String testSearch, int radius, int results) {
+    public Boolean addPrevSearch(int userID, String testSearch, int radius, int results, ArrayList<String> url) {
         try {
-            ps = conn.prepareStatement("SELECT p.userID, p.searchTerm, p.specradius, p.expectRes FROM previoussearch p WHERE p.userID = ? AND p.searchTerm =? AND p.specradius= ? AND p.expectRes = ?");
+            ps = conn.prepareStatement("SELECT p.userID, p.searchTerm, p.specradius,p.url, p.expectRes FROM previoussearch p WHERE p.userID = ? AND p.searchTerm =? AND p.specradius= ? AND p.expectRes = ?");
             ps.setInt(1, userID);
             ps.setString(2, testSearch);
             ps.setInt(3, radius);
@@ -754,11 +757,12 @@ public class Database
             if (rs.next()) {
                return false;
             }
-            ps = conn.prepareStatement("INSERT INTO previoussearch(userID, searchTerm, specradius, expectRes) VALUES(?,?,?,?)");
+            ps = conn.prepareStatement("INSERT INTO previoussearch(userID, searchTerm, specradius, expectRes, url) VALUES(?,?,?,?,?)");
             ps.setInt(1, userID);
             ps.setString(2, testSearch);
             ps.setInt(3, radius);
             ps.setInt(4, results);
+            ps.setString(5, new Gson().toJson(url));
             ps.executeUpdate();
             return true;
         }catch(SQLException e){

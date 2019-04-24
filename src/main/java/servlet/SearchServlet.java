@@ -83,14 +83,6 @@ public class SearchServlet extends HttpServlet {
 		String userSearch = request.getParameter("search");
 		int numResults = Integer.parseInt(request.getParameter("number"));
 		int radius = Integer.parseInt(request.getParameter("radius"));
-		ArrayList<Searches> prevSearches = ((ArrayList<Searches>)session.getAttribute("PreviousSearches"));
-		Searches search = new Searches(userSearch, radius, numResults);
-		if(!prevSearches.contains(search))
-		{
-			Database db = new Database();
-			db.addPrevSearch((Integer)session.getAttribute("userID"), userSearch, radius, numResults);
-			prevSearches.add(search);
-		}
 
 		//Set up variables to store return value
 		boolean success = true;
@@ -100,6 +92,14 @@ public class SearchServlet extends HttpServlet {
 		ArrayList<RecipeInfo> recipeList = recipeSearch(userSearch, numResults, doNotShowList, favoritesList);
 		ArrayList<RestaurantInfo> restaurantList = restaurantSearch(userSearch, numResults, radius, doNotShowList, favoritesList);
 		ArrayList<String> urlList = getImageURLs(userSearch);
+		ArrayList<Searches> prevSearches = ((ArrayList<Searches>)session.getAttribute("PreviousSearches"));
+		Searches search = new Searches(userSearch, radius, numResults, urlList);
+		if(!prevSearches.contains(search))
+		{
+			Database db = new Database();
+			db.addPrevSearch((Integer)session.getAttribute("userID"), userSearch, radius, numResults, urlList);
+			prevSearches.add(search);
+		}
 
 		//return content
 		if (success)

@@ -20,18 +20,19 @@ function removeItem(listName, item) {
     var response = JSON.parse(xhttp.response); //Could check and see if request was successful
 }
 
-//Requests reordering of recipes/restaurants by rating or alphabetically
-function reorderResults(listName, order){
+//Requests reordering of recipes/restaurants by
+function reorderResults(listName, order, pos){
     // note: "item" only used for order (stored in item.name), must be fully included for parsing purposes in ListServlet.java doPost() method
-    var item = {};
-    item.recipeID = 0;
-    item.prepTime = 0;
-    item.cookTime = 0;
-    item.ingredients = [""];
-    item.instructions = [""];
-    item.imageURL = "";
-    item.name = order;
-    var request = {header: "reorderList", body: JSON.stringify({header: listName, body: JSON.stringify(item)})};
+    var fakeitem = {};
+    fakeitem.recipeID = 0;
+    fakeitem.prepTime = 0;
+    fakeitem.cookTime = 0;
+    fakeitem.ingredients = [""];
+    fakeitem.instructions = [""];
+    fakeitem.imageURL = "";
+    fakeitem.name = order;
+    fakeitem.pos = pos;
+    var request = {header: "reorderList", body: JSON.stringify({header: listName, body: JSON.stringify(fakeitem)})};
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/Lists", false);
     xhttp.send(JSON.stringify(request));

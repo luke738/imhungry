@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `imhungry` ;
+CREATE DATABASE  IF NOT EXISTS `imhungry`;
 USE `imhungry`;
 -- MySQL dump 10.13  Distrib 8.0.15, for macos10.14 (x86_64)
 --
@@ -43,7 +43,7 @@ CREATE TABLE `groceries` (
 
 LOCK TABLES `groceries` WRITE;
 /*!40000 ALTER TABLE `groceries` DISABLE KEYS */;
-INSERT INTO `groceries` VALUES (1,1,1,'');
+INSERT INTO `groceries` VALUES (1,1,1,'[false, false]');
 /*!40000 ALTER TABLE `groceries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,6 +60,7 @@ CREATE TABLE `previoussearch` (
   `searchTerm` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `specradius` int(11) NOT NULL,
   `expectRes` int(11) NOT NULL,
+  `url` varchar(10000) NOT NULL,
   PRIMARY KEY (`prevID`),
   KEY `foreignK3_idx` (`userID`),
   CONSTRAINT `foreignK3` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`)
@@ -353,4 +354,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-24 14:47:06
+-- Dump completed on 2019-04-24 15:47:46
