@@ -4,13 +4,16 @@ import static org.junit.Assert.*;
 
 import com.google.gson.Gson;
 import info.Info;
-import info.Searches;
 import info.RecipeInfo;
 import info.RestaurantInfo;
+import info.Searches;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
 
 public class DatabaseTest
 {
@@ -101,19 +104,23 @@ public class DatabaseTest
         //ArrayList<Info> list = new ArrayList<>(Collections.singletonList(info));
         //removing recipes from the list
         Boolean favUpdate = db.updateLists(1, false,"Favorites",  info);
-        System.out.println(favUpdate);
+        System.out.println("99: " + favUpdate);
         Boolean expUpdate = db.updateLists(1, false,"To Explore", info);
-        System.out.println(expUpdate);
+        System.out.println("101: " + expUpdate);
         Boolean dnsUpdate = db.updateLists(1, false,"Do Not Show", info);
-        System.out.println(dnsUpdate);
+        System.out.println("103: " + dnsUpdate);
+        Boolean glUpdate = db.updateLists(1, false,"Grocery", info);
+        System.out.println("105: " + glUpdate);
         //adding recipes back to the list
         Boolean favUpdate2 = db.updateLists(1, true,"Favorites",  info);
-        System.out.println(favUpdate2);
+        System.out.println("108: " + favUpdate2);
         Boolean expUpdate2 = db.updateLists(1, true,"To Explore", info);
-        System.out.println(expUpdate2);
+        System.out.println("110: " + expUpdate2);
         Boolean dnsUpdate2 = db.updateLists(1, true,"Do Not Show", info);
-        System.out.println(dnsUpdate2);
-        assertTrue(favUpdate && expUpdate && dnsUpdate && favUpdate2 && expUpdate2 && dnsUpdate2);
+        System.out.println("112: " + dnsUpdate2);
+        Boolean glUpdate2 = db.updateLists(1, true,"Grocery", info);
+        System.out.println("114: " + glUpdate2);
+        assertTrue(favUpdate && expUpdate && dnsUpdate && glUpdate && favUpdate2 && expUpdate2 && dnsUpdate2 && glUpdate2);
         RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url");
         //removing restaurants from the lists
         Boolean rfavUpdate = db.updateLists(1, false,"Favorites",  rinfo);
