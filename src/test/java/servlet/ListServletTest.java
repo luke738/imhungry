@@ -76,7 +76,7 @@ public class ListServletTest {
 		doPostMethod.invoke(listServlet, request, response);
 
 		//Make sure the correct response was set
-		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Moved item up"))+System.lineSeparator()));
+		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Moved item Up"))+System.lineSeparator()));
 		assertEquals("Wendy's", ((ArrayList<Info>)sessionObj.get("Favorites")).get(0).name);
 
 	}
@@ -131,7 +131,7 @@ public class ListServletTest {
 		doPostMethod.invoke(listServlet, request, response);
 
 		//Make sure the correct response was set
-		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Moved item down"))+System.lineSeparator()));
+		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Moved item Down"))+System.lineSeparator()));
 		assertEquals("Wendy's", ((ArrayList<Info>)sessionObj.get("Favorites")).get(2).name);
 	}
 

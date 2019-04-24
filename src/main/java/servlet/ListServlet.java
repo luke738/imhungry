@@ -104,13 +104,16 @@ public class ListServlet extends HttpServlet
                 case "reorderList":
                     RecipeInfo ri = (RecipeInfo) item;
                     String order = ri.name;
-                    if (order.equals("Alphabetically")){ //TODO: Make this work
-                        //list = SortLists.sortAlphabetically(list);
-                    } else if (order.equals("Rating")){
-                        //list = SortLists.sortByRating(list);
+                    int position = ri.pos;
+                    Info mover = list.get(position);
+                    if (order.equals("Up")){
+                        list = SortLists.moveItemUp(list, mover);
+                    } else if (order.equals("Down")){
+                        list = SortLists.moveItemDown(list, mover);
                     }
                     session.setAttribute(listName, list);
-                    respWriter.println(gson.toJson(new Message("Changed order of lists to " + order)));
+                    db.changeOrder(userID, listName, order.equals("Up"), position);
+                    respWriter.println(gson.toJson(new Message("Moved item " + order)));
                     break;
                 default:
                     throw new Exception("Invalid action.");
