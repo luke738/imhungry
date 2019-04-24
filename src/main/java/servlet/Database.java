@@ -119,13 +119,53 @@ public class Database
         }
 
     }
-    public void moveUp(int userID, String listname, int position){
+    public void moveUp(int userID, String listname, int posit){
+        try {
+            //position of the one above the one we are moving
+            int position = posit -1;
+            Boolean isRecipe;
+            //first try restaurants
+            if(listname.equals("Favorites")) {
+                ps = conn.prepareStatement("SELECT rr.rID AND rr.favID FROM imhungry.restfavorites rr  WHERE rr.userID = ?  AND rr.pos = ?");
+            }
+            else if(listname.equals("Do Not Show")) {
+                ps = conn.prepareStatement("SELECT rr.rID AND rr.favID FROM imhungry.restdonotshow rr  WHERE rr.userID = ?  AND rr.pos = ?");
+            }
+            else if(listname.equals("To Explore")) {
+                ps = conn.prepareStatement("SELECT rr.rID AND rr.favID FROM imhungry.resttoexplore rr  WHERE rr.userID = ?  AND rr.pos = ?");
+            }
+            ps.setInt(1, userID);
+            ps.setInt(2, position);
+            rs = ps.executeQuery();
+            if (!rs.next()) {
+                isRecipe = true;
+                //for recipes
+                if(listname.equals("Favorites")) {
+                    ps = conn.prepareStatement("SELECT rr.rID AND rr.favID FROM imhungry.recipefavorites rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                }
+                else if(listname.equals("Do Not Show")) {
+                    ps = conn.prepareStatement("SELECT rr.rID AND rr.favID FROM imhungry.recipedonotshow rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                }
+                else if(listname.equals("To Explore")) {
+                    ps = conn.prepareStatement("SELECT rr.rID AND rr.favID FROM imhungry.recipetoexplore rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                }
+            }
+            else{
+                isRecipe = false;
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println("SQLException in function \"validate\"");
+            e.printStackTrace();
+        }
 
     }
     public void moveDown(int userID, String listname, int position){
 
     }
     public int getPos(int userID, String listname, Boolean isRecipe, int dbid){
+
         return 0;
     }
 

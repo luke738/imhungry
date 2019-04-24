@@ -143,7 +143,7 @@ public class DatabaseTest
         Boolean favUpdate = db.updateLists(1, true,"Favorites",  infos);
         RecipeInfo info = new RecipeInfo("testing", 8, 56565, 10, 10, new ArrayList<>(Arrays.asList("ingredient1", "ingredient2")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",2);
         Boolean favUpdates = db.updateLists(1, true,"Favorites",  info);
-        // userID, Listname, recipe BOolean, dbid
+        // userID, Listname, recipe Boolean, dbid
         assertEquals(1, db.getPos(1, "Favorites", true, 1));
     }
 
