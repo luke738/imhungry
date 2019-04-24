@@ -1,11 +1,65 @@
 package info;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class SortLists {
-    public static List<Info> sortAlphabetically(List<Info> list) {
+    // list: Favorites, doNotShow, or toExplore, itemToMove: name of item to move
+    public static ArrayList<Info> moveItemUp(ArrayList<Info> list, String itemToMove){
+        // searches for index of itemToMove in list
+        int targetToMove = -1;
+        for (int i=0; i<list.size(); i++) {
+            if (list.get(i).name.equals(itemToMove)) {
+                targetToMove = i;
+                break;
+            }
+        }
+        // item was not found in list
+        if (targetToMove == -1) {
+            return list;
+        }
+        // if item is at the top of list, it can't be moved further up
+        else if (targetToMove == 0) {
+            return list;
+        }
+        // if not at top of list, move up in list
+        else {
+            int aboveToMove = targetToMove - 1;
+            // swaps items within list
+            Collections.swap(list, aboveToMove, targetToMove);
+            return list;
+        }
+    }
+
+    // list: Favorites, doNotShow, or toExplore, itemToMove: name of item to move
+    public static ArrayList<Info> moveItemDown(ArrayList<Info> list, String itemToMove) {
+        // searches for index of itemToMove in list
+        int targetToMove = -1;
+        for (int i=0; i<list.size(); i++) {
+            if (list.get(i).name.equals(itemToMove)) {
+                targetToMove = i;
+                break;
+            }
+        }
+        // item was not found in list
+        if (targetToMove == -1) {
+            return list;
+        }
+        // if item is at the top of list, it can't be moved further down
+        else if (targetToMove == list.size() - 1 ) {
+            return list;
+        } // if not at top of list, move up in list
+        else {
+            int aboveToMove = targetToMove + 1;
+            // swaps items within list
+            Collections.swap(list, aboveToMove, targetToMove);
+            return list;
+        }
+    }
+}
+
+/*
+public static List<Info> sortAlphabetically(List<Info> list) {
         if (list == null) return null;
 
         Collections.sort(list, new AlphabeticalComp());
@@ -40,5 +94,5 @@ public class SortLists {
             else return -1;
         }
     }
-}
+ */
 

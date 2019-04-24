@@ -5,8 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class SortListsTest {
     List<Info> actual;
@@ -18,8 +17,51 @@ public class SortListsTest {
 
     // tests sorting alphabetically
     @Test
-    public void sortAlphabeticallyTest() {
-        // tests if out of order
+    public void moveItemUpTest() {
+        actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1"));
+        actual.add(new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1"));
+
+        // checks "if" statement (item is not found)
+        actual = SortLists.moveItemUp((ArrayList<Info>) actual, "notInList");
+        assertEquals(actual.get(0).name, "McDonald's");
+        assertEquals(actual.get(1).name, "Chicken Marsala");
+
+        // checks "else if" statement (shouldn't move anything)
+        actual = SortLists.moveItemUp((ArrayList<Info>) actual, "McDonald's");
+        assertEquals(actual.get(0).name, "McDonald's");
+        assertEquals(actual.get(1).name, "Chicken Marsala");
+
+        // checks "else" statement (moves item up)
+        actual = SortLists.moveItemUp((ArrayList<Info>) actual, "Chicken Marsala");
+        assertEquals(actual.get(0).name, "Chicken Marsala");
+        assertEquals(actual.get(1).name, "McDonald's");
+    }
+
+    // tests sorting by distance
+    @Test
+    public void moveItemDownTest() {
+        actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1"));
+        actual.add(new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1"));
+
+        // checks "if" statement (item is not found)
+        actual = SortLists.moveItemDown((ArrayList<Info>) actual, "notInList");
+        assertEquals(actual.get(0).name, "McDonald's");
+        assertEquals(actual.get(1).name, "Chicken Marsala");
+
+        // checks "else if" statement (shouldn't move anything)
+        actual = SortLists.moveItemDown((ArrayList<Info>) actual, "Chicken Marsala");
+        assertEquals(actual.get(0).name, "McDonald's");
+        assertEquals(actual.get(1).name, "Chicken Marsala");
+
+        // checks "else" statement (moves item up)
+        actual = SortLists.moveItemDown((ArrayList<Info>) actual, "McDonald's");
+        assertEquals(actual.get(0).name, "Chicken Marsala");
+        assertEquals(actual.get(1).name, "McDonald's");
+    }
+}
+
+/*
+// tests if out of order
         actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1"));
         actual.add(new RestaurantInfo("Wendy's", 1, "1", "1", 1, "1", 1, "1", "1"));
         actual.add(new RestaurantInfo("Burger King", 1, "1", "1", 1, "1", 1, "1", "1"));
@@ -51,12 +93,10 @@ public class SortListsTest {
         assertEquals("Mac & Cheese", actual.get(3).name);
         assertEquals("McDonald's", actual.get(4).name);
         assertEquals("Wendy's", actual.get(5).name);
-    }
+ */
 
-    // tests sorting by distance
-    @Test
-    public void sortByRatingTest() {
-        // tests if out of order
+/*
+ // tests if out of order
         actual.add(new RestaurantInfo("McDonald's", 5, "1", "1", 1, "1", 10, "1", "1"));
         actual.add(new RestaurantInfo("Wendy's", 2, "1", "1", 1, "1", 15, "1", "1"));
         actual.add(new RestaurantInfo("Burger King", 1, "1", "1", 1, "1", 5, "1", "1"));
@@ -102,6 +142,5 @@ public class SortListsTest {
         assertEquals(2, ri.rating);
         ri = actual.get(5);
         assertEquals(1, ri.rating);
-    }
-}
+ */
 
