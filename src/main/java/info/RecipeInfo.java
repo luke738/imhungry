@@ -42,7 +42,7 @@ public class RecipeInfo extends Info implements Comparable<RecipeInfo> {
 	}
 
 	public RecipeInfo(String name, int rating, int recipeID, int prepTime, int cookTime,
-					  ArrayList<String> ingredients, ArrayList<String> instructions, String imageURL, int dbid, ArrayList<Boolean> checked, int pos) {
+					  ArrayList<String> ingredients, ArrayList<String> instructions, String imageURL, int dbid, int pos) {
 		this.name = name;
 		this.rating = rating;
 		this.recipeID = recipeID;
@@ -52,7 +52,7 @@ public class RecipeInfo extends Info implements Comparable<RecipeInfo> {
 		this.instructions = instructions;
 		this.imageURL = imageURL;
 		this.dbid = dbid;
-		this.checked = checked;
+		checked = new ArrayList<>();
 		this.pos = pos;
 	}
 
