@@ -18,8 +18,8 @@ public class SortListsTest {
     // tests sorting alphabetically
     @Test
     public void moveItemUpTest() {
-        actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1"));
-        actual.add(new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1"));
+        actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1", 0));
+        actual.add(new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1", 0));
 
         // checks "if" statement (item is not found)
         actual = SortLists.moveItemUp((ArrayList<Info>) actual, "notInList");
@@ -40,8 +40,8 @@ public class SortListsTest {
     // tests sorting by distance
     @Test
     public void moveItemDownTest() {
-        actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1"));
-        actual.add(new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1"));
+        actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1", 0));
+        actual.add(new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1", 0));
 
         // checks "if" statement (item is not found)
         actual = SortLists.moveItemDown((ArrayList<Info>) actual, "notInList");

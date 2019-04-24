@@ -7,7 +7,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -56,7 +55,7 @@ public class SearchServletTest {
 	//getPhoneandURL test
 	public void getPhoneURLTest1() {
 		SearchServlet servlet = new SearchServlet();
-		RestaurantInfo ri = new RestaurantInfo("Chipotle", 1, "ChIJXQa3SffHwoARbWWdPwK_Ums", "1", 1, "1", 1, "1", "1");
+		RestaurantInfo ri = new RestaurantInfo("Chipotle", 1, "ChIJXQa3SffHwoARbWWdPwK_Ums", "1", 1, "1", 1, "1", "1", 0);
 		ArrayList<RestaurantInfo> testConfirm = new ArrayList<RestaurantInfo>();
 		testConfirm.add(ri);
 		servlet.getPhoneAndURL(testConfirm);
@@ -77,7 +76,7 @@ public class SearchServletTest {
 	//getDriveTimes test
 	public void getDriveTimesTest1() {
 		SearchServlet servlet = new SearchServlet();
-		RestaurantInfo ri = new RestaurantInfo("Chipotle", 1, "ChIJXQa3SffHwoARbWWdPwK_Ums", "1", 1, "1", 1, "1", "1");
+		RestaurantInfo ri = new RestaurantInfo("Chipotle", 1, "ChIJXQa3SffHwoARbWWdPwK_Ums", "1", 1, "1", 1, "1", "1", 0);
 		ArrayList<RestaurantInfo> testConfirm = new ArrayList<RestaurantInfo>();
 		testConfirm.add(ri);
 		servlet.getDriveTimes(testConfirm);

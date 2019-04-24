@@ -37,12 +37,12 @@ public class ListServletTest {
 		Map<String, Object> sessionObj = new TreeMap<>();
 		// create a test list
 		List<Info> actual = new ArrayList<Info>();
-		actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1"));
-		actual.add(new RestaurantInfo("Wendy's", 3, "1", "1", 1, "1", 1, "1", "1"));
-		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1"));
-		actual.add(new RecipeInfo("Chicken Marsala", 2, 1, 1, 1, null, null, "1"));
-		actual.add(new RecipeInfo("Clam Chowder", 6, 1, 1, 1, null, null, "1"));
-		actual.add(new RecipeInfo("Mac & Cheese", 4, 1, 1, 1, null, null, "1"));
+		actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1", 0));
+		actual.add(new RestaurantInfo("Wendy's", 3, "1", "1", 1, "1", 1, "1", "1", 0));
+		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1", 0));
+		actual.add(new RecipeInfo("Chicken Marsala", 2, 1, 1, 1, null, null, "1", 0));
+		actual.add(new RecipeInfo("Clam Chowder", 6, 1, 1, 1, null, null, "1", 0));
+		actual.add(new RecipeInfo("Mac & Cheese", 4, 1, 1, 1, null, null, "1", 0));
 		sessionObj.put("Favorites", actual);
 		sessionObj.put("hello", "Hello testuser");
 		sessionObj.put("userID", 1);
@@ -50,7 +50,7 @@ public class ListServletTest {
 		when(request.getSession()).thenReturn(session);
 		StringWriter stringWriter = new StringWriter();
 		when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
-		RecipeInfo ri = new RecipeInfo("Alphabetically", 0, 0, 0, 0, null, null, "");
+		RecipeInfo ri = new RecipeInfo("Alphabetically", 0, 0, 0, 0, null, null, "", 0);
 		Gson gson = new Gson();
 		BufferedReader br = new BufferedReader(new StringReader(gson.toJson(new Message("reorderList", gson.toJson(new Message("Favorites", gson.toJson(ri)))))));
 		when(request.getReader()).thenReturn(br);
@@ -94,12 +94,12 @@ public class ListServletTest {
 		Map<String, Object> sessionObj = new TreeMap<>();
 		// create a test list
 		List<Info> actual = new ArrayList<Info>();
-		actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1"));
-		actual.add(new RestaurantInfo("Wendy's", 3, "1", "1", 1, "1", 1, "1", "1"));
-		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1"));
-		actual.add(new RecipeInfo("Chicken Marsala", 2, 1, 1, 1, null, null, "1"));
-		actual.add(new RecipeInfo("Clam Chowder", 6, 1, 1, 1, null, null, "1"));
-		actual.add(new RecipeInfo("Mac & Cheese", 4, 1, 1, 1, null, null, "1"));
+		actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1", 0));
+		actual.add(new RestaurantInfo("Wendy's", 3, "1", "1", 1, "1", 1, "1", "1", 0));
+		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1", 0));
+		actual.add(new RecipeInfo("Chicken Marsala", 2, 1, 1, 1, null, null, "1", 0));
+		actual.add(new RecipeInfo("Clam Chowder", 6, 1, 1, 1, null, null, "1", 0));
+		actual.add(new RecipeInfo("Mac & Cheese", 4, 1, 1, 1, null, null, "1", 0));
 		sessionObj.put("Favorites", actual);
 		sessionObj.put("hello", "Hello testuser");
 		sessionObj.put("userID", 1);
@@ -107,7 +107,7 @@ public class ListServletTest {
 		when(request.getSession()).thenReturn(session);
 		StringWriter stringWriter = new StringWriter();
 		when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
-		RecipeInfo ri = new RecipeInfo("Rating", 0, 0, 0, 0, null, null, "");
+		RecipeInfo ri = new RecipeInfo("Rating", 0, 0, 0, 0, null, null, "", 0);
 		Gson gson = new Gson();
 		BufferedReader br = new BufferedReader(new StringReader(gson.toJson(new Message("reorderList", gson.toJson(new Message("Favorites", gson.toJson(ri)))))));
 		when(request.getReader()).thenReturn(br);
@@ -155,7 +155,7 @@ public class ListServletTest {
 		sessionObj.put("hello", "Hello testuser");
 		sessionObj.put("userID", 1);
 		List<Info> list = new ArrayList<>();
-		list.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1));
+		list.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>(), 0));
 		sessionObj.put("Grocery", list);
 		when(request.getSession()).thenReturn(session);
 		StringWriter stringWriter = new StringWriter();
@@ -248,7 +248,7 @@ public class ListServletTest {
 		when(request.getSession()).thenReturn(session);
 		List<Info> listAc = new ArrayList<Info>();
 		List<Info> list = new ArrayList<Info>();
-		RestaurantInfo ri = new RestaurantInfo("string", 767812, "string", "string", 0, "string", 0, "string", "string");
+		RestaurantInfo ri = new RestaurantInfo("string", 767812, "string", "string", 0, "string", 0, "string", "string", 0);
 		listAc.add(ri);
 		when(request.getParameter("list")).thenReturn("Favorites");
 		when(request.getSession().getAttribute("Favorites")).thenReturn(listAc);
@@ -279,7 +279,7 @@ public class ListServletTest {
 		when(request.getSession()).thenReturn(session);
 		List<Info> listAc = new ArrayList<Info>();
 		List<Info> list = new ArrayList<Info>();
-		RestaurantInfo ri = new RestaurantInfo("string", 244, "string", "string", 0, "string", 0, "string", "github.com");
+		RestaurantInfo ri = new RestaurantInfo("string", 244, "string", "string", 0, "string", 0, "string", "github.com", 0);
 		listAc.add(ri);
 		when(request.getParameter("list")).thenReturn("Do Not Show");
 		when(request.getSession().getAttribute("Favorites")).thenReturn(list);
@@ -312,7 +312,7 @@ public class ListServletTest {
 		when(request.getSession()).thenReturn(session);
 		List<Info> listAc = new ArrayList<Info>();
 		List<Info> list = new ArrayList<Info>();
-		RestaurantInfo ri = new RestaurantInfo("string", 20, "string", "string", 0, "string", 0, "string", "google.com");
+		RestaurantInfo ri = new RestaurantInfo("string", 20, "string", "string", 0, "string", 0, "string", "google.com", 0);
 		listAc.add(ri);
 		when(request.getParameter("list")).thenReturn("To Explore");
 		when(request.getSession().getAttribute("Favorites")).thenReturn(list);

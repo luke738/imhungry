@@ -22,7 +22,6 @@ import com.google.gson.JsonParser;
 import info.*;
 
 import java.net.*;
-import java.io.Reader.*;
 import java.util.*;
 
 /**
@@ -160,7 +159,7 @@ public class SearchServlet extends HttpServlet {
 			//initialize current RecipeInfo object that will be added. Detail information requires another
 			//request based on the recipe's unique recipe ID
 			RecipeInfo recipe = new RecipeInfo(currentRecipe.get("title").getAsString(), 0,
-					currentRecipe.get("id").getAsInt(), 30, 30, new ArrayList<String>(), new ArrayList<String>(), "");
+					currentRecipe.get("id").getAsInt(), 30, 30, new ArrayList<String>(), new ArrayList<String>(), "", 0);
 
 			//use recipe ID to make another request for detail information
 			String recipeDetailURL = SPOONACULAR_RECIPE_API_PREFIX + "/" + recipe.recipeID +"/information";
@@ -255,7 +254,7 @@ public class SearchServlet extends HttpServlet {
 			} catch(Exception e) {}
 			restaurants.add(new RestaurantInfo(currentPlace.get("name").getAsString(),
 					(int)currentPlace.get("rating").getAsDouble(), currentPlace.get("place_id").getAsString(),
-					currentPlace.get("vicinity").getAsString(), priceLevel, "", 0, "No phone number available", "No website available"));
+					currentPlace.get("vicinity").getAsString(), priceLevel, "", 0, "No phone number available", "No website available", 0));
 		}
 
 		//remove all items in Do Not Show List that appear in the result

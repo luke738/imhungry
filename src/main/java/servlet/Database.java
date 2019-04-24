@@ -236,7 +236,7 @@ public class Database
                 int driveTimeV = rs.getInt("driveTimeV");
                 String phone = rs.getString("phone");
                 String url = rs.getString("url");
-                RestaurantInfo p = new RestaurantInfo(restname, rating, placeID, restaddress, price,driveTimeT, driveTimeV, phone, url, dbid);
+                RestaurantInfo p = new RestaurantInfo(restname, rating, placeID, restaddress, price,driveTimeT, driveTimeV, phone, url, dbid, 0);
                 pList.add(p);
             }
             return pList;

@@ -104,10 +104,10 @@ public class ListServlet extends HttpServlet
                 case "reorderList":
                     RecipeInfo ri = (RecipeInfo) item;
                     String order = ri.name;
-                    if (order.equals("Alphabetically")){
-                        list = SortLists.sortAlphabetically(list);
+                    if (order.equals("Alphabetically")){ //TODO: Make this work
+                        //list = SortLists.sortAlphabetically(list);
                     } else if (order.equals("Rating")){
-                        list = SortLists.sortByRating(list);
+                        //list = SortLists.sortByRating(list);
                     }
                     session.setAttribute(listName, list);
                     respWriter.println(gson.toJson(new Message("Changed order of lists to " + order)));
