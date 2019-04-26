@@ -36,4 +36,6 @@ script:
   - mvn tomcat7:run &
   - sleep 10
   - cd Ruby/resources
+  - mv features/support/env.rb ../env_dev.rb
+  - mv ../env_trav.rb features/support/env.rb
   - cucumber

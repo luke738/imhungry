@@ -18,7 +18,7 @@ public class RestaurantInfoTest {
 		int driveTimeValue = 45;
 		String phone = "2134005888";
 		String url = "github.com";
-		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url);
+		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url, 0);
 		assertEquals("OK",ri.name);
 		assertEquals(4,ri.rating);
 		assertEquals("788",ri.placeID);
@@ -46,9 +46,9 @@ public class RestaurantInfoTest {
 		int driveTimeValue = 45;
 		String phone = "2134005888";
 		String url = "github.com";
-		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url);
+		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url, 0);
 		driveTimeValue = 20;
-		RestaurantInfo ri2 = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url);
+		RestaurantInfo ri2 = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url, 0);
 		assertEquals("compareTo error",25,ri.compareTo(ri2));
 	}
 	
@@ -64,11 +64,11 @@ public class RestaurantInfoTest {
 		int driveTimeValue = 45;
 		String phone = "2134005888";
 		String url = "github.com";
-		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url);
+		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url, 0);
 		price = 40;
 		name = "Newone";
 		url = "usc.edu";
-		RestaurantInfo ri2 = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url);
+		RestaurantInfo ri2 = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url, 0);
 		assertEquals("compareTo error",0,ri.compareTo(ri2));
 	}
 	
@@ -84,8 +84,8 @@ public class RestaurantInfoTest {
 		int driveTimeValue = 45;
 		String phone = "2134005888";
 		String url = "github.com";
-		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url);
-		RestaurantInfo ri2 = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url);
+		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url, 0);
+		RestaurantInfo ri2 = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url, 0);
 		assertEquals(true, ri.equals(ri2));
 		ri.rating = 99;
 		ri.address="";
@@ -115,7 +115,7 @@ public class RestaurantInfoTest {
 		int driveTimeValue = 45;
 		String phone = "2134005888";
 		String url = "github.com";
-		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url);
+		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url, 0);
 		Object ok = new Object();
 		assertEquals("other type of instances equal",false, ri.equals(ok));
 	}
@@ -132,7 +132,7 @@ public class RestaurantInfoTest {
 		int driveTimeValue = 45;
 		String phone = "2134005888";
 		String url = "github.com";
-		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url);
+		RestaurantInfo ri = new RestaurantInfo(name,rating,placeID,address,price,driveTimeText,driveTimeValue,phone,url, 0);
 		assertEquals("same object doesn't equal",true, ri.equals(ri));
 	}
 	

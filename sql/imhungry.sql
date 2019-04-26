@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `imhungry`;
+USE `imhungry`;
 -- MySQL dump 10.13  Distrib 8.0.15, for macos10.14 (x86_64)
 --
 -- Host: 127.0.0.1    Database: imhungry
@@ -26,6 +28,7 @@ CREATE TABLE `groceries` (
   `grocID` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL,
   `recipeID` int(11) NOT NULL,
+  `checked` varchar(5000) NOT NULL,
   PRIMARY KEY (`grocID`),
   KEY `foreignK_idx` (`userID`),
   KEY `foreign2_idx` (`recipeID`),
@@ -40,7 +43,7 @@ CREATE TABLE `groceries` (
 
 LOCK TABLES `groceries` WRITE;
 /*!40000 ALTER TABLE `groceries` DISABLE KEYS */;
-INSERT INTO `groceries` VALUES (1,1,1);
+INSERT INTO `groceries` VALUES (1,1,1,'[false, false]');
 /*!40000 ALTER TABLE `groceries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,6 +60,7 @@ CREATE TABLE `previoussearch` (
   `searchTerm` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `specradius` int(11) NOT NULL,
   `expectRes` int(11) NOT NULL,
+  `url` varchar(10000) NOT NULL,
   PRIMARY KEY (`prevID`),
   KEY `foreignK3_idx` (`userID`),
   CONSTRAINT `foreignK3` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`)
@@ -129,7 +133,7 @@ CREATE TABLE `recipedonotshow` (
 
 LOCK TABLES `recipedonotshow` WRITE;
 /*!40000 ALTER TABLE `recipedonotshow` DISABLE KEYS */;
-INSERT INTO `recipedonotshow` VALUES (53,1,1,1);
+INSERT INTO `recipedonotshow` VALUES (53,1,1,0);
 /*!40000 ALTER TABLE `recipedonotshow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,7 +163,7 @@ CREATE TABLE `recipefavorites` (
 
 LOCK TABLES `recipefavorites` WRITE;
 /*!40000 ALTER TABLE `recipefavorites` DISABLE KEYS */;
-INSERT INTO `recipefavorites` VALUES (52,1,1,1);
+INSERT INTO `recipefavorites` VALUES (52,1,1,0);
 /*!40000 ALTER TABLE `recipefavorites` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,7 +255,7 @@ CREATE TABLE `restdonotshow` (
 
 LOCK TABLES `restdonotshow` WRITE;
 /*!40000 ALTER TABLE `restdonotshow` DISABLE KEYS */;
-INSERT INTO `restdonotshow` VALUES (26,1,1,0);
+INSERT INTO `restdonotshow` VALUES (26,1,1,1);
 /*!40000 ALTER TABLE `restdonotshow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,7 +285,7 @@ CREATE TABLE `restfavorites` (
 
 LOCK TABLES `restfavorites` WRITE;
 /*!40000 ALTER TABLE `restfavorites` DISABLE KEYS */;
-INSERT INTO `restfavorites` VALUES (39,1,1,0);
+INSERT INTO `restfavorites` VALUES (39,1,1,1);
 /*!40000 ALTER TABLE `restfavorites` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -350,4 +354,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-22 14:04:26
+-- Dump completed on 2019-04-24 15:47:46
