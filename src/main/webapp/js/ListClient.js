@@ -22,6 +22,9 @@ function removeItem(listName, item) {
 
 //Requests reordering of recipes/restaurants by
 function reorderResults(listName, order, pos){
+    console.log(listName + " " + order + pos);
+    event.stopPropagation();
+    event.preventDefault();
     // note: "item" only used for order (stored in item.name), must be fully included for parsing purposes in ListServlet.java doPost() method
     var fakeitem = {};
     fakeitem.recipeID = 0;
