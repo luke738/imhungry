@@ -1,7 +1,5 @@
 package servlet;
 
-import static org.junit.Assert.*;
-
 import com.google.gson.Gson;
 import info.Info;
 import info.RecipeInfo;
@@ -14,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+
+import static org.junit.Assert.*;
 
 public class DatabaseTest
 {
@@ -144,7 +144,7 @@ public class DatabaseTest
         RecipeInfo info = new RecipeInfo("testing", 8, 56565, 10, 10, new ArrayList<>(Arrays.asList("ingredient1", "ingredient2")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",2);
         Boolean favUpdates = db.updateLists(1, true,"Favorites",  info);
         // userID, Listname, recipe BOolean, dbid
-        assertEquals(1, db.getPos(1, "Favorites", true, 1));
+        assertEquals(0, db.getPos(1, "Favorites", true, 1));
     }
 
     @Test

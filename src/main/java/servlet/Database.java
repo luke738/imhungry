@@ -16,6 +16,7 @@ public class Database
     private Statement st;
     private PreparedStatement ps;
     private ResultSet rs;
+    private DatabaseHelper helper;
 
     public Database() {
         conn = null;
@@ -33,6 +34,9 @@ public class Database
         catch (ClassNotFoundException cnfe) {
             System.out.println ("ClassNotFoundException: " + cnfe.getMessage());
         }
+
+        helper = new DatabaseHelper(ps, rs, conn);
+
     }
 
     public Boolean checkUser(String username) {
@@ -132,7 +136,7 @@ public class Database
 
     public ArrayList<Info> getLists(int userID, String listname) {
         ArrayList<Info> pList = new ArrayList<Info>();
-        listname = changeToDatabaseFormat(listname);
+        listname = helper.changeToDatabaseFormat(listname);
         try {
             if(listname.equals("favorites") || listname.equals("toexplore") || listname.equals("donotshow")) {
                 ps = conn.prepareStatement("SELECT rec.rID, rec.userID, r.recipeIDapi, r.prepTime, r.rating, r.CookTime, r.ingredient, r.instructions, r.imageURL, r.rname, rec.rID FROM recipe" + listname + " rec JOIN recipe r WHERE rec.userID=? AND rec.rID = r.recipID");
@@ -197,7 +201,7 @@ public class Database
     }
 
     private Boolean addToList(int userID, Boolean isRecipe, String listname, Info i){
-        listname = changeToDatabaseFormat(listname);
+        listname = helper.changeToDatabaseFormat(listname);
         //adding recipes
         try {
             if (isRecipe) {
@@ -243,7 +247,7 @@ public class Database
 
                 int highestPos = -1;
                 if (listname.equals("favorites") || listname.equals("toexplore") || listname.equals("donotshow")) {
-                    highestPos = findHighestPos(listname, userID);
+                    highestPos = helper.findHighestPos(listname, userID);
                     //checking that the specified user has the specified recipe in the [listname] list
                     ps = conn.prepareStatement("INSERT INTO recipe" + listname + "(rID, userid, pos) VALUES(?,?,?)");
                     ps.setInt(3, highestPos + 1);
@@ -292,7 +296,7 @@ public class Database
                 }
                 int highestPos = -1;
                 if (listname.equals("favorites") || listname.equals("toexplore") || listname.equals("donotshow")) {
-                    highestPos = findHighestPos(listname, userID);
+                    highestPos = helper.findHighestPos(listname, userID);
                     ps = conn.prepareStatement("INSERT INTO rest" + listname + "(rID, userid, pos) VALUES(?,?,?)");
                 }
                 ps.setInt(1, dbids);
@@ -310,42 +314,8 @@ public class Database
 
     }
 
-    private int findHighestPos(String listname, int userID){
-        String actualListname = changeToDatabaseFormat(listname);
-        String recipeQuery = "SELECT pos FROM recipe" + actualListname + " l WHERE userID = " + userID;
-        String restaurantQuery = "SELECT pos FROM rest" + actualListname + " l WHERE userID = " + userID;
-        int highestPos = -1;
-        try {
-            // get the positions of recipes
-            ps = conn.prepareStatement(recipeQuery);
-            rs = ps.executeQuery();
-            // find the highest position in recipes
-            while (rs.next()){
-                int pos = rs.getInt("pos");
-                if (pos > highestPos) {
-                    highestPos = pos;
-                }
-            }
-            // get the positions of restaurants
-            ps = conn.prepareStatement(restaurantQuery);
-            rs = ps.executeQuery();
-            // find the highest position in restaurants
-            while (rs.next()) {
-                int pos = rs.getInt("pos");
-                if (pos > highestPos){
-                    highestPos = pos;
-                }
-            }
-        }
-        catch(SQLException e){
-            System.out.println("SQLException in function \"validate\"");
-            e.printStackTrace();
-        }
-        return highestPos;
-    }
-
     private Boolean removeFromList(int userID, Boolean isRecipe, String listname, Info i) {
-        listname = changeToDatabaseFormat(listname);
+        listname = helper.changeToDatabaseFormat(listname);
         try {
             //removing recipe
             if (isRecipe) {
@@ -395,7 +365,7 @@ public class Database
                 // update indices
                 if (!listname.equals("Grocery") && pos != -111){
                     // update the indices of elements after element that is deleted
-                    updateIndicesAfterRemove(listname, pos, userID);
+                    helper.updateIndicesAfterRemove(listname, pos, userID);
                 }
                 return true;
             }
@@ -435,7 +405,7 @@ public class Database
                 ps.setInt(1, dbids);
                 ps.setInt(2, userID);
                 ps.executeUpdate();
-                updateIndicesAfterRemove(listname, pos, userID);
+                helper.updateIndicesAfterRemove(listname, pos, userID);
                 return true;
             }
         }catch(SQLException e){
@@ -444,64 +414,6 @@ public class Database
         }
         return false;
 
-    }
-
-    private void updateIndicesAfterRemove(String listname, int pos, int userID) {
-        try {
-            String actualName = changeToDatabaseFormat(listname);
-            // stop when you reach the highest pos
-            int highestPos = findHighestPos(listname, userID);
-            // update the pos column for item after removed item to highestPos
-            for (int i=pos+1; i<=highestPos; i++){
-                // is pos in recipe[listname] ?
-                ps = conn.prepareStatement("SELECT r.pos FROM recipe" + actualName + " r WHERE r.pos = ? AND r.userID = ?");
-                ps.setInt(1, i);
-                ps.setInt(2, userID);
-                rs = ps.executeQuery();
-                // pos IS in recipe[listname]
-                if (rs.next()){
-                    // change pos to be one less than before
-                    ps = conn.prepareStatement("UPDATE recipe" + actualName + " SET pos = ? WHERE pos = ? AND userID = ?");
-                    ps.setInt(1, i-1);
-                    ps.setInt(2, i);
-                    ps.setInt(3, userID);
-                    // if pos is in recipe[listname] it won't be in restaurants
-                    continue;
-                }
-                // is pos in rest[listname] ?
-                ps = conn.prepareStatement("SELECT r.pos FROM rest" + actualName + " r WHERE r.pos = ? and r.userID = ?");
-                ps.setInt(1, i);
-                ps.setInt(2, userID);
-                rs = ps.executeQuery();
-                // pos IS in rest[listname]
-                if (rs.next()){
-                    // change pos to be one less than before
-                    ps = conn.prepareStatement("UPDATE rest" + actualName + " SET pos = ? WHERE pos = ? AND userID = ?");
-                    ps.setInt(1, i-1);
-                    ps.setInt(2, i);
-                    ps.setInt(3, userID);
-                }
-            }
-        } catch(SQLException e){
-            System.out.println("SQLException in function \"validate\"");
-            e.printStackTrace();
-        }
-
-    }
-
-    // changes input of listname so it can be appended to sql command
-    // ex: "To Explore" becomes "toexplore"
-    // this means the conversion doesn't have to be done for every function
-    public String changeToDatabaseFormat(String listname){
-        String actualListname = listname;
-        if (listname.equals("Favorites")){
-            actualListname = "favorites";
-        } else if (listname.equals("To Explore")){
-            actualListname = "toexplore";
-        } else if (listname.equals("Do Not Show")){
-            actualListname = "donotshow";
-        }
-        return actualListname;
     }
 
     public Boolean updateLists(int userID, Boolean add, String listname, Info i) {
