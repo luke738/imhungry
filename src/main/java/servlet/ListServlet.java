@@ -42,7 +42,7 @@ public class ListServlet extends HttpServlet
             List<String> groceryList = new ArrayList<>();
             for (Info i : list) {
                 for(int l =0 ; l < ((RecipeInfo)i).ingredients.size();l++ ){
-                    groceryList.add(((RecipeInfo) i).checked.get(l)?"C":"N"+((RecipeInfo) i).ingredients.get(l));
+                    groceryList.add((((RecipeInfo) i).checked.get(l)?"C":"N")+((RecipeInfo) i).ingredients.get(l));
                 }
             }
 
@@ -105,11 +105,14 @@ public class ListServlet extends HttpServlet
                     session.invalidate(); //Note: This is for debuggin only; the page will break if this is called and a new search is not immediately made
                     break;
                 case "checkGrocery":
+                    System.out.println("Checking");
                     String ingred = item.name;
+                    System.out.println(ingred);
                     Boolean flag = false;
                     for(int k =0; k < list.size() && !flag; k++){
                         for(int m =0; m < ((RecipeInfo)list.get(k)).ingredients.size(); m++){
                             if(((RecipeInfo) list.get(k)).ingredients.get(m).equals(ingred)){
+                                System.out.println("did something");
                                 db.updateLists(userID, false, "Grocery", list.get(k));
                                 ((RecipeInfo) list.get(k)).checked.set(m, true);
                                 db.updateLists(userID, true, "Grocery", list.get(k));
@@ -118,6 +121,7 @@ public class ListServlet extends HttpServlet
                             }
                         }
                     }
+                    session.setAttribute("Grocery", list);
                     break;
                 case "uncheckGrocery":
                     String ingrid = item.name;
