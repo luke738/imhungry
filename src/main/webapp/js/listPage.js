@@ -69,7 +69,8 @@ else {
                     //Make sure that clicking this button doesn't also send user to the detailed page for this item
                     event.stopPropagation();
                     event.preventDefault();
-                    reorderResults(listName, "down", i);
+                    reorderResults(listName, "down", ind);
+                    window.location.reload(true);
                 }
             }(i));
 
@@ -84,7 +85,9 @@ else {
                     //Make sure that clicking this button doesn't also send user to the detailed page for this item
                     event.stopPropagation();
                     event.preventDefault();
-                    reorderResults(listName, "up", i);
+                    reorderResults(listName, "up", ind);
+                    window.location.reload(true);
+
                 }
             }(i));
         }
@@ -126,7 +129,8 @@ else {
                     //Make sure that clicking this button doesn't also send user to the detailed page for this item
                     event.stopPropagation();
                     event.preventDefault();
-                    reorderResults(listName, "down", i);
+                    reorderResults(listName, "down", ind);
+                    window.location.reload(true);
                 }
             }(i));
 
@@ -141,7 +145,8 @@ else {
                     //Make sure that clicking this button doesn't also send user to the detailed page for this item
                     event.stopPropagation();
                     event.preventDefault();
-                    reorderResults(listName, "up", i);
+                    reorderResults(listName, "up", ind);
+                    window.location.reload(true);
                 }
             }(i));
         }
