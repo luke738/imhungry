@@ -35,6 +35,10 @@
     font-size: 1.5rem;
     color: white;
 }
+.active {
+	background-color: #111;
+	color: white;
+}
 
 .page-link {
 	background-color: #FFD27F;
