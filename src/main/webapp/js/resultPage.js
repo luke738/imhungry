@@ -71,16 +71,13 @@ function makeList() {
 //removes items on pg and replaces with newly generated items according to clicked pg value for restaurants
 function loadRestList() {
     //remove previously generated recipe items from pg
-    var rest_btn = document.getElementById("rest_btn");
-    console.log(rest_btn);
-    console.log(rest_btn.firstChild);
-    if (rest_btn!=null) {
-        while (rest_btn.firstChild) {
-            rest_btn.removeChild(rest_btn.firstChild);
-        }
+    var rest_btn = document.getElementById("rest_nav");
+    while (rest_btn.firstChild) {
+        rest_btn.removeChild(rest_btn.firstChild);
     }
+
     //remove previously generated recipe items from pg
-    var rest_node = document.getElementById("column2");
+    var rest_node = document.getElementById("column1");
     while (rest_node.childNodes.length > 2) {
         rest_node.removeChild(rest_node.lastChild);
     }
@@ -88,12 +85,14 @@ function loadRestList() {
     //begin = which index in results array to display for specific page.
     //when (value is null) displays first page elements [0 - numberPerPage]
     //end = which index in results array to stop at
-    var value = parseInt(event.srcElement.id);
-    console.log("   VALUE" + value);
+
+    console.log("   REST VALUE" + value);
     var rest_begin = 0;
     if (event.srcElement.value == null) {
         rest_begin = 0;
     } else {
+        var id = (event.srcElement.id).split("-");
+        var value = parseInt(id[1]);
         rest_begin = ((value - 1) * numberPerPage);
     }
     var rest_end = rest_begin + numberPerPage;
@@ -117,27 +116,29 @@ function loadRestList() {
         createNumberedRestButton(1, numberOfRestPages);
         //if value of button is null, then its the first pg bc value not set yet, so dont show prev button
         if (value != 1 && event.srcElement.id != undefined) { // on all but first pg, show prev button
-            console.log("else first prev " + (value-1));
+            console.log("else REST first prev " + (value-1));
             createRestButton("Prev", (value-1));
         }
-        //create next buttons if not on last page for recipe column
-        if ( (value)<numberOfRestPages  || isNaN(value)) { //on all but last pg, show next button
-            console.log("else if " + (value+1));
-            if (isNaN(value)) {
-                createRestButton("Next", (2));
-            } else {
-                createRestButton("Next", (value+1));
-            }
+        //create next buttons if not on last page for restaurant column
+        if ( (value)<numberOfRestPages) { //on all but last pg, show next button
+            console.log("else REST if " + (value+1));
+            createRestButton("Next", (value+1));
         }
 
+        if (isNaN(value) && numberOfRestPages != 1) {
+            console.log("numberOfRestPages " + numberOfRestPages);
+            if (isNaN(value)) {
+                createRestButton("Next", (2));
+            }
+        }
 
         // make curr clicked page active
         var header = document.getElementById("rest_nav");
         var btns = header.getElementsByTagName("INPUT");
-        console.log(btns.length);
+
         for (var i = 0; i < btns.length; i++) {
 
-            if (btns[i].id == value) {
+            if (btns[i].id == ("rest-"+value)) {
                 console.log(btns[i]);
                 // btns[i].className = " active";
                 btns[i].style.backgroundColor = "black";
@@ -145,7 +146,7 @@ function loadRestList() {
             }
 
             btns[i].addEventListener("click", function() {
-                console.log("in active function");
+                // console.log("in active function");
                 var current = document.getElementsByClassName("active");
                 if (current.length > 0) {
                     current[0].className = current[0].className.replace(" active", "");
@@ -155,7 +156,7 @@ function loadRestList() {
         }
     }
 
-    drawRecList(rest_begin, rest_end);
+    drawRestList(rest_begin, rest_end);
 }
 
 //removes items on pg and replaces with newly generated items according to clicked pg value for recipes
@@ -176,7 +177,7 @@ function loadRecList() {
     //when (value is null) displays first page elements [0 - numberPerPage]
     //end = which index in results array to stop at
     var value = parseInt(event.srcElement.id);
-    console.log("   VALUE" + value);
+    console.log("   REC VALUE" + value);
     var rec_begin = 0;
     if (event.srcElement.value == null) {
         rec_begin = 0;
@@ -208,20 +209,21 @@ function loadRecList() {
             createRecButton("Prev", (value-1));
         }
         //create next buttons if not on last page for recipe column
-        if ( (value)<numberOfRecPages  || isNaN(value)) { //on all but last pg, show next button
-            console.log("else if " + (value+1));
-            if (isNaN(value)) {
-                createRecButton("Next", (2));
-            } else {
-                createRecButton("Next", (value+1));
-            }
+        if ( (value)<numberOfRecPages) { //on all but last pg, show next button
+            console.log("else REC if " + (value+1));
+            createRecButton("Next", (value+1));
         }
 
-
+        if (isNaN(value) && numberOfRecPages != 1) {
+            console.log("numberOfRecPages " + numberOfRecPages);
+            if (isNaN(value)) {
+                createRecButton("Next", (2));
+            }
+        }
         // make curr clicked page active
         var header = document.getElementById("rec_nav");
         var btns = header.getElementsByTagName("INPUT");
-        console.log(btns.length);
+        // console.log(btns.length);
         for (var i = 0; i < btns.length; i++) {
 
             if (btns[i].id == value) {
@@ -232,7 +234,7 @@ function loadRecList() {
             }
 
             btns[i].addEventListener("click", function() {
-                console.log("in active function");
+                // console.log("in active function");
                 var current = document.getElementsByClassName("active");
                 if (current.length > 0) {
                     current[0].className = current[0].className.replace(" active", "");
@@ -242,6 +244,8 @@ function loadRecList() {
         }
     }
 
+    console.log("   rec begin " + rec_begin);
+    console.log("   rec end " + rec_end);
     drawRecList(rec_begin, rec_end);
 }
 
@@ -252,7 +256,7 @@ function createNumberedRestButton(start, end) {
         rest_input.value = i;
         rest_input.class = "page-link";
         rest_input.type = "button";
-        rest_input.id = i;
+        rest_input.id = "rest-"+i;
         rest_input.addEventListener("click", loadRestList);
         document.getElementById("rest_nav").appendChild(rest_input);
     }
@@ -278,12 +282,12 @@ function createRestButton(value,number) {
     input.class = "page-link";
     input.type = "button";
     input.value = value;
-    input.id = number;
+    input.id = "rest-"+number;
     input.addEventListener("click", loadRestList);
     if (value == "Prev") {
-        document.getElementById("rest_nav").insertBefore(input,document.getElementById("1"));
+        document.getElementById("rest_nav").insertBefore(input,document.getElementById("rest-1"));
     } else if (value == "Next") {
-        document.getElementById("rec_nav").appendChild(input);
+        document.getElementById("rest_nav").appendChild(input);
     }
 }
 
@@ -406,11 +410,17 @@ function drawRecList(begin,end) {
 
 function load() {
     makeList();
-    loadRecList();
-    loadRestList();
+    // if (numberOfRecPages != 1) {
+        loadRecList();
+    // }
+    // if (numberOfRestPages != 1) {
+        loadRestList();
+    // }
 }
 
 window.onload = load;
+
+//prev search iterate through URLS and assemble collage
 
 //Assemble the collage
 var collage = document.getElementById("collage");
