@@ -293,7 +293,7 @@ function loadRecList() {
                 btns[i].style.backgroundColor = "black";
                 btns[i].style.color = "white";
             }
-            
+
         }
     }
 
