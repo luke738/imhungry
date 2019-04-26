@@ -4,6 +4,7 @@ document.getElementById("header").innerHTML =  query.search.replace(/\+/g, ' ');
 var results;
 var imageURLs;
 
+//grab previous searches from search page
 var prevSearchesJSON = (localStorage.getItem("prevSearches")).trim();
 var prevSearches = JSON.parse(prevSearchesJSON);
 for (var i = 0; i < prevSearches.length; i++) {
@@ -19,26 +20,34 @@ for (var i = 0; i < prevSearches.length;i++) {
     var search_urls = search.urls;
     var search_radius = search.specifiedRadius;
 
+    console.log(search_term);
+    console.log(search_radius);
+
+    //big div is used for column direction so title and collage are vertical but results are still horizontal
     var bigdiv = document.createElement("div");
     bigdiv.id = "bigdiv";
     bigdiv.style.direction = "column";
 
+    //node holds collage
     var node = document.createElement("div");
     node.className = "prev";
     bigdiv.appendChild(node);
-
     assembleCollage(node,search_urls);
 
+    //title of previous search shown underneath collage, id holds search parameters
     var a = document.createElement("div");
     a.innerHTML = search_term;
-    // a.addEventListener("click",go(search_term,search_number,search_radius));
-    a.addEventListener("click", function(){ go(search_term, search_number, search_radius); });
+    a.id = search_term+ "-" + search_number + "-" + search_radius;
+    a.addEventListener("click",go);
     bigdiv.appendChild(a);
 
     document.getElementById("prev_search").appendChild(bigdiv);
 }
-function go(search_term,search_number,search_radius) {
-    window.location.href = "/resultPage.jsp?search="+search_term+"&number="+search_number+"&radius="+search_radius;
+
+//changes url to go to result page with previous search terms
+function go() {
+    var parameters = (event.srcElement.id).split("-");
+    window.location.href = "/resultPage.jsp?search="+parameters[0]+"&number="+parameters[1]+"&radius="+parameters[2];
 }
 
 function assembleCollage(append, previmageURLS) {
@@ -68,7 +77,6 @@ function assembleCollage(append, previmageURLS) {
         append.appendChild(imgdiv);
     }
 }
-
 
 //To reduce server overhead and improve performance, the page will only search from the server if it was arrived at from the search page
 //or if a list was modified on the last page. Otherwise, it'll load the results from localStorage (much faster).

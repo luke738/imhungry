@@ -47,11 +47,7 @@
                 var response = JSON.parse(xhttp.response);
                 var prevSearches = response.body;
 
-                console.log("prevSearches " + prevSearches);
 				localStorage.setItem("prevSearches", JSON.stringify(prevSearches));
-                for (i = 0; i < prevSearches.length; i++) {
-                	console.log(prevSearches[i]);
-				}
 
 			</script>
 		</form>
