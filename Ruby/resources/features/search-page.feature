@@ -15,6 +15,13 @@ Scenario: initiating the search redirects to Results Page if I am logged in; mak
     And enter "testuser" into "username"
     And enter "password" into "password"
     And press "submit" button
+	And I should see the "Search" page
+	And I search for "pancake"
+	And expect 1 results
+	And enter radius of 4
+	And press "submit" button
+	And I should see the "Result" page
+	And press "back_search" button
     And I should see the "Search" page
 	And I search for "garden"
 	And expect 16 results
@@ -26,6 +33,7 @@ Scenario: initiating the search redirects to Results Page if I am logged in; mak
 	And I should see a "2" pagination button
 	And I should see a "Prev" button with value
 	And I should see a "3" pagination button
+	And I should see "pancake" text
 	And press a recipe
 	And click on dropdown
 	And click the "Grocery" selector
@@ -34,7 +42,11 @@ Scenario: initiating the search redirects to Results Page if I am logged in; mak
 	And click on dropdown
 	And click the "Grocery" selector
 	And press "manage_list" button
-	And I select "1. ingredient" unchecked
-	And press "back_search" button
+	And there is "1" unchecked
+	And check "1" first
+	And press "backtoresults" button
+	And click the "Grocery" selector
+	And press "manage_list" button
+	Then "1" should be checked
 
 
