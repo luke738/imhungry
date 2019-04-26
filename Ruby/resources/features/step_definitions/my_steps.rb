@@ -202,5 +202,5 @@ And(/^I should see a "([^"]*)" button with value$/) do |arg|
 end
 
 And(/^I select "([^"]*)" unchecked$/) do |arg|
-  expect(page).to have_unchecked_field('#'+arg)
+  page.all(:unchecked_field, arg, wait:20)
 end

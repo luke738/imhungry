@@ -122,6 +122,7 @@ public class ListServlet extends HttpServlet
                         }
                     }
                     session.setAttribute("Grocery", list);
+                    respWriter.println(new Gson().toJson(new Message("Checked")));
                     break;
                 case "uncheckGrocery":
                     String ingrid = item.name;
@@ -137,6 +138,8 @@ public class ListServlet extends HttpServlet
                             }
                         }
                     }
+                    session.setAttribute("Grocery", list);
+                    respWriter.println(new Gson().toJson(new Message("Unchecked")));
                     break;
                 case "reorderList":
                     RecipeInfo ri = (RecipeInfo) item;
