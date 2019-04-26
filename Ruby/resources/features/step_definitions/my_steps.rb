@@ -201,6 +201,23 @@ And(/^I should see a "([^"]*)" button with value$/) do |arg|
  page.all(:button, arg, maximum: 2)
 end
 
-And(/^I select "([^"]*)" unchecked$/) do |arg|
-  page.all(:unchecked_field, arg, wait:20)
+
+And(/^there is "([^"]*)" unchecked$/) do |arg|
+  expect(page).to have_unchecked_field(arg);
+end
+
+And(/^check "([^"]*)" first$/) do |arg|
+  find_by_id(arg).click
+end
+
+Then(/^"([^"]*)" should be checked$/) do |arg|
+  expect(page).to have_checked_field(arg);
+end
+
+And(/^click down on "item0down"$/) do |arg|
+  expect(page).to have_button(arg).click
+end
+
+Then(/^item1 has moved$/) do
+  expect(page).to have_css
 end
