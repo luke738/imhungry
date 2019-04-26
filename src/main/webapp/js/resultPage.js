@@ -20,9 +20,6 @@ for (var i = 0; i < prevSearches.length;i++) {
     var search_urls = search.urls;
     var search_radius = search.specifiedRadius;
 
-    console.log(search_term);
-    console.log(search_radius);
-
     //big div is used for column direction so title and collage are vertical but results are still horizontal
     var bigdiv = document.createElement("div");
     bigdiv.id = "bigdiv";
@@ -115,13 +112,10 @@ if (results[1].length == 0) {
     document.querySelector("#recipeColumn").appendChild(recipe_error);
 }
 
-//implement pagination, results split into pageLists
+//implement pagination, results split
 var rec_list = results[1];
 var rest_list = results[0];
-var rec_pageList = new Array();
-var rest_pageList = new Array();
 var numberPerPage = 5;
-var numberOfPages = 0;
 var numberOfRecPages = 0;
 var numberOfRestPages = 0;
 
@@ -220,14 +214,6 @@ function loadRestList() {
                 btns[i].style.color = "white";
             }
 
-            btns[i].addEventListener("click", function() {
-                // console.log("in active function");
-                var current = document.getElementsByClassName("active");
-                if (current.length > 0) {
-                    current[0].className = current[0].className.replace(" active", "");
-                }
-                this.className += " active";
-            });
         }
     }
 
@@ -307,15 +293,7 @@ function loadRecList() {
                 btns[i].style.backgroundColor = "black";
                 btns[i].style.color = "white";
             }
-
-            btns[i].addEventListener("click", function() {
-                // console.log("in active function");
-                var current = document.getElementsByClassName("active");
-                if (current.length > 0) {
-                    current[0].className = current[0].className.replace(" active", "");
-                }
-                this.className += " active";
-            });
+            
         }
     }
 
