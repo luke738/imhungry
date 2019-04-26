@@ -144,7 +144,7 @@ public class Database
             } else if (listname.equals("Do Not Show")) {
                 ps = conn.prepareStatement("SELECT rr.rID FROM imhungry.restdonotshow rr  WHERE rr.userID = ?  AND rr.pos = ?");
             } else if (listname.equals("To Explore")) {
-                ps = conn.prepareStatement("SELECT rr.rID FROM imhunngry.resttoexplore rr  WHERE rr.userID = ?  AND rr.pos = ?");
+                ps = conn.prepareStatement("SELECT rr.rID FROM imhungry.resttoexplore rr  WHERE rr.userID = ?  AND rr.pos = ?");
             }
             ps.setInt(1, userID);
             ps.setInt(2, position);
@@ -681,11 +681,11 @@ public class Database
                 actualName = "toexplore";
             }
             if (listname.equals("Favorites")) {
-                ps = conn.prepareStatement("SELECT r.rID AND r.pos FROM recipefavorites r WHERE r.userID= ? AND r.pos> ?");
+                ps = conn.prepareStatement("SELECT r.rID, r.pos FROM recipefavorites r WHERE r.userID= ? AND r.pos> ?");
             } else if (listname.equals("Do Not Show")) {
-                ps = conn.prepareStatement("SELECT r.rID AND r.pos FROM recipedonotshow r WHERE r.userID= ? AND r.pos> ?");
+                ps = conn.prepareStatement("SELECT r.rID, r.pos FROM recipedonotshow r WHERE r.userID= ? AND r.pos> ?");
             } else if (listname.equals("To Explore")) {
-                ps = conn.prepareStatement("SELECT r.rID AND r.pos FROM recipetoexplore r WHERE r.userID= ? AND r.pos>?");
+                ps = conn.prepareStatement("SELECT r.rID, r.pos FROM recipetoexplore r WHERE r.userID= ? AND r.pos> ?");
             }
             ps.setInt(1, userID);
             ps.setInt(2, pos);

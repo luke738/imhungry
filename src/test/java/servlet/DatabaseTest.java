@@ -132,11 +132,17 @@ public class DatabaseTest
         RecipeInfo info = new RecipeInfo("testing", 8, 56565, 10, 10, new ArrayList<>(Arrays.asList("ingredient1", "ingredient2")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",2, new ArrayList<Boolean>());
         Boolean favUpdates = db.updateLists(1, true,"Favorites",  info);
         //userID, listname, boolean (Up=true, down=false), pos
+        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url", 0);
         db.changeOrder(1, "Favorites", true, 2);
+        db.changeOrder(1, "To Explore", true, 1);
+        db.changeOrder(1, "To Explore", false, 0);
+        db.changeOrder(1, "Do Not Show", true, 1);
+        db.changeOrder(1, "Do Not Show", false, 0);
         ArrayList<Info> favor = db.getLists(1, "Favorites");
         assertEquals("testing", favor.get(1).name);
         assertEquals("testRest", favor.get(2).name);
         db.updateLists(1, false, "Favorites", info);
+
     }
 
     @Test
