@@ -259,22 +259,22 @@ public class SearchServletTest {
 		doGetMethod.invoke(searchServlet, request, response);
 		Gson gson = new Gson();
 		if( ((ArrayList<Searches>)sessionObj.get("PreviousSearches")).size() == 1){
-			assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5)))));
+			assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5, null)))));
 
 		}
 		else if( ((ArrayList<Searches>)sessionObj.get("PreviousSearches")).size() == 2){
-			assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("testSearch", 5, 1), new Searches("pancakeTest", 6, 5)))));
+			assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("testSearch", 5, 1, null), new Searches("pancakeTest", 6, 5, null)))));
 
 		}
 		//Make sure the correct response was set
 		//assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5)))));
 		Database db = new Database();
 		if( (db.getPrevSearch(1).size() == 1)){
-			assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5)))));
+			assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5, null)))));
 
 		}
 		else if(  (db.getPrevSearch(1).size() == 2)){
-			assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("testSearch", 5, 1), new Searches("pancakeTest", 6, 5)))));
+			assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("testSearch", 5, 1, null), new Searches("pancakeTest", 6, 5, null)))));
 
 		}
 		//assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5)))));

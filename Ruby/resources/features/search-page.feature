@@ -48,8 +48,11 @@ Scenario: initiating the search redirects to Results Page if I am logged in; mak
 	And enter radius of 10
 	And press "submit" button
 	And I should see the "Result" page
+	And I should see a "next" pagination button
 	And I should see a "page1" pagination button
+	And press "next" button
 	And I should see a "page2" pagination button
+	And I should see a "previous" button
 	And I should see a "page3" pagination button
 	And press a recipe
 	And click on dropdown
@@ -59,6 +62,7 @@ Scenario: initiating the search redirects to Results Page if I am logged in; mak
 	And click on dropdown
 	And click the "Grocery" selector
 	And press "manage_list" button
+	And I select "1. ingredient" unchecked
 	And press "back_search" button
     And click prevSearch dropdown
 	And click the "prev_search0" selector
