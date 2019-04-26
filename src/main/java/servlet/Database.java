@@ -15,6 +15,7 @@ public class Database
     private Statement st;
     private PreparedStatement ps;
     private ResultSet rs;
+    private DatabaseHelper helper;
 
     public Database() {
         conn = null;
@@ -32,6 +33,9 @@ public class Database
         catch (ClassNotFoundException cnfe) {
             System.out.println ("ClassNotFoundException: " + cnfe.getMessage());
         }
+
+        helper = new DatabaseHelper(ps, rs, conn);
+
     }
 
     public Boolean checkUser(String username) {
@@ -383,7 +387,6 @@ public class Database
                     System.out.println("NOPE");
                     return false;
                 }
-                System.out.println("here1");
 
                 int highestPos = -1;
                 if (listname.equals("Favorites")) {
@@ -451,7 +454,6 @@ public class Database
                 if(rs.next()){
                     return false;
                 }
-                // TODO: FIND OUT WHAT POS TO GIVE NEW ITEM
                 int highestPos = -1;
                 if (listname.equals("Favorites")) {
                     highestPos = findHighestPos("Favorites", userID);
@@ -529,7 +531,6 @@ public class Database
         try {
             //removing recipe
             if (isRecipe) {
-
                 //checking if added to Recipe Database in the past
                 // finding the ID of recipe in the database by identifying the unique api recipe ID
                 ps = conn.prepareStatement("SELECT r.recipeIDapi, r.recipID FROM recipe r WHERE r.recipeIDapi = ?");
