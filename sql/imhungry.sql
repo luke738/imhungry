@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `imhungry`;
+CREATE DATABASE  IF NOT EXISTS `imhungry` ;
 USE `imhungry`;
 -- MySQL dump 10.13  Distrib 8.0.15, for macos10.14 (x86_64)
 --
@@ -43,7 +43,6 @@ CREATE TABLE `groceries` (
 
 LOCK TABLES `groceries` WRITE;
 /*!40000 ALTER TABLE `groceries` DISABLE KEYS */;
-INSERT INTO `groceries` VALUES (1,1,1,'[false, false]');
 /*!40000 ALTER TABLE `groceries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -354,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-24 15:47:46
+-- Dump completed on 2019-04-26  3:23:08
