@@ -46,24 +46,13 @@
                 console.log(xhttp.response);
                 var response = JSON.parse(xhttp.response);
                 var prevSearches = response.body;
-                var prevDrop = document.getElementById("prev_search");
-                for(i=0; i<prevSearches.length; i++) {
-                    var search = document.createElement("option");
-                    search.setAttribute("value", JSON.stringify(prevSearches[i]));
-                    search.setAttribute("id", "prev_search"+i);
-                    search.innerHTML = prevSearches[i].searchTerm;
-                    prevDrop.appendChild(search);
-                }
-                prevDrop.setAttribute("onchange", "populateSearch()");
 
-                function populateSearch() {
-                    search = document.getElementById("prev_search").options[document.getElementById("prev_search").selectedIndex].value;
-                    if(search == "prev_search1") return;
-                    var searchObj = JSON.parse(search);
-                    document.getElementById("search").value = searchObj.searchTerm;
-                    document.getElementById("number").value = searchObj.expectedResults-0;
-                    document.getElementById("radius").value = searchObj.specifiedRadius-0;
+                console.log("prevSearches " + prevSearches);
+				localStorage.setItem("prevSearches", JSON.stringify(prevSearches));
+                for (i = 0; i < prevSearches.length; i++) {
+                	console.log(prevSearches[i]);
 				}
+
 			</script>
 		</form>
 	</div>

@@ -15,6 +15,12 @@
 	margin-left: 25vw;
 	margin-right: 25vw;
 }
+.prev {
+	overflow: hidden;
+	position: relative;
+	height: 30vh;
+	width: 35vw;
+}
 
 .imageDiv{
 	position:absolute;
@@ -30,8 +36,11 @@
 }
 
 #prev_search {
+	display: flex;
+	/*overflow-x: auto;*/
 	overflow-x: scroll;
-	overflow-y: hidden;
+	/*overflow-y: hidden;*/
+	/*width: 100%;*/
 }
 
 #dropdown {

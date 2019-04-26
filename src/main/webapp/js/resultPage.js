@@ -3,6 +3,73 @@ var query = parseQuery(window.location.search);
 document.getElementById("header").innerHTML =  query.search.replace(/\+/g, ' ');
 var results;
 var imageURLs;
+
+var prevSearchesJSON = (localStorage.getItem("prevSearches")).trim();
+var prevSearches = JSON.parse(prevSearchesJSON);
+for (var i = 0; i < prevSearches.length; i++) {
+    var jsonData = prevSearches[i];
+    console.log(jsonData);
+}
+
+//assemble prevSearches collage at "id = prev_search" div
+for (var i = 0; i < prevSearches.length;i++) {
+    var search = prevSearches[i];
+    var search_number = search.expectedResults;
+    var search_term = search.searchTerm;
+    var search_urls = search.urls;
+    var search_radius = search.specifiedRadius;
+
+    var bigdiv = document.createElement("div");
+    bigdiv.id = "bigdiv";
+    bigdiv.style.direction = "column";
+
+    var node = document.createElement("div");
+    node.className = "prev";
+    bigdiv.appendChild(node);
+
+    assembleCollage(node,search_urls);
+
+    var a = document.createElement("div");
+    a.innerHTML = search_term;
+    // a.addEventListener("click",go(search_term,search_number,search_radius));
+    a.addEventListener("click", function(){ go(search_term, search_number, search_radius); });
+    bigdiv.appendChild(a);
+
+    document.getElementById("prev_search").appendChild(bigdiv);
+}
+function go(search_term,search_number,search_radius) {
+    window.location.href = "/resultPage.jsp?search="+search_term+"&number="+search_number+"&radius="+search_radius;
+}
+
+function assembleCollage(append, previmageURLS) {
+    for(let i = 0; i < previmageURLS.length; i++) {
+        //Create a div to hold this image
+        let imgdiv = document.createElement("div");
+        imgdiv.setAttribute("class", "imageDiv");
+        imgdiv.setAttribute("id", "image"+i);
+        //Create the img element
+        let img = document.createElement("img");
+        img.setAttribute("src", previmageURLS[i]);
+        img.setAttribute("class", "image");
+        //Add the img to the div
+        imgdiv.appendChild(img);
+        //Generate a set of randomized position, rotation angle, scaling factor, and z index
+        let x = 2*(i%5-1)*20+Math.floor(Math.random()*30);
+        let y = 2*(i%2)*50+Math.floor(Math.random()*30)-20;
+        let rot = Math.floor(Math.random()*90)-45;
+        let scale = Math.random()*0.2+0.9;
+        let z = Math.floor(Math.random()*50);
+        //Apply a style to the element that applies the above transformations to it
+        imgdiv.setAttribute("style", "-webkit-transform: translate("+x+"%, "+y+"%) rotate("+rot+"deg) scale("+scale+");" +
+            "-ms-transform: translate("+x+"%, "+y+"%) rotate("+rot+"deg) scale("+scale+");" +
+            "transform: translate("+x+"%, "+y+"%) rotate("+rot+"deg) scale("+scale+");" +
+            "z-index:"+z+";");
+        //Add the element to the collage
+        append.appendChild(imgdiv);
+    }
+}
+
+
 //To reduce server overhead and improve performance, the page will only search from the server if it was arrived at from the search page
 //or if a list was modified on the last page. Otherwise, it'll load the results from localStorage (much faster).
 if(query.number == "cache") {

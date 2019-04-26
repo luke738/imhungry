@@ -64,11 +64,16 @@
 	</nav>
 
 	<br>
+	<br>
+	<br>
 
-    <div id = "prev_search">
+
+<div class = "container" id = "prev_search">
 
     </div>
 
+<br>
+<br>
     <script src="js/parseQueryString.js"></script>
 	<script src="js/resultPage.js"></script>
 
