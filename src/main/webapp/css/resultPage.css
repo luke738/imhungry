@@ -29,6 +29,11 @@
 	align-items:center;
 }
 
+#prev_search {
+	overflow-x: scroll;
+	overflow-y: hidden;
+}
+
 #dropdown {
 	background-color: #FFD27F;
 	width: 100%;

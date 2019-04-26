@@ -65,6 +65,10 @@
 
 	<br>
 
+    <div id = "prev_search">
+
+    </div>
+
     <script src="js/parseQueryString.js"></script>
 	<script src="js/resultPage.js"></script>
 
