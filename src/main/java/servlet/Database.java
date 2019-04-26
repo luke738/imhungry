@@ -246,15 +246,13 @@ public class Database
                     highestPos = findHighestPos(listname, userID);
                     //checking that the specified user has the specified recipe in the [listname] list
                     ps = conn.prepareStatement("INSERT INTO recipe" + listname + "(rID, userid, pos) VALUES(?,?,?)");
+                    ps.setInt(3, highestPos + 1);
                 } else if (listname.equals("Grocery")) {
                     //checking that the specified user has the specified recipe in the to explore list
                     ps = conn.prepareStatement("INSERT INTO groceries(recipeID, userID) VALUES(?,?)");
                 }
                 ps.setInt(1, dbids);
                 ps.setInt(2, userID);
-                if (!listname.equals("Grocery")) {
-                    ps.setInt(3, highestPos + 1);
-                }
                 ps.executeUpdate();
                 return true;
             }
@@ -313,14 +311,7 @@ public class Database
     }
 
     private int findHighestPos(String listname, int userID){
-        String actualListname = listname;
-        if (listname.equals("Favorites")){
-            actualListname = "favorites";
-        } else if (listname.equals("Do Not Show")){
-            actualListname = "donotshow";
-        } else if (listname.equals("To Explore")){
-            actualListname = "toexplore";
-        }
+        String actualListname = changeToDatabaseFormat(listname);
         String recipeQuery = "SELECT pos FROM recipe" + actualListname + " l WHERE userID = " + userID;
         String restaurantQuery = "SELECT pos FROM rest" + actualListname + " l WHERE userID = " + userID;
         int highestPos = -1;
@@ -457,14 +448,7 @@ public class Database
 
     private void updateIndicesAfterRemove(String listname, int pos, int userID) {
         try {
-            String actualName = listname;
-            if (listname.equals("Favorites")){
-                actualName = "favorites";
-            } else if (listname.equals("Do Not Show")){
-                actualName = "donotshow";
-            } else if (listname.equals("To Explore")){
-                actualName = "toexplore";
-            }
+            String actualName = changeToDatabaseFormat(listname);
             // stop when you reach the highest pos
             int highestPos = findHighestPos(listname, userID);
             // update the pos column for item after removed item to highestPos
