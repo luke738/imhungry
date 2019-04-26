@@ -18,7 +18,7 @@ else if(listName === "Grocery") {
         let check = "";
         if(checked) check = "checked";
         console.log(check);
-        col1.innerHTML +=    "<input id=(i+1) style='display: inline;' onchange='groceryCheckbox(\""+list[i].substring(1, list[i].length) + "\"," + checked + ")' type='checkbox' " + check + " >" + (i+1) + ". " + list[i].substring(1, list[i].length) + "<br>";
+        col1.innerHTML +=    "<input id="+(i+1)+" style='display: inline;' onchange='groceryCheckbox(\""+list[i].substring(1, list[i].length) + "\"," + checked + ")' type='checkbox' " + check + " >" + (i+1) + ". " + list[i].substring(1, list[i].length) + "<br>";
 
     }
 }
