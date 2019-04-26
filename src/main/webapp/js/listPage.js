@@ -61,32 +61,32 @@ else {
             sec6 = document.createElement("button");
             sec6.setAttribute("class", "item_format6");
             let arrowDown = document.createElement("i");
-            arrowDown.id = "item"+i+"down";
+            sec6.id = "item"+i+"down";
             arrowDown.className = "fas fa-arrow-down";
             sec6.appendChild(arrowDown);
-            sec6.addEventListener("click", function() {
-                event.stopPropagation();
-                event.preventDefault();
-                var first = (event.srcElement.id).split("m");
-                var second = first[1].split("d");
-                var third = parseInt(second[0]);
-                reorderResults(listName, "down", third);
-            });
+            (function(ind) {
+                sec6.onclick= function(event) {
+                    //Make sure that clicking this button doesn't also send user to the detailed page for this item
+                    event.stopPropagation();
+                    event.preventDefault();
+                    reorderResults(listName, "down", i);
+                }
+            }(i));
 
             sec7 = document.createElement("button");
             sec7.setAttribute("class", "item_format7");
             let arrowUp = document.createElement("i");
-            arrowUp.id = "item"+i+"up";
+            sec7.id = "item"+i+"up";
             arrowUp.className = "fas fa-arrow-up";
             sec7.appendChild(arrowUp);
-            sec7.addEventListener("click", function() {
-                event.stopPropagation();
-                event.preventDefault();
-                var first = (event.srcElement.id).split("m");
-                var second = first[1].split("u");
-                var third = parseInt(second[0]);
-                reorderResults(listName, "up", third);
-            });
+            (function(ind) {
+                sec7.onclick= function(event) {
+                    //Make sure that clicking this button doesn't also send user to the detailed page for this item
+                    event.stopPropagation();
+                    event.preventDefault();
+                    reorderResults(listName, "up", i);
+                }
+            }(i));
         }
         else {
             sec1 = document.createElement("div");
@@ -119,34 +119,31 @@ else {
             sec6.setAttribute("class", "item_format6");
             let arrowDown = document.createElement("i");
             arrowDown.className = "fas fa-arrow-down";
-            arrowDown.id = "item"+i+"down";
+            sec6.id = "item"+i+"down";
             sec6.appendChild(arrowDown);
-            sec6.addEventListener("click", function() {
-                event.stopPropagation();
-                event.preventDefault();
-                var first = (event.srcElement.id).split("m");
-                console.log(first);
-                var second = first[1].split("d");
-                console.log(second);
-                var third = parseInt(second[0]);
-                reorderResults(listName, "down", third);
-            });
+            (function(ind) {
+                sec6.onclick= function(event) {
+                    //Make sure that clicking this button doesn't also send user to the detailed page for this item
+                    event.stopPropagation();
+                    event.preventDefault();
+                    reorderResults(listName, "down", i);
+                }
+            }(i));
 
             sec7 = document.createElement("button");
             sec7.setAttribute("class", "item_format7");
             let arrowUp = document.createElement("i");
             arrowUp.className = "fas fa-arrow-up";
-            arrowUp.id = "item"+i+"up";
+            sec7.id = "item"+i+"up";
             sec7.appendChild(arrowUp);
-            sec7.addEventListener("click", function() {
-                event.stopPropagation();
-                event.preventDefault();
-                var first = (event.srcElement.id).split("m");
-                var second = first[1].split("u");
-                var third = parseInt(second[0]);
-                reorderResults(listName, "up", third);
-            });
-
+            (function(ind) {
+                sec7.onclick= function(event) {
+                    //Make sure that clicking this button doesn't also send user to the detailed page for this item
+                    event.stopPropagation();
+                    event.preventDefault();
+                    reorderResults(listName, "up", i);
+                }
+            }(i));
         }
         //Build the change and remove list buttons for this item
         let changeButton = document.createElement("button");
