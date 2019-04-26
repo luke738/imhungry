@@ -54,7 +54,7 @@ var numberOfRestPages = 0;
 function makeList() {
     numberOfRecPages = Math.ceil(rec_list.length / numberPerPage);
     numberOfRestPages = Math.ceil(rest_list.length / numberPerPage);
-
+    
     //show up to first five buttons
     if (numberOfRestPages >= 5) {
         createNumberedRestButton(1, 5);
