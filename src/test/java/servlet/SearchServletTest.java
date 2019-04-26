@@ -7,7 +7,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -56,7 +55,7 @@ public class SearchServletTest {
 	//getPhoneandURL test
 	public void getPhoneURLTest1() {
 		SearchServlet servlet = new SearchServlet();
-		RestaurantInfo ri = new RestaurantInfo("Chipotle", 1, "ChIJXQa3SffHwoARbWWdPwK_Ums", "1", 1, "1", 1, "1", "1");
+		RestaurantInfo ri = new RestaurantInfo("Chipotle", 1, "ChIJXQa3SffHwoARbWWdPwK_Ums", "1", 1, "1", 1, "1", "1", 0);
 		ArrayList<RestaurantInfo> testConfirm = new ArrayList<RestaurantInfo>();
 		testConfirm.add(ri);
 		servlet.getPhoneAndURL(testConfirm);
@@ -77,7 +76,7 @@ public class SearchServletTest {
 	//getDriveTimes test
 	public void getDriveTimesTest1() {
 		SearchServlet servlet = new SearchServlet();
-		RestaurantInfo ri = new RestaurantInfo("Chipotle", 1, "ChIJXQa3SffHwoARbWWdPwK_Ums", "1", 1, "1", 1, "1", "1");
+		RestaurantInfo ri = new RestaurantInfo("Chipotle", 1, "ChIJXQa3SffHwoARbWWdPwK_Ums", "1", 1, "1", 1, "1", "1", 0);
 		ArrayList<RestaurantInfo> testConfirm = new ArrayList<RestaurantInfo>();
 		testConfirm.add(ri);
 		servlet.getDriveTimes(testConfirm);
@@ -260,22 +259,22 @@ public class SearchServletTest {
 		doGetMethod.invoke(searchServlet, request, response);
 		Gson gson = new Gson();
 		if( ((ArrayList<Searches>)sessionObj.get("PreviousSearches")).size() == 1){
-			assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5)))));
+			assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5, new ArrayList<>(Arrays.asList("https://i0.wp.com/omgsdfwfood.com/wp-content/uploads/2017/06/omgs-dfw-food-coconut-flour-pancake-test-cake-1.jpg?ssl\u003d1","https://www.metcalfelancaster.com/wp-content/uploads/2018/05/2RW_Rob-Pancake-Test-V2-Edit-Edit.jpg","https://omgsdfwfood.com/wp-content/uploads/2017/06/omgs-dfw-food-coconut-flour-pancake-test-cake-1.jpg","https://www.researchgate.net/profile/Paul_Arciero/publication/283974319/figure/tbl1/AS:670321237577739@1536828445608/Nutritional-analysis-of-pancake-test-meals.png","https://d3cizcpymoenau.cloudfront.net/images/34909/SFS_german_pancakes-119.jpg","https://www.researchgate.net/profile/Paul_Arciero/publication/283974319/figure/tbl1/AS:670321237577739@1536828445608/Nutritional-analysis-of-pancake-test-meals_Q320.jpg","https://i.pinimg.com/originals/a5/72/03/a572039253b8e0569d3352de3ae98ba1.jpg","http://i1079.photobucket.com/albums/w506/inlovewithgreta/Food/Pancake%20Test%203_zps0jcsrjzt.jpg?width\u003d480\u0026height\u003d480\u0026crop\u003d1:1,smart","https://sites.create-cdn.net/siteimages/29/5/2/295268/14/7/4/14743192/350x350.jpg?1487771886","https://media-cdn.tripadvisor.com/media/photo-s/06/15/f6/66/huevos-rancheros.jpg")))))));
 
 		}
 		else if( ((ArrayList<Searches>)sessionObj.get("PreviousSearches")).size() == 2){
-			assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("testSearch", 5, 1), new Searches("pancakeTest", 6, 5)))));
+			assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("testSearch", 5, 1, null), new Searches("pancakeTest", 6, 5, new ArrayList<>(Arrays.asList("https://i0.wp.com/omgsdfwfood.com/wp-content/uploads/2017/06/omgs-dfw-food-coconut-flour-pancake-test-cake-1.jpg?ssl\u003d1","https://www.metcalfelancaster.com/wp-content/uploads/2018/05/2RW_Rob-Pancake-Test-V2-Edit-Edit.jpg","https://omgsdfwfood.com/wp-content/uploads/2017/06/omgs-dfw-food-coconut-flour-pancake-test-cake-1.jpg","https://www.researchgate.net/profile/Paul_Arciero/publication/283974319/figure/tbl1/AS:670321237577739@1536828445608/Nutritional-analysis-of-pancake-test-meals.png","https://d3cizcpymoenau.cloudfront.net/images/34909/SFS_german_pancakes-119.jpg","https://www.researchgate.net/profile/Paul_Arciero/publication/283974319/figure/tbl1/AS:670321237577739@1536828445608/Nutritional-analysis-of-pancake-test-meals_Q320.jpg","https://i.pinimg.com/originals/a5/72/03/a572039253b8e0569d3352de3ae98ba1.jpg","http://i1079.photobucket.com/albums/w506/inlovewithgreta/Food/Pancake%20Test%203_zps0jcsrjzt.jpg?width\u003d480\u0026height\u003d480\u0026crop\u003d1:1,smart","https://sites.create-cdn.net/siteimages/29/5/2/295268/14/7/4/14743192/350x350.jpg?1487771886","https://media-cdn.tripadvisor.com/media/photo-s/06/15/f6/66/huevos-rancheros.jpg")))))));
 
 		}
 		//Make sure the correct response was set
 		//assertEquals(gson.toJson(sessionObj.get("PreviousSearches")), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5)))));
 		Database db = new Database();
 		if( (db.getPrevSearch(1).size() == 1)){
-			assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5)))));
+			assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5, new ArrayList<>(Arrays.asList("https://i0.wp.com/omgsdfwfood.com/wp-content/uploads/2017/06/omgs-dfw-food-coconut-flour-pancake-test-cake-1.jpg?ssl\u003d1","https://www.metcalfelancaster.com/wp-content/uploads/2018/05/2RW_Rob-Pancake-Test-V2-Edit-Edit.jpg","https://omgsdfwfood.com/wp-content/uploads/2017/06/omgs-dfw-food-coconut-flour-pancake-test-cake-1.jpg","https://www.researchgate.net/profile/Paul_Arciero/publication/283974319/figure/tbl1/AS:670321237577739@1536828445608/Nutritional-analysis-of-pancake-test-meals.png","https://d3cizcpymoenau.cloudfront.net/images/34909/SFS_german_pancakes-119.jpg","https://www.researchgate.net/profile/Paul_Arciero/publication/283974319/figure/tbl1/AS:670321237577739@1536828445608/Nutritional-analysis-of-pancake-test-meals_Q320.jpg","https://i.pinimg.com/originals/a5/72/03/a572039253b8e0569d3352de3ae98ba1.jpg","http://i1079.photobucket.com/albums/w506/inlovewithgreta/Food/Pancake%20Test%203_zps0jcsrjzt.jpg?width\u003d480\u0026height\u003d480\u0026crop\u003d1:1,smart","https://sites.create-cdn.net/siteimages/29/5/2/295268/14/7/4/14743192/350x350.jpg?1487771886","https://media-cdn.tripadvisor.com/media/photo-s/06/15/f6/66/huevos-rancheros.jpg")))))));
 
 		}
 		else if(  (db.getPrevSearch(1).size() == 2)){
-			assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("testSearch", 5, 1), new Searches("pancakeTest", 6, 5)))));
+			assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("testSearch", 5, 1, null), new Searches("pancakeTest", 6, 5, new ArrayList<>(Arrays.asList("https://i0.wp.com/omgsdfwfood.com/wp-content/uploads/2017/06/omgs-dfw-food-coconut-flour-pancake-test-cake-1.jpg?ssl\u003d1","https://www.metcalfelancaster.com/wp-content/uploads/2018/05/2RW_Rob-Pancake-Test-V2-Edit-Edit.jpg","https://omgsdfwfood.com/wp-content/uploads/2017/06/omgs-dfw-food-coconut-flour-pancake-test-cake-1.jpg","https://www.researchgate.net/profile/Paul_Arciero/publication/283974319/figure/tbl1/AS:670321237577739@1536828445608/Nutritional-analysis-of-pancake-test-meals.png","https://d3cizcpymoenau.cloudfront.net/images/34909/SFS_german_pancakes-119.jpg","https://www.researchgate.net/profile/Paul_Arciero/publication/283974319/figure/tbl1/AS:670321237577739@1536828445608/Nutritional-analysis-of-pancake-test-meals_Q320.jpg","https://i.pinimg.com/originals/a5/72/03/a572039253b8e0569d3352de3ae98ba1.jpg","http://i1079.photobucket.com/albums/w506/inlovewithgreta/Food/Pancake%20Test%203_zps0jcsrjzt.jpg?width\u003d480\u0026height\u003d480\u0026crop\u003d1:1,smart","https://sites.create-cdn.net/siteimages/29/5/2/295268/14/7/4/14743192/350x350.jpg?1487771886","https://media-cdn.tripadvisor.com/media/photo-s/06/15/f6/66/huevos-rancheros.jpg")))))));
 
 		}
 		//assertEquals(gson.toJson(db.getPrevSearch(1)), gson.toJson(new ArrayList<>(Arrays.asList(new Searches("pancakeTest", 6, 5)))));

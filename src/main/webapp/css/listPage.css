@@ -6,6 +6,8 @@ body {
 #dropdown {
 	background-color: #FFD27F;
 	width:100%;
+	font-size: 1.5rem;
+	color: white;
 }
 
 .sort_buttons {
@@ -50,11 +52,17 @@ button {
 #back_search{
 	position: absolute;
 	top:calc(21vh + 9rem);
+    margin-top: 10px;
 }
 #back_result{
 	position: absolute;
-	padding: 10px;
+	/*padding: 10px;*/
 	top:calc(21vh + 6rem);
+}
+
+
+input[type=checkbox] {
+    display: inline;
 }
 
 #header{
@@ -71,9 +79,9 @@ button {
 	top: calc(20vh + 5rem);
 	width: 50vw;
 	font-size: 1rem;
-	display:flex;
+	/*display:flex;*/
 	justify-content: space-evenly;
-	flex-direction: column;
+	/*flex-direction: column;*/
 }
 
 .item:nth-child(even), .item:nth-child(even) button {background-color:#6D6D6D;}

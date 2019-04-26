@@ -15,6 +15,12 @@
 	margin-left: 25vw;
 	margin-right: 25vw;
 }
+.prev {
+	overflow: hidden;
+	position: relative;
+	height: 30vh;
+	width: 35vw;
+}
 
 .imageDiv{
 	position:absolute;
@@ -29,9 +35,23 @@
 	align-items:center;
 }
 
+#prev_search {
+	display: flex;
+	/*overflow-x: auto;*/
+	overflow-x: scroll;
+	/*overflow-y: hidden;*/
+	/*width: 100%;*/
+}
+
 #dropdown {
 	background-color: #FFD27F;
 	width: 100%;
+    font-size: 1.5rem;
+    color: white;
+}
+.active {
+	background-color: #111;
+	color: white;
 }
 
 .page-link {
@@ -200,4 +220,12 @@ a:hover {
 	background-color: #FFD27F;
 	text-decoration: none;
 	color: white;
+}
+
+#rest_nav {
+    margin-right: 45%;
+}
+
+#rec_nav {
+    margin-right: 30%;
 }

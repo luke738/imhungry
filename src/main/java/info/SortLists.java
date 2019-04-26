@@ -1,19 +1,12 @@
 package info;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class SortLists {
     // list: Favorites, doNotShow, or toExplore, itemToMove: name of item to move
-    public static ArrayList<Info> moveItemUp(ArrayList<Info> list, String itemToMove){
+    public static List<Info> moveItemUp(List<Info> list, Info i){
         // searches for index of itemToMove in list
-        int targetToMove = -1;
-        for (int i=0; i<list.size(); i++) {
-            if (list.get(i).name.equals(itemToMove)) {
-                targetToMove = i;
-                break;
-            }
-        }
+        int targetToMove = list.indexOf(i);
         // item was not found in list
         if (targetToMove == -1) {
             return list;
@@ -32,15 +25,9 @@ public class SortLists {
     }
 
     // list: Favorites, doNotShow, or toExplore, itemToMove: name of item to move
-    public static ArrayList<Info> moveItemDown(ArrayList<Info> list, String itemToMove) {
+    public static List<Info> moveItemDown(List<Info> list, Info i) {
         // searches for index of itemToMove in list
-        int targetToMove = -1;
-        for (int i=0; i<list.size(); i++) {
-            if (list.get(i).name.equals(itemToMove)) {
-                targetToMove = i;
-                break;
-            }
-        }
+        int targetToMove = list.indexOf(i);
         // item was not found in list
         if (targetToMove == -1) {
             return list;

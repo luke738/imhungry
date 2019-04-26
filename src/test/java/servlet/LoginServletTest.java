@@ -1,12 +1,10 @@
 package servlet;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import info.*;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import security.PasswordHashing;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -18,12 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class LoginServletTest
 {
@@ -40,10 +35,10 @@ public class LoginServletTest
         Map<String, Object> sessionObj = new TreeMap<>();
         sessionObj.put("hello", "Hello testuser");
         sessionObj.put("userID", 1);
-        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1);
+        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>());
         ArrayList<Info> list = new ArrayList<>(Collections.singletonList(info));
-        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url");
-        sessionObj.put("Grocery",new ArrayList<>(list));
+        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url", 0);
+        sessionObj.put("Grocery",new ArrayList<>());
         list.add(rinfo);
         sessionObj.put("Favorites",list);
         sessionObj.put("To Explore",list);
@@ -185,12 +180,12 @@ public class LoginServletTest
         String randName = String.valueOf(new Random().nextInt());
         sessionObj.put("hello", "Hello "+randName);
         sessionObj.put("userID", 2);
-        ArrayList<Info> list = new ArrayList<>();
-        sessionObj.put("Favorites",list);
-        sessionObj.put("To Explore",list);
-        sessionObj.put("Do Not Show",list);
-        sessionObj.put("Grocery",list);
-        sessionObj.put("PreviousSearches",new ArrayList<Searches>());
+        sessionObj.put("Favorites", new ArrayList<>());
+        sessionObj.put("Grocery", new ArrayList<>());
+        sessionObj.put("Do Not Show", new ArrayList<>());
+        sessionObj.put("To Explore", new ArrayList<>());
+        sessionObj.put("PreviousSearches", new ArrayList<>());
+
         when(request.getSession()).thenReturn(session);
         StringWriter stringWriter = new StringWriter();
         when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
@@ -202,6 +197,7 @@ public class LoginServletTest
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable
             {
+                System.out.println(invocationOnMock.getArguments()[0]);
                 assertEquals(sessionObj.get(invocationOnMock.getArguments()[0]), invocationOnMock.getArguments()[1]); //ensures the session state is set correctly
                 return null;
             }
@@ -282,9 +278,9 @@ public class LoginServletTest
         Map<String, Object> sessionObj = new TreeMap<>();
         sessionObj.put("hello", "Hello testuser");
         sessionObj.put("userID", 1);
-        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url");
+        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url", 0);
         ArrayList<Info> list = new ArrayList<>(Collections.singletonList(rinfo));
-        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1);
+        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>());
         list.add(info);
         sessionObj.put("Favorites",list);
         sessionObj.put("To Explore",list);

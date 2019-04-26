@@ -23,7 +23,7 @@ public class RecipeInfoTest {
 		instr.add("put into water");
 		instr.add("wait for 25 minutes");
 		String imageURL = "github.com";
-		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL);
+		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL, 0);
 		assertEquals(name,ri.name);
 		assertEquals(rating,ri.rating);
 		assertEquals(recipeID, ri.recipeID);
@@ -49,9 +49,9 @@ public class RecipeInfoTest {
 		instr.add("put into water");
 		instr.add("wait for 25 minutes");
 		String imageURL = "github.com";
-		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL);
+		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL, 0);
 		prepTime = 51;
-		RecipeInfo ri2 = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL);
+		RecipeInfo ri2 = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL, 0);
 		assertEquals("value comparison error",-21,ri.compareTo(ri2));
 	}
 	
@@ -70,12 +70,12 @@ public class RecipeInfoTest {
 		instr.add("put into water");
 		instr.add("wait for 25 minutes");
 		String imageURL = "github.com";
-		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL);
-		RecipeInfo ri2 = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL);
+		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL, 0);
+		RecipeInfo ri2 = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL, 0);
 		assertEquals(true,ri.equals(ri2));
 		ArrayList<String> ingre1 = new ArrayList<String>();
 		ArrayList<String> instr2 = new ArrayList<String>();
-		RecipeInfo ri3 = new RecipeInfo("",0,recipeID,0,0,ingre1,instr2,"");
+		RecipeInfo ri3 = new RecipeInfo("",0,recipeID,0,0,ingre1,instr2,"", 0);
 		assertEquals("Equal() comparison error", true, ri.equals(ri3));
 		ri3.recipeID = ri.recipeID-1;
 		assertEquals("Equal() comparison error", false, ri.equals(ri3));
@@ -94,7 +94,7 @@ public class RecipeInfoTest {
 		instr.add("put into water");
 		instr.add("wait for 25 minutes");
 		String imageURL = "github.com";
-		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL);
+		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL, 0);
 		assertEquals(true,ri.equals(ri));
 	}
 	@Test
@@ -113,7 +113,7 @@ public class RecipeInfoTest {
 		instr.add("wait for 25 minutes");
 		String imageURL = "github.com";
 		Object newone = new Object();
-		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL);
+		RecipeInfo ri = new RecipeInfo(name,rating,recipeID,prepTime,cookTime,ingre,instr,imageURL, 0);
 		assertEquals(false,ri.equals(newone));
 	}
 	

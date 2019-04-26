@@ -42,7 +42,7 @@ public class PrevSearchServletTest {
         sessionObj.put("hello", "Hello testuser");
         sessionObj.put("userID", 1);
         List<Searches> list = new ArrayList<>();
-        list.add(new Searches("testSearch", 1, 1));
+        list.add(new Searches("testSearch", 1, 1, null));
         sessionObj.put("PreviousSearches", list);
         when(request.getSession()).thenReturn(session);
         StringWriter stringWriter = new StringWriter();

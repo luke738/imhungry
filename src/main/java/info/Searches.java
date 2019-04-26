@@ -1,14 +1,17 @@
 package info;
+import java.util.*;
 
 public class Searches {
     public String searchTerm;
     public int specifiedRadius;
     public int expectedResults;
+    public ArrayList<String> urls;
 
-    public Searches(String st, int sr, int er){
+    public Searches(String st, int sr, int er, ArrayList<String> url){
         searchTerm = st;
         specifiedRadius = sr;
         expectedResults = er;
+        urls = url;
     }
 
     @Override

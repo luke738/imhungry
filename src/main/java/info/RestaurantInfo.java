@@ -11,7 +11,7 @@ public class RestaurantInfo extends Info implements Comparable<RestaurantInfo> {
 	public String url;
 
 	public RestaurantInfo(String name, int rating, String placeID, String address, int price, String driveTimeText,
-						  int driveTimeValue, String phone, String url) {
+						  int driveTimeValue, String phone, String url, int pos) {
 		this.name = name;
 		this.rating = rating;
 		this.placeID = placeID;
@@ -28,7 +28,7 @@ public class RestaurantInfo extends Info implements Comparable<RestaurantInfo> {
 	}
 	
 	public RestaurantInfo(String name, int rating, String placeID, String address, int price, String driveTimeText,
-			int driveTimeValue, String phone, String url, int dbid) {
+						  int driveTimeValue, String phone, String url, int dbid, int pos) {
 		this.name = name;
 		this.rating = rating;
 		this.placeID = placeID;
@@ -43,6 +43,7 @@ public class RestaurantInfo extends Info implements Comparable<RestaurantInfo> {
 		this.phone = phone;
 		this.url = url;
 		this.dbid = dbid;
+		this.pos = pos;
 	}
 	
 	//used for sorting in ascending order based on driveTimeValue.

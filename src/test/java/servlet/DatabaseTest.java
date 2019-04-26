@@ -65,13 +65,15 @@ public class DatabaseTest
     public void getListsTest() {
         Database db = new Database();
         //recipe test
-        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1);
+        int pos = db.findHighestPos("Favorites", 1);
+        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", pos);
         ArrayList<Info> list = new ArrayList<>(Collections.singletonList(info));
         db.updateLists(1, true,"Favorites",  info);
         db.updateLists(1, true,"To Explore",  info);
         db.updateLists(1, true,"Do Not Show",  info);
         //restaurant test
-        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url");
+        pos = db.findHighestPos("favorites", 1);
+        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url", pos);
         list.addAll(Collections.singletonList(rinfo));
         db.updateLists(1, true,"Favorites",  rinfo);
         db.updateLists(1, true,"To Explore",  rinfo);
@@ -84,23 +86,13 @@ public class DatabaseTest
         //assertEquals(list, db.getLists(1, "Do Not Show"));
 
     }
-    @Test
-    //retrieve lists
-    public void getGroceryListTest() {
-        Database db = new Database();
-        //recipe test
-        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1);
-        ArrayList<Info> list = new ArrayList<>(Collections.singletonList(info));
-        db.updateLists(1, true,"Grocery",  info);
-
-    }
 
     @Test
     //update lists
     public void updateListsTest() {
         Database db = new Database();
         Gson gson = new Gson();
-        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",1);
+        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",1, new ArrayList<Boolean>(Arrays.asList(false, false)));
         //ArrayList<Info> list = new ArrayList<>(Collections.singletonList(info));
         //removing recipes from the list
         Boolean favUpdate = db.updateLists(1, false,"Favorites",  info);
@@ -109,8 +101,8 @@ public class DatabaseTest
         System.out.println("101: " + expUpdate);
         Boolean dnsUpdate = db.updateLists(1, false,"Do Not Show", info);
         System.out.println("103: " + dnsUpdate);
-        Boolean glUpdate = db.updateLists(1, false,"Grocery", info);
-        System.out.println("105: " + glUpdate);
+        Boolean glUpdate2 = db.updateLists(1, true,"Grocery", info);
+        System.out.println("114: " + glUpdate2);
         //adding recipes back to the list
         Boolean favUpdate2 = db.updateLists(1, true,"Favorites",  info);
         System.out.println("108: " + favUpdate2);
@@ -118,10 +110,8 @@ public class DatabaseTest
         System.out.println("110: " + expUpdate2);
         Boolean dnsUpdate2 = db.updateLists(1, true,"Do Not Show", info);
         System.out.println("112: " + dnsUpdate2);
-        Boolean glUpdate2 = db.updateLists(1, true,"Grocery", info);
-        System.out.println("114: " + glUpdate2);
-        assertTrue(favUpdate && expUpdate && dnsUpdate && glUpdate && favUpdate2 && expUpdate2 && dnsUpdate2 && glUpdate2);
-        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url");
+        assertTrue(favUpdate && expUpdate && dnsUpdate && favUpdate2 && expUpdate2 && dnsUpdate2 && glUpdate2);
+        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url", 0);
         //removing restaurants from the lists
         Boolean rfavUpdate = db.updateLists(1, false,"Favorites",  rinfo);
         Boolean rexpUpdate = db.updateLists(1, false,"To Explore", rinfo);
@@ -136,31 +126,23 @@ public class DatabaseTest
 
     @Test
     //update lists
-    public void getPosTest() {
-        Database db = new Database();
-        Gson gson = new Gson();
-        RecipeInfo infos = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",1);
-        Boolean favUpdate = db.updateLists(1, true,"Favorites",  infos);
-        RecipeInfo info = new RecipeInfo("testing", 8, 56565, 10, 10, new ArrayList<>(Arrays.asList("ingredient1", "ingredient2")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",2);
-        Boolean favUpdates = db.updateLists(1, true,"Favorites",  info);
-        // userID, Listname, recipe BOolean, dbid
-        assertEquals(1, db.getPos(1, "Favorites", true, 1));
-    }
-
-    @Test
-    //update lists
     public void updateListOrderTest() {
         Database db = new Database();
         Gson gson = new Gson();
-        RecipeInfo infos = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",1);
-        Boolean favUpdate = db.updateLists(1, true,"Favorites",  infos);
-        RecipeInfo info = new RecipeInfo("testing", 8, 56565, 10, 10, new ArrayList<>(Arrays.asList("ingredient1", "ingredient2")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",2);
+        RecipeInfo info = new RecipeInfo("testing", 8, 56565, 10, 10, new ArrayList<>(Arrays.asList("ingredient1", "ingredient2")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url",2, new ArrayList<Boolean>());
         Boolean favUpdates = db.updateLists(1, true,"Favorites",  info);
         //userID, listname, boolean (Up=true, down=false), pos
+        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url", 0);
         db.changeOrder(1, "Favorites", true, 2);
+        db.changeOrder(1, "To Explore", true, 1);
+        db.changeOrder(1, "To Explore", false, 0);
+        db.changeOrder(1, "Do Not Show", true, 1);
+        db.changeOrder(1, "Do Not Show", false, 0);
         ArrayList<Info> favor = db.getLists(1, "Favorites");
-        assertEquals("testrecipe", favor.get(2).name);
         assertEquals("testing", favor.get(1).name);
+        assertEquals("testRest", favor.get(2).name);
+        db.updateLists(1, false, "Favorites", info);
+
     }
 
     @Test
@@ -183,7 +165,7 @@ public class DatabaseTest
     //add previous Searches
     public void addPrevSearchTest() {
         Database db = new Database();
-        db.addPrevSearch(1, "testSearch", 5, 1);
+        db.addPrevSearch(1, "testSearch", 5, 1, null);
         ArrayList<Searches> prevT = db.getPrevSearch(1);
         boolean isPrevStored = false;
         for(int i = 0; i < prevT.size(); i++){
@@ -192,7 +174,6 @@ public class DatabaseTest
             }
         }
         assertTrue(isPrevStored);
-        db.addPrevSearch(1, "testSearch", 5, 1);
     }
 
     @Test
@@ -206,9 +187,9 @@ public class DatabaseTest
     //Remove a nonexistent recipe and restaurant
     public void removeFakeRecipeRestaurant() {
         Database db = new Database();
-        RecipeInfo info = new RecipeInfo("testrecipe", 5, 329853468, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1);
+        RecipeInfo info = new RecipeInfo("testrecipe", 5, 329853468, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>());
         assertTrue(!db.updateLists(1, false, "Favorites", info));
-        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "notaplaceID", "adress" , 8, "drivetime", 8, "phone", "url");
+        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "notaplaceID", "adress" , 8, "drivetime", 8, "phone", "url", 0);
         assertTrue(!db.updateLists(1, false, "Favorites", rinfo));
     }
 
@@ -216,9 +197,9 @@ public class DatabaseTest
     //Remove a recipe and restaurant not in a users list
     public void removeRecipeRestaurantFromWrongUser() {
         Database db = new Database();
-        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1);
+        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>());
         assertTrue(!db.updateLists(3, false, "Favorites", info));
-        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url");
+        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url", 0);
         assertTrue(!db.updateLists(3, false, "Favorites", rinfo));
     }
 
@@ -226,14 +207,16 @@ public class DatabaseTest
     //Add a new, random, recipe and restaurant
     public void addBrandNewRecipeRestaurant() {
         Database db = new Database();
-        RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1);
-        RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url");
+        RecipeInfo info = new RecipeInfo("testrecipe2", 5, 12345678, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, 3);
+        RestaurantInfo rinfo = new RestaurantInfo("testRest2", 5, "placeIDsss", "adress" , 8, "drivetime", 8, "phone", "url", 3);
         int randID = new Random().nextInt();
         info.recipeID = randID;
         rinfo.placeID = String.valueOf(randID);
         assertTrue(db.updateLists(1, true, "Favorites", info));
         assertTrue(db.updateLists(1, true, "Favorites", rinfo));
         db.updateLists(1, false, "Favorites", info);
+        System.out.println(((ArrayList<Info>)db.getLists(1, "Favorites")).size());
         db.updateLists(1, false, "Favorites", rinfo);
+        System.out.println(((ArrayList<Info>)db.getLists(1, "Favorites")).size());
     }
 }

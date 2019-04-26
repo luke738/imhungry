@@ -22,7 +22,6 @@ import com.google.gson.JsonParser;
 import info.*;
 
 import java.net.*;
-import java.io.Reader.*;
 import java.util.*;
 
 /**
@@ -84,14 +83,6 @@ public class SearchServlet extends HttpServlet {
 		String userSearch = request.getParameter("search");
 		int numResults = Integer.parseInt(request.getParameter("number"));
 		int radius = Integer.parseInt(request.getParameter("radius"));
-		ArrayList<Searches> prevSearches = ((ArrayList<Searches>)session.getAttribute("PreviousSearches"));
-		Searches search = new Searches(userSearch, radius, numResults);
-		if(!prevSearches.contains(search))
-		{
-			Database db = new Database();
-			db.addPrevSearch((Integer)session.getAttribute("userID"), userSearch, radius, numResults);
-			prevSearches.add(search);
-		}
 
 		//Set up variables to store return value
 		boolean success = true;
@@ -101,6 +92,14 @@ public class SearchServlet extends HttpServlet {
 		ArrayList<RecipeInfo> recipeList = recipeSearch(userSearch, numResults, doNotShowList, favoritesList);
 		ArrayList<RestaurantInfo> restaurantList = restaurantSearch(userSearch, numResults, radius, doNotShowList, favoritesList);
 		ArrayList<String> urlList = getImageURLs(userSearch);
+		ArrayList<Searches> prevSearches = ((ArrayList<Searches>)session.getAttribute("PreviousSearches"));
+		Searches search = new Searches(userSearch, radius, numResults, urlList);
+		if(!prevSearches.contains(search))
+		{
+			Database db = new Database();
+			db.addPrevSearch((Integer)session.getAttribute("userID"), userSearch, radius, numResults, urlList);
+			prevSearches.add(search);
+		}
 
 		//return content
 		if (success)
@@ -160,7 +159,7 @@ public class SearchServlet extends HttpServlet {
 			//initialize current RecipeInfo object that will be added. Detail information requires another
 			//request based on the recipe's unique recipe ID
 			RecipeInfo recipe = new RecipeInfo(currentRecipe.get("title").getAsString(), 0,
-					currentRecipe.get("id").getAsInt(), 30, 30, new ArrayList<String>(), new ArrayList<String>(), "");
+					currentRecipe.get("id").getAsInt(), 30, 30, new ArrayList<String>(), new ArrayList<String>(), "", 0);
 
 			//use recipe ID to make another request for detail information
 			String recipeDetailURL = SPOONACULAR_RECIPE_API_PREFIX + "/" + recipe.recipeID +"/information";
@@ -188,6 +187,7 @@ public class SearchServlet extends HttpServlet {
 			for(int j = 0; j < ingredientsJSON.size(); j++) {
 				recipe.ingredients.add("- " + ingredientsJSON.get(j).getAsJsonObject()
 						.get("name").getAsString());
+				recipe.checked.add(false);
 			}
 
 			//Most recipe data include instructions divided into steps. When the field "analyzedInstructions"
@@ -255,7 +255,7 @@ public class SearchServlet extends HttpServlet {
 			} catch(Exception e) {}
 			restaurants.add(new RestaurantInfo(currentPlace.get("name").getAsString(),
 					(int)currentPlace.get("rating").getAsDouble(), currentPlace.get("place_id").getAsString(),
-					currentPlace.get("vicinity").getAsString(), priceLevel, "", 0, "No phone number available", "No website available"));
+					currentPlace.get("vicinity").getAsString(), priceLevel, "", 0, "No phone number available", "No website available", 0));
 		}
 
 		//remove all items in Do Not Show List that appear in the result

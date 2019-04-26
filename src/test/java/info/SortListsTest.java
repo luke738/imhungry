@@ -15,24 +15,26 @@ public class SortListsTest {
         actual = new ArrayList<Info>();
     }
 
-    // tests sorting alphabetically
+    // tests sorting up
     @Test
     public void moveItemUpTest() {
-        actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1"));
-        actual.add(new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1"));
+        Info rest = new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1", 0);
+        Info recip = new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1", 1);
+        actual.add(rest);
+        actual.add(recip);
 
         // checks "if" statement (item is not found)
-        actual = SortLists.moveItemUp((ArrayList<Info>) actual, "notInList");
+        actual = SortLists.moveItemUp((ArrayList<Info>) actual, new RecipeInfo("fake",0,0,0,0,null,null,"",0));
         assertEquals(actual.get(0).name, "McDonald's");
         assertEquals(actual.get(1).name, "Chicken Marsala");
 
         // checks "else if" statement (shouldn't move anything)
-        actual = SortLists.moveItemUp((ArrayList<Info>) actual, "McDonald's");
+        actual = SortLists.moveItemUp((ArrayList<Info>) actual, rest);
         assertEquals(actual.get(0).name, "McDonald's");
         assertEquals(actual.get(1).name, "Chicken Marsala");
 
         // checks "else" statement (moves item up)
-        actual = SortLists.moveItemUp((ArrayList<Info>) actual, "Chicken Marsala");
+        actual = SortLists.moveItemUp((ArrayList<Info>) actual, recip);
         assertEquals(actual.get(0).name, "Chicken Marsala");
         assertEquals(actual.get(1).name, "McDonald's");
     }
@@ -40,21 +42,23 @@ public class SortListsTest {
     // tests sorting by distance
     @Test
     public void moveItemDownTest() {
-        actual.add(new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1"));
-        actual.add(new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1"));
+        Info rest = new RestaurantInfo("McDonald's", 1, "1", "1", 1, "1", 1, "1", "1", 0);
+        Info recip = new RecipeInfo("Chicken Marsala", 1, 1, 1, 1, null, null, "1", 1);
+        actual.add(rest);
+        actual.add(recip);
 
         // checks "if" statement (item is not found)
-        actual = SortLists.moveItemDown((ArrayList<Info>) actual, "notInList");
+        actual = SortLists.moveItemDown((ArrayList<Info>) actual, new RecipeInfo("fake",0,0,0,0,null,null,"",0));
         assertEquals(actual.get(0).name, "McDonald's");
         assertEquals(actual.get(1).name, "Chicken Marsala");
 
         // checks "else if" statement (shouldn't move anything)
-        actual = SortLists.moveItemDown((ArrayList<Info>) actual, "Chicken Marsala");
+        actual = SortLists.moveItemDown((ArrayList<Info>) actual, recip);
         assertEquals(actual.get(0).name, "McDonald's");
         assertEquals(actual.get(1).name, "Chicken Marsala");
 
-        // checks "else" statement (moves item up)
-        actual = SortLists.moveItemDown((ArrayList<Info>) actual, "McDonald's");
+        // checks "else" statement (moves item down)
+        actual = SortLists.moveItemDown((ArrayList<Info>) actual, rest);
         assertEquals(actual.get(0).name, "Chicken Marsala");
         assertEquals(actual.get(1).name, "McDonald's");
     }
