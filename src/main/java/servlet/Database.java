@@ -408,12 +408,7 @@ public class Database
                     ps.setInt(3, highestPos + 1);
                 }
                 else{
-                    int j = ((RecipeInfo) i).ingredients.size();
-                    ArrayList<Boolean> checked = new ArrayList<>();
-                    for(int m = 0; m < j; m++){
-                        checked.add(false);
-                    }
-                    ps.setString(3, new Gson().toJson(checked));
+                    ps.setString(3, new Gson().toJson(((RecipeInfo) i).checked));
                 }
                 ps.executeUpdate();
                 return true;
@@ -566,12 +561,14 @@ public class Database
                 rs = ps.executeQuery();
                 int pos = -111;
                 //Did not exist in the specified Recipe list
-                if(!listname.equals("Grocery") && rs.next()) {
-                    pos = rs.getInt("pos");
-                }
-                else{
-                    System.out.println("Cant delete what you dont have - recipe");
-                    return false;
+                if(!listname.equals("Grocery")){
+                    if (rs.next()) {
+                        pos = rs.getInt("pos");
+                    }
+                    else {
+                        System.out.println("Cant delete what you dont have - recipe");
+                        return false;
+                    }
                 }
                 if (listname.equals("Favorites")) {
                     //checking that the specified user has the specified recipe in the Favorites list
@@ -584,7 +581,7 @@ public class Database
                     ps = conn.prepareStatement("DELETE FROM recipetoexplore WHERE rID = ? AND userID = ?");
                 } else if (listname.equals("Grocery")) {
                     //checking that the specified user has the specified recipe in the Grocery list
-                    ps = conn.prepareStatement("DELETE FROM groceries WHERE grocID = ? AND userID = ?");
+                    ps = conn.prepareStatement("DELETE FROM groceries WHERE recipeID = ? AND userID = ?");
 
                 }
                 ps.setInt(1, dbids);
