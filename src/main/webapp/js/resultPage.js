@@ -45,49 +45,80 @@ var rec_list = results[1];
 var rest_list = results[0];
 var rec_pageList = new Array();
 var rest_pageList = new Array();
-var currentPage = 1;
 var numberPerPage = 5;
 var numberOfPages = 0;
+var numberOfRecPages = 0;
+var numberOfRestPages = 0;
 
 //creates numbered pg buttons according to the max of either recipe or restaurant results
 function makeList() {
     numberOfRecPages = Math.ceil(rec_list.length / numberPerPage);
     numberOfRestPages = Math.ceil(rest_list.length / numberPerPage);
-
-    //create numbered pg buttons - restaurant
-    for (var i = 1; i <= numberOfRestPages; i++) {
-        var rest_input = document.createElement("input");
-        rest_input.value = i;
-        rest_input.class = "page-link";
-        rest_input.type = "button";
-        rest_input.id = "page"+i;
-        rest_input.addEventListener("click", nextPage);
-        document.getElementById("rest_nav").appendChild(rest_input);
+    
+    //show up to first five buttons
+    if (numberOfRestPages >= 5) {
+        createNumberedRestButton(1, 5);
+    } else {
+        createNumberedRestButton(1, numberOfRestPages);
     }
-
-    //create numbered pg buttons - recipe
-    for (var i = 1; i <= numberOfRecPages; i++) {
-        var rec_input = document.createElement("input");
-        rec_input.value = i;
-        rec_input.class = "page-link";
-        rec_input.type = "button";
-        rec_input.id = "page"+i;
-        rec_input.addEventListener("click", nextPage);
-        document.getElementById("rec_nav").appendChild(rec_input);
+    if (numberOfRecPages >= 5) {
+        createNumberedRecButton(1, 5);
+    } else {
+        createNumberedRecButton(1, numberOfRestPages);
     }
 }
 
-function nextPage() {
-    currentPage += 1;
-    loadList();
-}
+//removes items on pg and replaces with newly generated items according to clicked pg value for restaurants
+function loadRestList() {
+    //clear buttons and regenerate them for each page so it doesnt build
+    var rest_btn = document.getElementById("rest_nav");
+    while (rest_btn.firstChild) {
+        rest_btn.removeChild(rest_btn.firstChild);
+    }
 
-//removes items on pg and replaces with newly generated items according to clicked pg value
-function loadList() {
     //remove previously generated restaurant items on pg so results dont build on each other
     var rest_node = document.getElementById("column1");
     while (rest_node.childNodes.length > 2) {
         rest_node.removeChild(rest_node.lastChild);
+    }
+
+    //begin = which index in results array to display for specific page.
+    //when (value is null) displays first page elements [0 - numberPerPage]
+    //end = which index in results array to stop at
+    var rest_begin = 0;
+    if (event.srcElement.value == null) {
+        rest_begin = 0;
+    } else {
+        rest_begin = ((event.srcElement.value - 1) * numberPerPage);
+    }
+    var rest_end = rest_begin + numberPerPage;
+
+    //if clicked btn value is not undefined (undefined = no button has been clicked yet- displays just numbered btns)
+    if (event.srcElement.value != undefined) {
+
+        createNumberedRestButton(event.srcElement.value, numberOfRestPages);
+
+        //create prev buttons if not on first page for restaurant column
+        if (event.srcElement.value != 1) { // show prev
+            createRestButton("Prev");
+        }
+
+        //create next buttons if not on last page for restaurant column
+        if (event.srcElement.value != numberOfRestPages) { //show
+            createRestButton("Next");
+        }
+    }
+
+    drawRestList(rest_begin, rest_end);
+}
+
+//removes items on pg and replaces with newly generated items according to clicked pg value for recipes
+function loadRecList() {
+    console.log("in load Rec list ");
+    //remove previously generated recipe items from pg
+    var rec_btn = document.getElementById("rec_nav");
+    while (rec_btn.firstChild) {
+        rec_btn.removeChild(rec_btn.firstChild);
     }
 
     //remove previously generated recipe items from pg
@@ -97,21 +128,105 @@ function loadList() {
     }
 
     //begin = which index in results array to display for specific page.
-    //when (value is null) displays elements [0 - numberPerPage]
+    //when (value is null) displays first page elements [0 - numberPerPage]
     //end = which index in results array to stop at
-    var begin = 0;
+    var rec_begin = 0;
     if (event.srcElement.value == null) {
-        begin = (0);
+        rec_begin = 0;
     } else {
-        begin = ((event.srcElement.value - 1) * numberPerPage);
+        rec_begin = ((event.srcElement.value - 1) * numberPerPage);
     }
-    var end = begin + numberPerPage;
+    var rec_end = rec_begin + numberPerPage;
 
-    drawList(begin,end);
+    if (numberOfRecPages > 5) {
+        console.log("if > 5" + numberOfRecPages);
+
+        if (event.srcElement.value > 2 && (event.srcElement.value < numberOfRecPages - 2)) {
+            createNumberedRecButton(event.srcElement.value - 2, event.srcElement.value + 2);
+        }
+        //if value of button is null, then its the first pg bc value not set yet, so dont show prev button
+        if (event.srcElement.value != 1) { // on all but first pg, show prev button
+            createRecButton("Prev");
+        }
+        //create next buttons if not on last page for recipe column
+        if (event.srcElement.value != numberOfRecPages) { //on all but last pg, show next button
+            createRecButton("Next");
+        }
+    } else {
+        console.log("else");
+        createNumberedRecButton(1, numberOfRecPages);
+        //prev next
+        //if value of button is null, then its the first pg bc value not set yet, so dont show prev button
+        if (event.srcElement.value != 1) { // on all but first pg, show prev button
+            createRecButton("Prev");
+        }
+        //create next buttons if not on last page for recipe column
+        if (event.srcElement.value != numberOfRecPages) { //on all but last pg, show next button
+            createRecButton("Next");
+        }
+    }
+    drawRecList(rec_begin, rec_end);
+}
+
+//create numbered pg buttons - restaurant
+function createNumberedRestButton(start, end) {
+    for (var i = start; i <= end; i++) {
+        var rest_input = document.createElement("input");
+        rest_input.value = i;
+        rest_input.class = "page-link";
+        rest_input.type = "button";
+        rest_input.id = "rest_page";
+        rest_input.addEventListener("click", loadRestList);
+        document.getElementById("rest_nav").appendChild(rest_input);
+    }
+}
+
+//create numbered pg buttons - recipe
+function createNumberedRecButton(start, end) {
+    for (var i = start; i <= end; i++) {
+        var rec_input = document.createElement("input");
+        rec_input.value = i;
+        rec_input.class = "page-link";
+        rec_input.type = "button";
+        rec_input.id = "rec_page";
+        rec_input.addEventListener("click", loadRecList);
+        document.getElementById("rec_nav").appendChild(rec_input);
+    }
+}
+
+//creates a button under restaurant column
+//insert before the first pg button
+function createRestButton(value) {
+    var input = document.createElement("input");
+    input.class = "page-link";
+    input.type = "button";
+    input.value = value;
+    input.id = "rest_page";
+    input.addEventListener("click", loadRestList);
+    if (value == "prev") {
+        document.getElementById("rest_nav").insertBefore(input,document.getElementById("page1"));
+    } else if (value == "next") {
+        document.getElementById("rec_nav").appendChild(input);
+    }
+}
+
+//creates a button under recipe column
+function createRecButton(value) {
+    var input = document.createElement("input");
+    input.class = "page-link";
+    input.type = "button";
+    input.value = value;
+    input.id = "rec_page";
+    input.addEventListener("click", loadRecList);
+    if (value == "prev") {
+        document.getElementById("rec_nav").insertBefore(input,document.getElementById("page1"));
+    } else if (value == "next") {
+        document.getElementById("rec_nav").appendChild(input);
+    }
 }
 
 //generates the list of item results to show
-function drawList(begin,end) {
+function drawRestList(begin,end) {
 
     var col1 = document.getElementById("column1");
     for(let i = begin; i < end; i++) {
@@ -164,7 +279,9 @@ function drawList(begin,end) {
             col1.appendChild(res);
         }
     }
+}
 
+function drawRecList(begin,end) {
     //Same process as above, but for recipe results
     var col2 = document.getElementById("column2");
     for (var i = begin; i < end; i++) {
@@ -212,11 +329,11 @@ function drawList(begin,end) {
 
 function load() {
     makeList();
-    loadList();
+    loadRecList();
+    loadRestList();
 }
 
 window.onload = load;
-
 
 //Assemble the collage
 var collage = document.getElementById("collage");

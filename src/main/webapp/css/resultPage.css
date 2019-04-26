@@ -32,6 +32,8 @@
 #dropdown {
 	background-color: #FFD27F;
 	width: 100%;
+    font-size: 1.5rem;
+    color: white;
 }
 
 .page-link {
@@ -200,4 +202,12 @@ a:hover {
 	background-color: #FFD27F;
 	text-decoration: none;
 	color: white;
+}
+
+#rest_nav {
+    margin-right: 45%;
+}
+
+#rec_nav {
+    margin-right: 30%;
 }
