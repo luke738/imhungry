@@ -187,6 +187,7 @@ public class SearchServlet extends HttpServlet {
 			for(int j = 0; j < ingredientsJSON.size(); j++) {
 				recipe.ingredients.add("- " + ingredientsJSON.get(j).getAsJsonObject()
 						.get("name").getAsString());
+				recipe.checked.add(false);
 			}
 
 			//Most recipe data include instructions divided into steps. When the field "analyzedInstructions"

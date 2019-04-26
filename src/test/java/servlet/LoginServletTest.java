@@ -38,7 +38,7 @@ public class LoginServletTest
         RecipeInfo info = new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>());
         ArrayList<Info> list = new ArrayList<>(Collections.singletonList(info));
         RestaurantInfo rinfo = new RestaurantInfo("testRest", 5, "placeID", "adress" , 8, "drivetime", 8, "phone", "url", 0);
-        sessionObj.put("Grocery",new ArrayList<>(list));
+        sessionObj.put("Grocery",new ArrayList<>());
         list.add(rinfo);
         sessionObj.put("Favorites",list);
         sessionObj.put("To Explore",list);
@@ -180,6 +180,11 @@ public class LoginServletTest
         String randName = String.valueOf(new Random().nextInt());
         sessionObj.put("hello", "Hello "+randName);
         sessionObj.put("userID", 2);
+        sessionObj.put("Favorites", new ArrayList<>());
+        sessionObj.put("Grocery", new ArrayList<>());
+        sessionObj.put("Do Not Show", new ArrayList<>());
+        sessionObj.put("To Explore", new ArrayList<>());
+        sessionObj.put("PreviousSearches", new ArrayList<>());
 
         when(request.getSession()).thenReturn(session);
         StringWriter stringWriter = new StringWriter();
@@ -192,6 +197,7 @@ public class LoginServletTest
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable
             {
+                System.out.println(invocationOnMock.getArguments()[0]);
                 assertEquals(sessionObj.get(invocationOnMock.getArguments()[0]), invocationOnMock.getArguments()[1]); //ensures the session state is set correctly
                 return null;
             }

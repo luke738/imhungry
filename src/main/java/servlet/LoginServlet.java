@@ -86,7 +86,6 @@ public class LoginServlet extends HttpServlet
                         String salt = PasswordHashing.getRandomSalt();
                         db.createUser(username, PasswordHashing.hashPassword(password, salt), salt);
 
-                        //REFACTOR!!!!!! make it empty arraylists because no need to call to database when we know it is empty
                         int userIDstore = db.getUserID(username);
                         session.setAttribute("hello", "Hello " + username);
                         session.setAttribute("userID", userIDstore);

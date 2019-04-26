@@ -40,6 +40,28 @@ function reorderResults(listName, order, pos){
     var response = JSON.parse(xhttp.response);
 }
 
+//Requests reordering of recipes/restaurants by
+function groceryCheckbox(item, check){
+    // note: "item" only used for order (stored in item.name), must be fully included for parsing purposes in ListServlet.java doPost() method
+    var fakeitem = {};
+    fakeitem.recipeID = 0;
+    fakeitem.prepTime = 0;
+    fakeitem.cookTime = 0;
+    fakeitem.ingredients = [""];
+    fakeitem.instructions = [""];
+    fakeitem.imageURL = "";
+    fakeitem.name = item;
+    fakeitem.pos = 0;
+    var checked = "checkGrocery";
+    if(check) checked = "uncheckGrocery";
+    var request = {header: checked, body: JSON.stringify({header: listName, body: JSON.stringify(fakeitem)})};
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/Lists", false);
+    console.log(request);
+    xhttp.send(JSON.stringify(request));
+    window.location.reload(true);
+}
+
 //Invalidates server-side session
 function resetLists() { //Debugging function
     var request = {header: "resetLists", body: {header: "null", body: "null"}};

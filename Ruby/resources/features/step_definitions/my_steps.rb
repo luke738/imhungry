@@ -194,9 +194,13 @@ And(/^click on dropdown$/) do
 end
 
 And(/^I should see a "([^"]*)" pagination button$/) do |arg|
- find_by_id(arg)
+ page.all(:button, arg, minimum: 1)
+end
+
+And(/^I should see a "([^"]*)" button with value$/) do |arg|
+ page.all(:button, arg, maximum: 2)
 end
 
 And(/^I select "([^"]*)" unchecked$/) do |arg|
-  expect(page).to have_unchecked_field('#'+arg)
+  page.all(:unchecked_field, arg, wait:20)
 end

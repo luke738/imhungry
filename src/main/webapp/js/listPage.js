@@ -14,7 +14,11 @@ var col1 = document.getElementById("container");
 if(list == null || list.length === 0) col1.innerHTML = "This list is empty. Add something to see it here!" ;
 else if(listName === "Grocery") {
     for (var i = 0; i < list.length; i++) {
-        col1.innerHTML += "<input style='display: inline;' type='checkbox'>" + (i+1) + ". " + list[i] + "<br>";
+        let checked = list[i][0] === "C";
+        let check = "";
+        if(checked) check = "checked";
+        console.log(check);
+        col1.innerHTML +=    "<input style='display: inline;' onchange='groceryCheckbox(\""+list[i].substring(1, list[i].length) + "\"," + checked + ")' type='checkbox' " + check + " >" + (i+1) + ". " + list[i].substring(1, list[i].length) + "<br>";
 
     }
 }
