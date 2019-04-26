@@ -42,7 +42,7 @@ public class ListServletTest {
 		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1", 2));
 		sessionObj.put("Favorites", actual);
 		sessionObj.put("hello", "Hello testuser");
-		sessionObj.put("userID", 1);
+		sessionObj.put("userID", 3);
 
 		when(request.getSession()).thenReturn(session);
 		StringWriter stringWriter = new StringWriter();
@@ -97,7 +97,7 @@ public class ListServletTest {
 		actual.add(new RestaurantInfo("Burger King", 5, "1", "1", 1, "1", 1, "1", "1", 2));
 		sessionObj.put("Favorites", actual);
 		sessionObj.put("hello", "Hello testuser");
-		sessionObj.put("userID", 1);
+		sessionObj.put("userID", 3);
 
 		when(request.getSession()).thenReturn(session);
 		StringWriter stringWriter = new StringWriter();
@@ -145,7 +145,7 @@ public class ListServletTest {
 		Map<String, Object> sessionObj = new TreeMap<>();
 		// create a test list
 		List<Info> actual = new ArrayList<Info>();
-		actual.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>(Arrays.asList(false,false))));
+		actual.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<String>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>(Arrays.asList(false,false))));
 		sessionObj.put("Grocery", actual);
 		sessionObj.put("hello", "Hello testuser");
 		sessionObj.put("userID", 1);
@@ -178,7 +178,7 @@ public class ListServletTest {
 		doPostMethod.invoke(listServlet, request, response);
 
 		//Make sure the correct response was set
-		assertEquals(stringWriter.toString(), (new Gson().toJson(new Message("Checked"))+System.lineSeparator()));
+		assertEquals(stringWriter.toString(), new Gson().toJson(new Message("Checked"))+System.lineSeparator());
 		assertTrue(((RecipeInfo)((ArrayList<Info>)sessionObj.get("Grocery")).get(0)).checked.get(0));
 
 	}@Test
@@ -244,7 +244,7 @@ public class ListServletTest {
 		sessionObj.put("hello", "Hello testuser");
 		sessionObj.put("userID", 1);
 		List<Info> list = new ArrayList<>();
-		list.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>()));
+		list.add(new RecipeInfo("testrecipe", 5, 12345, 10, 10, new ArrayList<>(Arrays.asList("1. ingredient", "2. ingredient")), new ArrayList<>(Arrays.asList("1. step", "2. step")), "url", 1, new ArrayList<Boolean>(Arrays.asList(false, false))));
 		sessionObj.put("Grocery", list);
 		when(request.getSession()).thenReturn(session);
 		StringWriter stringWriter = new StringWriter();

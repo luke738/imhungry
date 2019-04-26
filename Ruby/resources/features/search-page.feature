@@ -42,13 +42,12 @@ Scenario: initiating the search redirects to Results Page if I am logged in; mak
     And enter "password" into "password"
     And press "submit" button
     And I should see the "Search" page
-	And I should see prevSearch dropdown
 	And I search for "garden"
 	And expect 16 results
 	And enter radius of 10
 	And press "submit" button
 	And I should see the "Result" page
-	And I should see a "next" pagination button
+	And I should see a "next" button
 	And I should see a "page1" pagination button
 	And press "next" button
 	And I should see a "page2" pagination button
@@ -64,9 +63,5 @@ Scenario: initiating the search redirects to Results Page if I am logged in; mak
 	And press "manage_list" button
 	And I select "1. ingredient" unchecked
 	And press "back_search" button
-    And click prevSearch dropdown
-	And click the "prev_search0" selector
-	Then I should see "garden" in "search"
-	And  I should see "10" in "radius"
-	And I should see "16" in "number"
+
 

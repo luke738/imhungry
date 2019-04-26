@@ -180,12 +180,7 @@ public class LoginServletTest
         String randName = String.valueOf(new Random().nextInt());
         sessionObj.put("hello", "Hello "+randName);
         sessionObj.put("userID", 2);
-        ArrayList<Info> list = new ArrayList<>();
-        sessionObj.put("Favorites",list);
-        sessionObj.put("To Explore",list);
-        sessionObj.put("Do Not Show",list);
-        sessionObj.put("Grocery",list);
-        sessionObj.put("PreviousSearches",new ArrayList<Searches>());
+
         when(request.getSession()).thenReturn(session);
         StringWriter stringWriter = new StringWriter();
         when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
