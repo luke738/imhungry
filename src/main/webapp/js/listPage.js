@@ -65,7 +65,12 @@ else {
             arrowDown.className = "fas fa-arrow-down";
             sec6.appendChild(arrowDown);
             sec6.addEventListener("click", function() {
-                reorderResults(listName, "down", i);
+                event.stopPropagation();
+                event.preventDefault();
+                var first = (event.srcElement.id).split("m");
+                var second = first[1].split("d");
+                var third = parseInt(second[0]);
+                reorderResults(listName, "down", third);
             });
 
             sec7 = document.createElement("button");
@@ -75,7 +80,12 @@ else {
             arrowUp.className = "fas fa-arrow-up";
             sec7.appendChild(arrowUp);
             sec7.addEventListener("click", function() {
-                reorderResults(listName, "up", i);
+                event.stopPropagation();
+                event.preventDefault();
+                var first = (event.srcElement.id).split("m");
+                var second = first[1].split("u");
+                var third = parseInt(second[0]);
+                reorderResults(listName, "up", third);
             });
         }
         else {
@@ -109,10 +119,17 @@ else {
             sec6.setAttribute("class", "item_format6");
             let arrowDown = document.createElement("i");
             arrowDown.className = "fas fa-arrow-down";
-            arrowDown.id = "item"+i+"up";
+            arrowDown.id = "item"+i+"down";
             sec6.appendChild(arrowDown);
             sec6.addEventListener("click", function() {
-                reorderResults(listName, "down", i);
+                event.stopPropagation();
+                event.preventDefault();
+                var first = (event.srcElement.id).split("m");
+                console.log(first);
+                var second = first[1].split("d");
+                console.log(second);
+                var third = parseInt(second[0]);
+                reorderResults(listName, "down", third);
             });
 
             sec7 = document.createElement("button");
@@ -122,7 +139,12 @@ else {
             arrowUp.id = "item"+i+"up";
             sec7.appendChild(arrowUp);
             sec7.addEventListener("click", function() {
-                reorderResults(listName, "up", i);
+                event.stopPropagation();
+                event.preventDefault();
+                var first = (event.srcElement.id).split("m");
+                var second = first[1].split("u");
+                var third = parseInt(second[0]);
+                reorderResults(listName, "up", third);
             });
 
         }
