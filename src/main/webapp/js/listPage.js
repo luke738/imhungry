@@ -17,8 +17,8 @@ else if(listName === "Grocery") {
         let checked = list[i][0] === "C";
         let check = "";
         if(checked) check = "checked";
-        console.log(check);
-        col1.innerHTML +=    "<input id=(i+1) style='display: inline;' onchange='groceryCheckbox(\""+list[i].substring(1, list[i].length) + "\"," + checked + ")' type='checkbox' " + check + " >" + (i+1) + ". " + list[i].substring(1, list[i].length) + "<br>";
+
+        col1.innerHTML +=    "<input id=(i+1) style='display: inline;' {' onchange='groceryCheckbox(\""+list[i].substring(1, list[i].length) + "\"," + checked + ")' type='checkbox' " + check + " >" + (i+1) + ". " + list[i].substring(1, list[i].length) + "<br>";
 
     }
 }
@@ -61,16 +61,22 @@ else {
             sec6 = document.createElement("button");
             sec6.setAttribute("class", "item_format6");
             let arrowDown = document.createElement("i");
+            arrowDown.id = "item"+i+"down";
             arrowDown.className = "fas fa-arrow-down";
             sec6.appendChild(arrowDown);
-            // sec7.addEventListener("click", );
+            sec6.addEventListener("click", function() {
+                reorderResults(listName, "down", i);
+            });
 
             sec7 = document.createElement("button");
             sec7.setAttribute("class", "item_format7");
             let arrowUp = document.createElement("i");
+            arrowUp.id = "item"+i+"up";
             arrowUp.className = "fas fa-arrow-up";
             sec7.appendChild(arrowUp);
-            // sec7.addEventListener("click", );
+            sec7.addEventListener("click", function() {
+                reorderResults(listName, "up", i);
+            });
         }
         else {
             sec1 = document.createElement("div");
@@ -103,15 +109,22 @@ else {
             sec6.setAttribute("class", "item_format6");
             let arrowDown = document.createElement("i");
             arrowDown.className = "fas fa-arrow-down";
+            arrowDown.id = "item"+i+"up";
             sec6.appendChild(arrowDown);
-            // sec7.addEventListener("click", );
+            sec6.addEventListener("click", function() {
+                reorderResults(listName, "down", i);
+            });
 
             sec7 = document.createElement("button");
             sec7.setAttribute("class", "item_format7");
             let arrowUp = document.createElement("i");
             arrowUp.className = "fas fa-arrow-up";
+            arrowUp.id = "item"+i+"up";
             sec7.appendChild(arrowUp);
-            // sec7.addEventListener("click", );
+            sec7.addEventListener("click", function() {
+                reorderResults(listName, "up", i);
+            });
+
         }
         //Build the change and remove list buttons for this item
         let changeButton = document.createElement("button");
