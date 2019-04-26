@@ -225,7 +225,7 @@ public class Database
         }
 
         // to update the position of the info item above the moving one before the move
-        System.out.println("pos1: " + posit +"  pos2: " + position + " rID"+ rID + " movingID:" + movingrID);
+        System.out.println("pos1: " + posit +"  pos2: " + position + " rID"+ rID + " movingID:" + movingrID + " movingUp" + moveUp);
         updatePos(posit, listname, userID, rID, isRecipe);
         // now update the position of the moving one after the move
         updatePos(position, listname, userID, movingrID, isRecipe2);
@@ -515,6 +515,8 @@ public class Database
                     highestPos = pos;
                 }
             }
+            System.out.println("HIGH: "+highestPos);
+            return highestPos;
         }
         catch(SQLException e){
             System.out.println("SQLException in function \"validate\"");
@@ -665,39 +667,59 @@ public class Database
             } else if (listname.equals("To Explore")){
                 actualName = "toexplore";
             }
-            // stop when you reach the highest pos
-            int highestPos = findHighestPos(listname, userID);
-            // update the pos column for item after removed item to highestPos
-            for (int i=pos+1; i<=highestPos; i++){
-                // is pos in recipe[listname] ?
-                ps = conn.prepareStatement("SELECT r.pos FROM recipe" + actualName + " r WHERE r.pos = ? AND r.userID = ?");
-                ps.setInt(1, i);
-                ps.setInt(2, userID);
-                rs = ps.executeQuery();
-                // pos IS in recipe[listname]
-                if (rs.next()){
-                    // change pos to be one less than before
-                    ps = conn.prepareStatement("UPDATE recipe" + actualName + " SET pos = ? WHERE pos = ? AND userID = ?");
-                    ps.setInt(1, i-1);
-                    ps.setInt(2, i);
-                    ps.setInt(3, userID);
-                    // if pos is in recipe[listname] it won't be in restaurants
-                    continue;
-                }
-                // is pos in rest[listname] ?
-                ps = conn.prepareStatement("SELECT r.pos FROM rest" + actualName + " r WHERE r.pos = ? and r.userID = ?");
-                ps.setInt(1, i);
-                ps.setInt(2, userID);
-                rs = ps.executeQuery();
-                // pos IS in rest[listname]
-                if (rs.next()){
-                    // change pos to be one less than before
-                    ps = conn.prepareStatement("UPDATE rest" + actualName + " SET pos = ? WHERE pos = ? AND userID = ?");
-                    ps.setInt(1, i-1);
-                    ps.setInt(2, i);
-                    ps.setInt(3, userID);
-                }
+            if (listname.equals("Favorites")) {
+                ps = conn.prepareStatement("SELECT r.rID AND r.pos FROM recipefavorites r WHERE r.userID= ? AND r.pos> ?");
+            } else if (listname.equals("Do Not Show")) {
+                ps = conn.prepareStatement("SELECT r.rID AND r.pos FROM recipedonotshow r WHERE r.userID= ? AND r.pos> ?");
+            } else if (listname.equals("To Explore")) {
+                ps = conn.prepareStatement("SELECT r.rID AND r.pos FROM recipetoexplore r WHERE r.userID= ? AND r.pos>?");
             }
+            ps.setInt(1, userID);
+            ps.setInt(2, pos);
+            int counter =0;
+            ArrayList<Integer> allRID = new ArrayList<>();
+            ArrayList<Integer> allpos = new ArrayList<>();
+            while(rs.next()) {
+                int rID = rs.getInt("rID");
+                int position = rs.getInt("pos");
+                allRID.add(rID);
+                allpos.add(position);
+                counter++;
+            }
+            for(int i = 0; i < counter; i++){
+                ps = conn.prepareStatement("UPDATE recipe"+ actualName + "r SET r.pos = ? WHERE r.pos = ? AND r.userID = ?");
+                ps.setInt(1, allpos.get(i)-1);
+                ps.setInt(2, allpos.get(i));
+                ps.setInt(3, allRID.get(i));
+                ps.executeQuery();
+            }
+            if (listname.equals("Favorites")) {
+                ps = conn.prepareStatement("SELECT r.rID AND r.pos FROM restfavorites r WHERE r.userID= ? AND r.pos> ?");
+            } else if (listname.equals("Do Not Show")) {
+                ps = conn.prepareStatement("SELECT r.rID AND r.pos FROM restdonotshow r WHERE r.userID= ? AND r.pos> ?");
+            } else if (listname.equals("To Explore")) {
+                ps = conn.prepareStatement("SELECT r.rID AND r.pos FROM resttoexplore r WHERE r.userID= ? AND r.pos>?");
+            }
+            ps.setInt(1, userID);
+            ps.setInt(2, pos);
+            counter =0;
+            ArrayList<Integer> restallRID = new ArrayList<>();
+            ArrayList<Integer> restallpos = new ArrayList<>();
+            while(rs.next()) {
+                int rID = rs.getInt("rID");
+                int position = rs.getInt("pos");
+                restallRID.add(rID);
+                restallpos.add(position);
+                counter++;
+            }
+            for(int i = 0; i < counter; i++){
+                ps = conn.prepareStatement("UPDATE rest"+ actualName + "r SET r.pos = ? WHERE r.pos = ? AND r.userID = ?");
+                ps.setInt(1, restallpos.get(i)-1);
+                ps.setInt(2, restallpos.get(i));
+                ps.setInt(3, restallRID.get(i));
+                ps.executeQuery();
+            }
+
         } catch(SQLException e){
             System.out.println("SQLException in function \"validate\"");
             e.printStackTrace();
@@ -734,7 +756,13 @@ public class Database
                 int expectedResults = rs.getInt("expectRes");
                 String urlString = rs.getString("url");
                 String[] urlArray = new Gson().fromJson(urlString, String[].class);
-                ArrayList<String> url = new ArrayList<>(Arrays.asList(urlArray));
+                ArrayList<String> url;
+                if(urlArray!= null) {
+                    url = new ArrayList<>(Arrays.asList(urlArray));
+                }
+                else {
+                    url = null;
+                }
                 searchHistory.add(new Searches(searchTerm, specifiedRadius, expectedResults, url));
             }
             return searchHistory;
