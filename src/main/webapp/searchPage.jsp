@@ -15,10 +15,7 @@
 	<div id = "header">I'm Hungry </div>
 	<div id = "format">
 		<form action = "resultPage.jsp" method = "GET" onsubmit="if(localStorage.getItem('loggedIn')===null) {window.location = '/loginPage.jsp'; return false;} else return true;">
-			<select id= "prev_search">
-				<option value="prev_search1">Previous Searches</option>
 
-			</select>
 
 			<input type = "text" name = "search" id = "search" placeholder = "Enter Food" required />
 			<div id = "hover_format" class = "hover_format">

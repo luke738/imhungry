@@ -1,6 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+		 pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 	<head>
+
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>List Management</title>
 		<link rel="stylesheet" type="text/css" href="css/listPage.css" />
@@ -8,7 +11,7 @@
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	</head>
 	<body>
@@ -42,7 +45,10 @@
 		</form>
 	    
 		<div id = "header"></div>
+
 		<div id = "container">
+
+
 		</div>
 
 	<script src="js/ListClient.js"></script>
@@ -64,7 +70,8 @@
         if(list == null || list.length === 0) col1.innerHTML = "This list is empty. Add something to see it here!" ;
         else if(listName === "Grocery") {
             for (var i = 0; i < list.length; i++) {
-                col1.innerHTML += i+1 + ". " + list[i] + "<br />";
+                col1.innerHTML += "<input style='display: inline;' type='checkbox'>" + (i+1) + ". " + list[i] + "<br>";
+
             }
         }
         else {
@@ -102,6 +109,20 @@
                     sec5 = document.createElement("div");
                     sec5.setAttribute("class", "item_format5");
                     sec5.innerHTML = list[i].priceLevel;
+
+					sec6 = document.createElement("button");
+					sec6.setAttribute("class", "item_format6");
+					let arrowDown = document.createElement("i");
+					arrowDown.className = "fas fa-arrow-down";
+					sec6.appendChild(arrowDown);
+					// sec7.addEventListener("click", );
+
+					sec7 = document.createElement("button");
+					sec7.setAttribute("class", "item_format7");
+					let arrowUp = document.createElement("i");
+					arrowUp.className = "fas fa-arrow-up";
+					sec7.appendChild(arrowUp);
+					// sec7.addEventListener("click", );
                 }
                 else {
                     sec1 = document.createElement("div");
@@ -129,7 +150,21 @@
                     sec5 = document.createElement("div");
                     sec5.setAttribute("class", "item_format5");
                     sec5.innerHTML = "   ";
-                }
+
+					sec6 = document.createElement("button");
+					sec6.setAttribute("class", "item_format6");
+					let arrowDown = document.createElement("i");
+					arrowDown.className = "fas fa-arrow-down";
+					sec6.appendChild(arrowDown);
+					// sec7.addEventListener("click", );
+
+					sec7 = document.createElement("button");
+					sec7.setAttribute("class", "item_format7");
+					let arrowUp = document.createElement("i");
+					arrowUp.className = "fas fa-arrow-up";
+					sec7.appendChild(arrowUp);
+					// sec7.addEventListener("click", );
+				}
                 //Build the change and remove list buttons for this item
                 let changeButton = document.createElement("button");
                 changeButton.setAttribute("id", "changeButton"+i);
@@ -190,6 +225,8 @@
                 //Do add an extra div compared to there to get the button positioning working
                 let divider2 = document.createElement("div");
                 divider2.setAttribute("class", "divider");
+				res.appendChild(sec6);
+				res.appendChild(sec7);
                 res.appendChild(divider2);
                 res.appendChild(changeButton);
                 res.appendChild(removeButton);
@@ -204,9 +241,9 @@
         }
 	</script>
 
-	<div class = "sort_buttons">
-		<button id = "alphabet_sort" type="button" class="btn btn-outline-warning" onclick="reorderResults(listName, 'Alphabetically'); location.reload(true);">Sort By Alphabet</button>
-		<button id = "rating_sort" type="button" class="btn btn-outline-warning" onclick="reorderResults(listName, 'Rating'); location.reload(true);">Sort By Rating</button>
-	</div>
+	<%--<div class = "sort_buttons">--%>
+		<%--<button id = "alphabet_sort" type="button" class="btn btn-outline-warning" onclick="reorderResults(listName, 'Alphabetically'); location.reload(true);">Sort By Alphabet</button>--%>
+		<%--<button id = "rating_sort" type="button" class="btn btn-outline-warning" onclick="reorderResults(listName, 'Rating'); location.reload(true);">Sort By Rating</button>--%>
+	<%--</div>--%>
 	</body>
 </html>

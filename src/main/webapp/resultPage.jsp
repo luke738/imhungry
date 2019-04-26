@@ -43,12 +43,6 @@
    	 	<input type="submit" id = "back_search" value="Back to Search" />
 	</form>
 
-	<nav aria-label="page-navigation" class="pagination" id = "rec_nav">
-	</nav>
-
-	<nav aria-label="page-navigation" class="pagination" id = "rest_nav">
-	</nav>
-
 	<div id = "container">
 		<div id = "column1">
 			<div id = "restaurantColumn" class = "sub_header">Restaurants</div>
@@ -62,6 +56,14 @@
 		<ul id=”pages”></ul>
 
 	</div>
+
+	<nav aria-label="page-navigation" class="pagination" id = "rec_nav">
+	</nav>
+
+	<nav aria-label="page-navigation" class="pagination" id = "rest_nav">
+	</nav>
+
+	<br>
 
     <script src="js/parseQueryString.js"></script>
 	<script src="js/resultPage.js"></script>
